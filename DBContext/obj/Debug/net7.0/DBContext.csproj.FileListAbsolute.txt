@@ -1,0 +1,14 @@
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\bin\Debug\net7.0\DBContext.deps.json
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\bin\Debug\net7.0\DBContext.dll
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\bin\Debug\net7.0\DBContext.pdb
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.csproj.AssemblyReference.cache
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.AssemblyInfoInputs.cache
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.AssemblyInfo.cs
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.csproj.CoreCompileInputs.cache
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.dll
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\refint\DBContext.dll
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.pdb
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\ref\DBContext.dll
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\bin\Debug\net7.0\DBContext.runtimeconfig.json
+C:\Users\Mohamed\source\repos\AmiraMohd\HrbiApp\DBContext\obj\Debug\net7.0\DBContext.genruntimeconfig.cache
