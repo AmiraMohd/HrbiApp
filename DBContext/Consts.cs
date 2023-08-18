@@ -33,5 +33,15 @@ namespace DBContext
         public const string NourseAdminAccountType = "NourseAdmin";
 
         #endregion
+
+        #region NotificationTypes
+        public enum AdminNotificationType
+        {
+            error,
+            success,
+            warning,
+            info
+        }
+        #endregion
     }
 }

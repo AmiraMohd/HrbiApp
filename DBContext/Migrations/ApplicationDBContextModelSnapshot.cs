@@ -134,7 +134,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ApplicationVersions");
+                    b.ToTable("ApplicationVersions", (string)null);
                 });
 
             modelBuilder.Entity("DBContext.ExceptionLog", b =>
@@ -170,7 +170,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("ExceptionLogs");
+                    b.ToTable("ExceptionLogs", (string)null);
                 });
 
             modelBuilder.Entity("DBContext.Notification", b =>
@@ -208,7 +208,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("DBContext.OTP", b =>
@@ -229,7 +229,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("OTPs");
+                    b.ToTable("OTPs", (string)null);
                 });
 
             modelBuilder.Entity("DBContext.Setting", b =>
@@ -250,7 +250,7 @@ namespace DBContext.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
