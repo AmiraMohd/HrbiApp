@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DBContext
 {
-    public class Specialist
+    public class Specialization
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

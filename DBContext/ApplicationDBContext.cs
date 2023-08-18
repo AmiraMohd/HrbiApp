@@ -19,6 +19,14 @@ namespace DBContext
         }
 
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
+        public DbSet<NurseService> NurseServices { get; set; }
+        public DbSet<NurseBooking> NurseBookings { get; set; }
+        public DbSet<LabService> LabServices { get; set; }
+        public DbSet<LabServiceBooking> LabServiceBookings { get; set; }
+        public DbSet<DoctorBooking> DoctorBookings { get; set; }
+        public DbSet<DoctorPosition> DoctorPositions { get; set; }
         public DbSet<Setting> Settings { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public DbSet<OTP> OTPs { get; set; }
