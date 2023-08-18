@@ -1,17 +1,17 @@
 ﻿
+using DBContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TzwedDBcontext;
 
-namespace Tzwed.web.Areas.Common
+namespace HrbiApp.Web.Areas.Common
 {
     public class ExcptionHandler
     {
-        ApplicationDbContext _db;
+        ApplicationDBContext _db;
         //UnitOfWork _unitOfWork;
-        public ExcptionHandler(ApplicationDbContext db)
+        public ExcptionHandler(ApplicationDBContext db)
         {
             _db = db;
             //_unitOfWork = new UnitOfWork(db);

@@ -1,4 +1,5 @@
 ﻿using DBContext;
+using HrbiApp.Web.Models.LabServices;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -12,15 +13,16 @@ namespace HrbiApp.Web.Areas.Common
         }
 
         #region Lab Services
-        public void GetLabServices()
+        public (bool Result,LabServicesListModel Services) GetLabServices()
         {
             try
             {
-
+                var services=_dbContext.la
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex);
+                return (false,new LabServicesListModel());
             }
         }
         #endregion

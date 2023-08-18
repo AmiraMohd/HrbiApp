@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Common\Controllers\" />
     <Folder Include="Areas\Common\Data\" />
     <Folder Include="Areas\Common\Models\" />
     <Folder Include="Areas\Common\Views\" />
