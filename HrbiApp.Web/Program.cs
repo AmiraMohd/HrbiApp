@@ -22,6 +22,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ExcptionHandler>();
+builder.Services.AddScoped<Validators>();
 
 builder.Services.AddScoped<CoreServices>();
 var app = builder.Build();

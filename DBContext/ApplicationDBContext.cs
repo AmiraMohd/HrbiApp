@@ -24,6 +24,7 @@ namespace DBContext
         public DbSet<OTP> OTPs { get; set; }
         public DbSet<ApplicationVersion> ApplicationVersions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<LabService> LabServices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
