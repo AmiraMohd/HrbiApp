@@ -152,5 +152,54 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+
+
+        #region booking Validators
+        public bool IsValidDoctorToAcceptRejectBooking(int doctorId, int bookingId)
+        {
+            try {
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                if (booking.DoctorID == doctorId)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception) {
+                return false;
+            }
+        }
+
+        public bool IsBookingRejected(int bookingId)
+        {
+            try
+            {
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                if (booking.Status == Consts.Rejected)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool IsBookingAccepted(int bookingId)
+        {
+            try
+            {
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                if (booking.Status == Consts.Accepted)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }

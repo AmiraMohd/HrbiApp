@@ -30,6 +30,13 @@ namespace DBContext
         #region Booking Messages
         public const string SuccessfulBooking = "CreatedSuccessfully";
         public const string BookingFailed = "BookingFailed";
+        public const string BookingAlreadyRejected = "BookingAlreadyRejected";
+        public const string BookingAlreadyAccepted = "BookingAlreadyAccepted";
+        #endregion
+
+        #region General
+
+        public const string Failed = "Failed";
         #endregion
 
     }

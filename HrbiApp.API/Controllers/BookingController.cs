@@ -30,12 +30,12 @@ namespace HrbiApp.API.Controllers
         [Route("PlaceDoctorBooking")]
         public async Task<IActionResult> PlaceDoctorBooking([FromBody] PlaceDoctorBookigRequest model)
         {
-          
+
             if (!_validator.IsValidDoctor(model.DoctorId))
             {
                 return Ok(new BaseResponse()
                 {
-                 
+
                     Message = Responses.NotValidDoctor
                 });
             }
@@ -146,6 +146,77 @@ namespace HrbiApp.API.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("AcceptBookingByDoctor")]
+        public async Task<IActionResult> AcceptBookingByDoctor(int bookingId,int doctorId)
+        {
+            if (_validator.IsBookingRejected(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.BookingAlreadyRejected
+                });
+            }
+            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId,bookingId)) {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidDoctor
+                });
 
+            }
+            var result = CS.AcceptBooking(bookingId);
+            if(!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true
+               
+                }); ;
+            }
+        }
+
+        [HttpPut]
+        [Route("RejectBookingByDoctor")]
+        public async Task<IActionResult> RejectBookingByDoctor(int bookingId, int doctorId)
+        {
+            if (_validator.IsBookingAccepted(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.BookingAlreadyAccepted
+                });
+            }
+            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidDoctor
+                });
+
+            }
+            var result = CS.RejectBooking(bookingId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true
+
+                }); ;
+            }
+        }
     }
 }

@@ -272,7 +272,7 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public async Task<bool> AcceptBookingByDoctor(int bookingId)
+        public async Task<bool> AcceptBooking(int bookingId)
         {
             try {
                 var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
@@ -286,7 +286,7 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
-        public async Task<bool> RejectBookingByDoctor(int bookingId)
+        public async Task<bool> RejectBooking(int bookingId)
         {
             try
             {
