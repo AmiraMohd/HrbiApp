@@ -29,8 +29,6 @@ namespace DBContext
 
         #region booking Statuses
         public const string New = "New";
-        public const string Accepted = "Accepted";
-        public const string Rejected = "Rejected";
         public const string OnProgress = "OnProgress";
         public const string Done = "Done";
         #endregion
