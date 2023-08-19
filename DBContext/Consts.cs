@@ -9,7 +9,7 @@ namespace DBContext
     public class Consts
     {
         #region GeneralSettings
-        public const string ConfirmationPurose = "Confirmation";
+        public const string ConfirmationPurpose = "Confirmation";
         public const string ResetPurose = "Reset";
         public const string NotificationServerKey = "";
 
@@ -22,6 +22,8 @@ namespace DBContext
         public const string Active = "Active";
         public const string Deleted = "Deleted";
         public const string Pending = "Suspended";
+        public const string Accepted = "Accepted";
+        public const string Rejected = "Rejected";
 
         #endregion
 
@@ -57,6 +59,11 @@ namespace DBContext
             Rejected,
             Done,
         }
+        #endregion
+
+        #region ClaimsName
+        public const string UserIDClaimName = "UserID";
+        public const string PhoneNumberClaimName = "PhoneNumber";
         #endregion
     }
 }

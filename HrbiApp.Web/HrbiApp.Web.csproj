@@ -31,4 +31,8 @@
     <Folder Include="Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DBContext\DBContext.csproj" />
+  </ItemGroup>
+
 </Project>

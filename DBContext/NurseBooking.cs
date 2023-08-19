@@ -8,15 +8,19 @@ using System.Threading.Tasks;
 
 namespace DBContext
 {
-    public class NourseService
+    public class NurseBooking
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public string NameAR { get; set; }
-        public string NameEN { get; set; }
+        public string PatientID { get; set; }
+        [ForeignKey(nameof(PatientID))]
+        public ApplicationUser Patient { get; set; }
+        public int ServiceID { get; set; }
+        [ForeignKey(nameof(ServiceID))]
+        public NurseService NurseService { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime VisitTime { get; set; }
         public string Status { get; set; }
-        public double Price { get; set; }
-
     }
 }
