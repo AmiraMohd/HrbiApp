@@ -32,7 +32,7 @@ namespace HrbiApp.Web.Areas.Common
                 };
                 //_unitOfWork.ExceptionLogs.Add(new Data.Entities.ExceptionLog() { });
                 //_unitOfWork.Complete();
-                _db.Add<ExceptionLog>(exceptionLog);
+                _db.ExceptionLogs.Add(exceptionLog);
                 _db.SaveChanges();
             }
             catch (Exception ex)

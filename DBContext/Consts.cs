@@ -24,6 +24,14 @@ namespace DBContext
         public const string Pending = "Suspended";
 
         #endregion
+
+        #region booking Statuses
+        public const string New = "New";
+        public const string Accepted = "Accepted";
+        public const string Rejected = "Rejected";
+        public const string OnProgress = "OnProgress";
+        public const string Done = "Done";
+        #endregion
         #endregion
         #region AccountTypes
         public const string DoctorAccountType = "Doctor";
@@ -41,6 +49,13 @@ namespace DBContext
             success,
             warning,
             info
+        }
+        public enum BookingsNotificationTypes
+        {
+            New=1,
+            Accepted,
+            Rejected,
+            Done,
         }
         #endregion
     }

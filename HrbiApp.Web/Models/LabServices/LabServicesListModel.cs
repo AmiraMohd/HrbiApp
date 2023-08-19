@@ -2,6 +2,7 @@
 {
     public class LabServicesListModel
     {
+        public int ID { get; set; }
         public string ServiceNameAR { get; set; }
         public string ServiceNameEN { get; set; }
         public string Status { get; set; }

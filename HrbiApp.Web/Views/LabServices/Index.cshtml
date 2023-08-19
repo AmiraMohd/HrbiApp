@@ -18,15 +18,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.ServiceNameEN)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsAvilableFromHome)
             </th>
+
             <th></th>
         </tr>
     </thead>
@@ -39,9 +38,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ServiceNameEN)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
@@ -49,9 +46,13 @@
                 @Html.DisplayFor(modelItem => item.IsAvilableFromHome)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Update", "Update", new { serviceId=item.ID }) |
+                    @if (item.Status == Consts.Active)
+                    {
+                        @Html.ActionLink("DeActivate", "DeActivateService", new { serviceId=item.ID })
+                    }else{
+                        @Html.ActionLink("Activate", "ActivateService", new { serviceId=item.ID })
+                    }
             </td>
         </tr>
 }

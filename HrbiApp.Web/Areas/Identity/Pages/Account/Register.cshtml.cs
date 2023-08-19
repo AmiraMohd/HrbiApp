@@ -118,7 +118,7 @@ namespace HrbiApp.Web.Areas.Identity.Pages.Account
                 user.AccountType = string.Empty;
                 user.FullName = string.Empty;
                 user.Status = string.Empty;
-                user.Lanuage = string.Empty;
+                user.Language = string.Empty;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

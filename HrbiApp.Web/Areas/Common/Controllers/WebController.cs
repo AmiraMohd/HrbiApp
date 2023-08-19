@@ -5,6 +5,13 @@ namespace HrbiApp.Web.Areas.Common.Controllers
 {
     public class WebController : Controller
     {
+        protected CoreServices CS;
+        protected Validators Validators;
+        public WebController(CoreServices cs, Validators validators)
+        {
+            CS = cs;
+            Validators = validators;
+        }
         protected void Alert(string message, Consts.AdminNotificationType notificationType)
         {
             string msg = "";

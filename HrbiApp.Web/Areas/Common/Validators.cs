@@ -34,14 +34,14 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                StringBuilder message = new StringBuilder();
+                List<string> messages = new List<string>();
                 var sameARName = _dbContext.LabServices.FirstOrDefault(s => s.NameAR == model.ServiceNameAR);
-                if(sameARName != null) message.Append(Messages.ThereIsServiceWithSameARName);
+                if(sameARName != null) messages.Append(Messages.ThereIsServiceWithSameARName);
 
                 var sameENName= _dbContext.LabServices.FirstOrDefault(s=>s.NameEN==model.ServiceNameEN);
-                if (sameENName != null) message.Append(Messages.ThereIsServiceWithSameENName);
+                if (sameENName != null) messages.Append(Messages.ThereIsServiceWithSameENName);
 
-                return (message == new StringBuilder(), message.ToString());
+                return (messages.Count==0 , string.Join(",",messages));
             }
             catch (Exception ex)
             {
@@ -67,6 +67,22 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex);
                 return (false, Messages.ExceptionOccured);
+            }
+        }
+
+        #endregion
+        #region LabServiceBookings
+        public bool IsValidLabServiceBooking(int bookingID)
+        {
+            try
+            {
+                var service = _dbContext.LabServiceBookings.Find(bookingID);
+                return service != null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex);
+                return false;
             }
         }
 
