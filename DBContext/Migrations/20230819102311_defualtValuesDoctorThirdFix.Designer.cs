@@ -4,6 +4,7 @@ using DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DBContext.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230819102311_defualtValuesDoctorThirdFix")]
+    partial class defualtValuesDoctorThirdFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,31 +24,6 @@ namespace DBContext.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DBContext.Ambulance", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Hospital")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Ambulances");
-                });
 
             modelBuilder.Entity("DBContext.ApplicationUser", b =>
                 {
@@ -192,9 +170,6 @@ namespace DBContext.Migrations
                     b.Property<DateTime?>("OpenTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PositionID")
-                        .HasColumnType("int");
-
                     b.Property<double?>("Price")
                         .HasColumnType("float");
 
@@ -211,8 +186,6 @@ namespace DBContext.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserID");
-
-                    b.HasIndex("PositionID");
 
                     b.HasIndex("SpecializationID");
 
@@ -708,17 +681,11 @@ namespace DBContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DBContext.DoctorPosition", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionID");
-
                     b.HasOne("DBContext.Specialization", "Specialization")
                         .WithMany()
                         .HasForeignKey("SpecializationID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Position");
 
                     b.Navigation("Specialization");
 

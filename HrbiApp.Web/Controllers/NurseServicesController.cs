@@ -1,24 +1,23 @@
 ﻿using DBContext;
 using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
-using HrbiApp.Web.Models.LabServices;
+using HrbiApp.Web.Models.NurseServices;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
 {
-    public class LabServicesController : WebController
+    public class NurseServicesController : WebController
     {
-        
-        public LabServicesController(CoreServices cs,Validators validators):base(cs,validators)
+        public NurseServicesController(CoreServices cs, Validators validators) : base(cs, validators)
         {
-            
         }
+
         public IActionResult Index()
         {
-            var getServices=CS.GetLabServices();
+            var getServices = CS.GetNurseServices();
             if (!getServices.Result)
             {
-                Alert(Messages.ExceptionOccured,Consts.AdminNotificationType.error);
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
             }
             return View(getServices.Services);
         }
@@ -27,12 +26,13 @@ namespace HrbiApp.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create (CreateLabServiceModel model)
+        public IActionResult Create(CreateNurseServiceModel model)
         {
-            var isValid=Validators.IsValidLabServiceToCreate(model);
-            if(isValid.Result)
+            var isValid = Validators.IsValidNurseServiceToCreate(model);
+            if (isValid.Result)
             {
-                if (CS.CreateLabService(model) == true) {
+                if (CS.CreateNurseService(model) == true)
+                {
                     Alert(Messages.Done, Consts.AdminNotificationType.success);
                     return RedirectToAction(nameof(Index));
                 }
@@ -51,22 +51,23 @@ namespace HrbiApp.Web.Controllers
         }
         public IActionResult Update(int serviceID)
         {
-            if (!Validators.IsValidLabService(serviceID))
+            if (!Validators.IsValidNurseService(serviceID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var getService = CS.GetLabServiceToUpdate(serviceID);
+            var getService = CS.GetNurseServiceToUpdate(serviceID);
             if (!getService.Result)
             {
-                Alert(Messages.ExceptionOccured,Consts.AdminNotificationType.error);
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
             return View(getService.Service);
         }
         [HttpPost]
-        public IActionResult Update(UpdateLabServiceModel model) {
-            var result = CS.UpdateLabService(model);
+        public IActionResult Update(UpdateNurseServiceModel model)
+        {
+            var result = CS.UpdateNurseService(model);
             if (result)
             {
                 Alert(Messages.Done, Consts.AdminNotificationType.success);
@@ -78,14 +79,16 @@ namespace HrbiApp.Web.Controllers
                 return View(model);
             }
         }
-        public IActionResult DeActivateService(int serviceID) {
-            if (!Validators.IsValidLabService(serviceID))
+        public IActionResult DeActivateService(int serviceID)
+        {
+            if (!Validators.IsValidNurseService(serviceID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var result = CS.ChangeLabServiceStatus(serviceID, Consts.NotActive);
-            if (!result) {
+            var result = CS.ChangeNurseServiceStatus(serviceID, Consts.NotActive);
+            if (!result)
+            {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
             }
             else
@@ -94,14 +97,16 @@ namespace HrbiApp.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult ActivateService(int serviceID) {
-            if (!Validators.IsValidLabService(serviceID))
+        public IActionResult ActivateService(int serviceID)
+        {
+            if (!Validators.IsValidNurseService(serviceID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var result = CS.ChangeLabServiceStatus(serviceID, Consts.Active);
-            if (!result) {
+            var result = CS.ChangeNurseServiceStatus(serviceID, Consts.Active);
+            if (!result)
+            {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
             }
             else

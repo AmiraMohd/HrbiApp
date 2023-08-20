@@ -17,8 +17,8 @@ namespace DBContext
         public ApplicationUser Patient { get; set; }
         public string PatientID { get; set; }
         [ForeignKey(nameof(DoctorID))]
-        public Doctor Doctor { get; set; }
-        public int DoctorID { get; set; }
+        public Doctor? Doctor { get; set; }
+        public int? DoctorID { get; set; }
         public string Status { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime VisiteDate { get; set; }

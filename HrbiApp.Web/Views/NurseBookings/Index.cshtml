@@ -1,8 +1,9 @@
-﻿@model IEnumerable<HrbiApp.Web.Models.LabBooking.LabBookingListModel>
+﻿@model IEnumerable<HrbiApp.Web.Models.NurseBookings.NurseBookingListModel>
 
 @{
     ViewData["Title"] = "Index";
 }
+
 
 <table class="table">
     <thead>
@@ -22,9 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ServiceNameEN)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFromHome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Status)
@@ -56,9 +54,6 @@
                     @Html.DisplayFor(modelItem => item.ServiceNameEN)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsFromHome)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
@@ -76,6 +71,7 @@
                     }
                     else if (item.Status == Consts.Accepted)
                         @Html.ActionLink("MakeDone", "MakeDone", new { bookingID=item.ID })
+
                     </td>
                 </tr>
         }

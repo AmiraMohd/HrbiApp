@@ -29,16 +29,17 @@ namespace HrbiApp.Web.Areas.Common
             _configuration = configuration;
 
         }
+        #region Lab Bookings
         public async Task NotifyPatientWithAcceptedLabBooking(int bookingID)
         {
             try
             {
-                var booking=_db.LabServiceBookings.Find(bookingID);
+                var booking = _db.LabServiceBookings.Find(bookingID);
 
                 var patient = _db.Users.Find(booking.PatientID);
                 var notification = new Notification()
                 {
-                    DataID = bookingID+"",
+                    DataID = bookingID + "",
                     UserID = booking.PatientID,
                     Body = Messages.AcceptedLabBookingBody,
                     Title = Messages.AcceptedLabBookingTitle,
@@ -57,11 +58,11 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var booking=_db.LabServiceBookings.Find(bookingID);
+                var booking = _db.LabServiceBookings.Find(bookingID);
                 var patient = _db.Users.Find(booking.PatientID);
                 var notification = new Notification()
                 {
-                    DataID = bookingID+"",
+                    DataID = bookingID + "",
                     UserID = booking.PatientID,
                     Body = Messages.RejectedLabBookingBody,
                     Title = Messages.RejectedLabBookingTitle,
@@ -78,11 +79,11 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var booking=_db.LabServiceBookings.Find(bookingID);
+                var booking = _db.LabServiceBookings.Find(bookingID);
                 var patient = _db.Users.Find(booking.PatientID);
                 var notification = new Notification()
                 {
-                    DataID = bookingID+"",
+                    DataID = bookingID + "",
                     UserID = booking.PatientID,
                     Body = Messages.DoneLabBookingBody,
                     Title = Messages.DoneLabBookingTitle,
@@ -95,7 +96,75 @@ namespace HrbiApp.Web.Areas.Common
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
             }
         }
+        #endregion
+        #region Nurse Bookings
+        public async Task NotifyPatientWithAcceptedNurseBooking(int bookingID)
+        {
+            try
+            {
+                var booking = _db.NurseBookings.Find(bookingID);
 
+                var patient = _db.Users.Find(booking.PatientID);
+                var notification = new Notification()
+                {
+                    DataID = bookingID + "",
+                    UserID = booking.PatientID,
+                    Body = Messages.AcceptedNurseBookingBody,
+                    Title = Messages.AcceptedNurseBookingTitle,
+                    Type = (int)Consts.BookingsNotificationTypes.Accepted,
+
+                };
+                await SendNotification(notification);
+
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+        public async Task NotifyPatientWithRejectedNurseBooking(int bookingID)
+        {
+            try
+            {
+                var booking = _db.NurseBookings.Find(bookingID);
+                var patient = _db.Users.Find(booking.PatientID);
+                var notification = new Notification()
+                {
+                    DataID = bookingID + "",
+                    UserID = booking.PatientID,
+                    Body = Messages.RejectedNurseBookingBody,
+                    Title = Messages.RejectedNurseBookingTitle,
+                    Type = (int)Consts.BookingsNotificationTypes.Rejected,
+                };
+                await SendNotification(notification);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+        public async Task NotifyPatientWithDoneNurseBooking(int bookingID)
+        {
+            try
+            {
+                var booking = _db.NurseBookings.Find(bookingID);
+                var patient = _db.Users.Find(booking.PatientID);
+                var notification = new Notification()
+                {
+                    DataID = bookingID + "",
+                    UserID = booking.PatientID,
+                    Body = Messages.DoneNurseBookingBody,
+                    Title = Messages.DoneNurseBookingTitle,
+                    Type = (int)Consts.BookingsNotificationTypes.Rejected,
+                };
+                await SendNotification(notification);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+            }
+        }
+        #endregion
         public async Task SendNotification(Notification notification)
         {
             try
