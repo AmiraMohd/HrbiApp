@@ -1,0 +1,52 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.DoctorPositions.DoctorPositionsListModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+           <th>
+                @Html.DisplayNameFor(model => model.NameAR)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameEN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           <td>
+                @Html.DisplayFor(modelItem => item.NameAR)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameEN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Update", "Update", new { positionId =item.ID}) |
+                    @if (item.Status == Consts.Active)
+                    {
+                        @Html.ActionLink("DeActivate", "DeActivate", new { positionId=item.ID })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Activate", "Activate", new { positionId=item.ID })
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

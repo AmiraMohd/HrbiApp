@@ -1,5 +1,6 @@
 ﻿using DBContext;
 using HrbiApp.Web.Models.Ambulances;
+using HrbiApp.Web.Models.DoctorPositions;
 using HrbiApp.Web.Models.Doctors;
 using HrbiApp.Web.Models.LabServices;
 using HrbiApp.Web.Models.NurseServices;
@@ -336,6 +337,62 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return (false,Messages.ExceptionOccured);
+            }
+        }
+        #endregion
+
+        #region Doctor Positions
+        public bool IsValidDoctorPosition(int serviceID)
+        {
+            try
+            {
+                var service = _dbContext.DoctorPositions.FirstOrDefault(s => s.ID == serviceID);
+                return service != null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public (bool Result, string Message) IsValidDoctorPositionToCreate(CreateDoctorPositionModel model)
+        {
+            try
+            {
+                List<string> messages = new List<string>();
+                var sameARName = _dbContext.DoctorPositions.FirstOrDefault(s => s.NameAR == model.NameAR);
+                if (sameARName != null) messages.Add(Messages.ThereIsServiceWithSameARName);
+
+                var sameENName = _dbContext.DoctorPositions.FirstOrDefault(s => s.NameEN == model.NameEN);
+                if (sameENName != null) messages.Add(Messages.ThereIsServiceWithSameENName);
+
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, Messages.ExceptionOccured);
+            }
+        }
+
+        public (bool Result, string Message) IsValidDoctorPositionToUpdate(UpdateDoctorPositionModel model)
+        {
+            try
+            {
+                List<string> messages = new();
+                var sameARName = _dbContext.DoctorPositions.FirstOrDefault(s => s.NameAR == model.NameAR && s.ID != model.ID);
+                if (sameARName != null) messages.Add(Messages.ThereIsServiceWithSameARName);
+
+                var sameENName = _dbContext.DoctorPositions.FirstOrDefault(s => s.NameEN == model.NameEN && s.ID != model.ID);
+                if (sameENName != null) messages.Add(Messages.ThereIsServiceWithSameENName);
+
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, Messages.ExceptionOccured);
             }
         }
         #endregion

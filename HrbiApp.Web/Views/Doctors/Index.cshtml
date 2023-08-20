@@ -4,9 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -48,7 +46,7 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @Html.ActionLink("Update", "Update", new { doctorID=item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { doctorID=item.ID }) |
                     @if (item.Status == Consts.Active)
                     {
                         @Html.ActionLink("DeActivate", "Details", new {doctorID=item.ID  })

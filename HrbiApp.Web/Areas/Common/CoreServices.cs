@@ -5,6 +5,7 @@ using HrbiApp.Web.Models.LabBooking;
 using HrbiApp.Web.Models.LabServices;
 using HrbiApp.Web.Models.NurseBookings;
 using HrbiApp.Web.Models.NurseServices;
+using HrbiApp.Web.Models.DoctorPositions;
 using HrbiApp.Web.Models.Specializations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -395,6 +396,41 @@ namespace HrbiApp.Web.Areas.Common
         #endregion
 
         #region Doctors
+        public (bool Result,DoctorDetailsModel Doctor) GetDoctorDetails(int doctorId)
+        {
+            try
+            {
+                var doctor = _dbContext.Doctors.Find(doctorId);
+                var position = _dbContext.DoctorPositions.Find(doctor.PositionID);
+                var specilazation = _dbContext.Specializations.Find(doctor.SpecializationID);
+                
+                var detailsModel= new DoctorDetailsModel()
+                {
+                    AboutDoctor=doctor.AboutDoctor,
+                    ApplicationUserID=doctor.ApplicationUserID,
+                    SpecializationNameAR=specilazation.NameAR,
+                    SpecializationNameEN=specilazation.NameEN,
+                    Status=doctor.Status,
+                    Address=doctor.Address,
+                    CloseTime=doctor.CloseTime,
+                    ID=doctor.ID,
+                    Lat=doctor.Lat,
+                    Lon=doctor.Lon,
+                    OpenTime=doctor.OpenTime,
+                    Price=doctor.Price,
+                    WorkHours=doctor.WorkHours,
+                    PositionNameAR=position.NameAR,
+                    PositionNameEN=position.NameEN,
+                    
+                };
+                return (true, detailsModel);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,new());
+            }
+        }
         public (bool Result,List<DoctorsListModel>Doctors) GetDoctors()
         {
             try
@@ -720,6 +756,99 @@ namespace HrbiApp.Web.Areas.Common
         }
 
 
+        #endregion
+
+        #region Positions
+        public (bool Result, List<DoctorPositionsListModel> Services) GetDoctorPositions()
+        {
+            try
+            {
+                var positions = _dbContext.DoctorPositions.Select(s => new DoctorPositionsListModel()
+                {
+                    ID = s.ID,
+                    NameAR = s.NameAR,
+                    NameEN = s.NameEN,
+                    Status = s.Status,
+                }).ToList();
+                return (true, positions);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new List<DoctorPositionsListModel>());
+            }
+        }
+
+        public bool CreateDoctorPosition(CreateDoctorPositionModel model)
+        {
+            try
+            {
+                var position = new DoctorPosition();
+                position.NameAR = model.NameAR;
+                position.NameEN = model.NameEN;
+                position.Status = Consts.NotActive;
+                _dbContext.DoctorPositions.Add(position);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public bool ChangeDoctorPositionStatus(int positionID, string status)
+        {
+            try
+            {
+                var position = _dbContext.DoctorPositions.Find(positionID);
+                position.Status = status;
+                _dbContext.DoctorPositions.Update(position);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public (bool Result, UpdateDoctorPositionModel Service) GetDoctorPositionToUpdate(int positionID)
+        {
+            try
+            {
+                var position = _dbContext.DoctorPositions.Find(positionID);
+                var editModel = new UpdateDoctorPositionModel()
+                {
+                    ID = positionID,
+                    NameAR = position.NameAR,
+                    NameEN = position.NameEN,
+                };
+                return (true, editModel);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new UpdateDoctorPositionModel());
+            }
+        }
+        public bool UpdateDoctorPosition(UpdateDoctorPositionModel model)
+        {
+            try
+            {
+                var position = _dbContext.DoctorPositions.FirstOrDefault(s => s.ID == model.ID);
+                position.NameAR = model.NameAR;
+                position.NameEN = model.NameEN;
+                _dbContext.DoctorPositions.Update(position);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         #endregion
     }
 }

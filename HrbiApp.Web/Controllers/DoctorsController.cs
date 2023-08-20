@@ -22,6 +22,22 @@ namespace HrbiApp.Web.Controllers
             }
             return View(getDoctors.Doctors);
         }
+
+        public IActionResult Details(int doctorID)
+        {
+            if (!Validators.IsValidDoctor(doctorID))
+            {
+Alert(Messages.ExceptionOccured,Consts.AdminNotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+            var getDetails = CS.GetDoctorDetails(doctorID);
+            if (!getDetails.Result)
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(getDetails.Doctor);
+        }
         public IActionResult Create()
         {
             var getSpecialization = CS.GetSpecializationsToSelect();
