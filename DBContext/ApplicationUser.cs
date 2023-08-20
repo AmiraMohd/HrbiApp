@@ -13,7 +13,7 @@ namespace DBContext
         public string FullName { get; set; }
         public string AccountType { get; set; }
         public string Status { get;set; }
-        public string Lanuage { get; set; }
+        public string Language { get; set; }
         public string InstanceID { get; set; }
     }
 }

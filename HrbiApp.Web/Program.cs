@@ -1,7 +1,7 @@
-using DBContext;
-using HrbiApp.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using DBContext;
+using HrbiApp.Web.Areas.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +11,20 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+}
+    )
+    .AddEntityFrameworkStores<ApplicationDBContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<ExcptionHandler>();
+builder.Services.AddScoped<Validators>();
+builder.Services.AddScoped<NotificationCenter>();
+builder.Services.AddScoped<CoreServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

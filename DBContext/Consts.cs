@@ -27,6 +27,12 @@ namespace DBContext
         public const string Delayed = "Delayed";
 
         #endregion
+
+        #region booking Statuses
+        public const string New = "New";
+        public const string OnProgress = "OnProgress";
+        public const string Done = "Done";
+        #endregion
         #endregion
         #region AccountTypes
         public const string DoctorAccountType = "Doctor";
@@ -35,6 +41,23 @@ namespace DBContext
         public const string AdminAccountType = "Admin";
         public const string NourseAdminAccountType = "NourseAdmin";
 
+        #endregion
+
+        #region NotificationTypes
+        public enum AdminNotificationType
+        {
+            error,
+            success,
+            warning,
+            info
+        }
+        public enum BookingsNotificationTypes
+        {
+            New=1,
+            Accepted,
+            Rejected,
+            Done,
+        }
         #endregion
 
         #region ClaimsName
