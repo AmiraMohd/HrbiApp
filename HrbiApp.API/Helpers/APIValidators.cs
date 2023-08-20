@@ -94,11 +94,48 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+
+        public bool IsActiveDoctorSpecialization(int id)
+        {
+            try
+            {
+                var sp = _db.Specializations.FirstOrDefault(u => u.ID == id);
+                if (sp != null && sp.Status == Consts.Active)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public bool IsActiveDoctorPosition(int id)
+        {
+            try
+            {
+                var sp = _db.DoctorPositions.FirstOrDefault(u => u.ID == id);
+                if (sp != null && sp.Status == Consts.Active)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
         #endregion
 
         #region Patient Validators
 
-            public bool IsValidPatient(string id)
+        public bool IsValidPatient(string id)
         {
             try
             {

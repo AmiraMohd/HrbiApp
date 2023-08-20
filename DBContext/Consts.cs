@@ -24,6 +24,7 @@ namespace DBContext
         public const string Pending = "Suspended";
         public const string Accepted = "Accepted";
         public const string Rejected = "Rejected";
+        public const string Delayed = "Delayed";
 
         #endregion
 

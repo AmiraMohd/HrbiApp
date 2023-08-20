@@ -115,7 +115,7 @@ namespace HrbiApp.API.Controllers
 
         [HttpGet]
         [Route("GetDoctorsBySpecialization/{specializationId}")]
-        public async Task<IActionResult> DoctorsList(int specializationId)
+        public async Task<IActionResult> GetDoctorsBySpecialization(int specializationId)
         {
 
             if (!_validator.IsValidSpecialization(specializationId))
