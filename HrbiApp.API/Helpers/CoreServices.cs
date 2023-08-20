@@ -1,6 +1,7 @@
 ﻿using DBContext;
 using DBContext.Enums;
 using HrbiApp.API.Models.Booking;
+using HrbiApp.API.Models.Common;
 using HrbiApp.API.Models.Doctor;
 using HrbiApp.API.Models.Patient;
 using Microsoft.AspNetCore.Identity;
@@ -27,7 +28,7 @@ namespace HrbiApp.API.Helpers
             _configuration = configuration;
             _userManager = userManager;
             _signInManager = signInManager;
-            _serviceScopeFactory= serviceProviderFactory;
+            _serviceScopeFactory = serviceProviderFactory;
         }
 
         #region Doctor Services
@@ -43,7 +44,7 @@ namespace HrbiApp.API.Helpers
                     Status = Consts.NotActive,
                 };
                 var result = await _userManager.CreateAsync(user);
-              
+
                 if (!result.Succeeded)
                 {
                     return (false, string.Join(",", result.Errors.Select(e => e.Description)));
@@ -55,8 +56,8 @@ namespace HrbiApp.API.Helpers
                     ApplicationUserID = user.Id,
                     SpecializationID = model.DoctorSpecializationId,
                     PositionID = model.DoctorPositionId,
-                    Status= Consts.NotActive
-                    
+                    Status = Consts.NotActive
+
 
                 };
                 _db.Doctors.Add(doctor);
@@ -81,7 +82,7 @@ namespace HrbiApp.API.Helpers
                 {
                     return (false, new DoctorLoginResponse() { Message = Responses.UserNotExist });
                 }
-               
+
                 else
                 {
                     var otp = _db.OTPs.FirstOrDefault(o => o.UserID == user.Id && o.Purpose == Consts.ConfirmationPurpose
@@ -110,34 +111,11 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public (bool Result,List<DoctorsList> Response) GetDoctorsList()
-        {
-            try {
-                var doctors = _db.Doctors.ToList();
-                var result = doctors.Select(a => new DoctorsList
-                {
-                    DoctorId = a.ID,
-                    CloseTime= a.OpenTime,
-                    OpenTime = a.CloseTime,
-                    DoctorName = a.User.FullName,
-                    AboutDoctor = a.AboutDoctor,
-                    Price = a.Price
-
-                    
-                }).ToList();
-                return (true, result);
-            }
-            catch (Exception)
-            {
-                return(false , new ());
-            }
-        }
-
-        public (bool Result, List<DoctorsList> Response) GetDoctorsBySpecialization(int specializationId)
+        public (bool Result, List<DoctorsList> Response) GetDoctorsList()
         {
             try
             {
-                var doctors = _db.Doctors.Where(a=> a.SpecializationID == specializationId).ToList();
+                var doctors = _db.Doctors.ToList();
                 var result = doctors.Select(a => new DoctorsList
                 {
                     DoctorId = a.ID,
@@ -157,7 +135,31 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        
+        public (bool Result, List<DoctorsList> Response) GetDoctorsBySpecialization(int specializationId)
+        {
+            try
+            {
+                var doctors = _db.Doctors.Where(a => a.SpecializationID == specializationId).ToList();
+                var result = doctors.Select(a => new DoctorsList
+                {
+                    DoctorId = a.ID,
+                    CloseTime = a.OpenTime,
+                    OpenTime = a.CloseTime,
+                    DoctorName = a.User.FullName,
+                    AboutDoctor = a.AboutDoctor,
+                    Price = a.Price
+
+
+                }).ToList();
+                return (true, result);
+            }
+            catch (Exception)
+            {
+                return (false, new());
+            }
+        }
+
+
 
         #endregion
 
@@ -186,7 +188,8 @@ namespace HrbiApp.API.Helpers
 
         }
 
-        public async Task<bool> PlaceNurseServiceBooking(PlaceNurseBookingRequest model) {
+        public async Task<bool> PlaceNurseServiceBooking(PlaceNurseBookingRequest model)
+        {
             try
             {
                 var booking = new NurseBooking()
@@ -195,7 +198,7 @@ namespace HrbiApp.API.Helpers
                     CreateDate = DateTime.Now,
                     PatientID = model.PatientId,
                     Status = Consts.Pending
-                    
+
                 };
                 _db.NurseBookings.Add(booking);
                 _db.SaveChanges();
@@ -205,12 +208,13 @@ namespace HrbiApp.API.Helpers
             {
                 return false;
             }
-        
+
         }
 
         public async Task<bool> PlaceLabServiceBooking(PlaceLabServiceBookingRequest model)
         {
-            try {
+            try
+            {
                 var booking = new LabServiceBooking()
                 {
                     LabServiceID = model.LabServiceId,
@@ -218,7 +222,7 @@ namespace HrbiApp.API.Helpers
                     Status = Consts.Pending,
                     IsFromHome = model.IsFromHome,
                     Price = model.Price
-                   
+
                 };
                 return true;
             }
@@ -250,7 +254,7 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public (bool Result, List<PatientBookingsList> Response) GetPatientBookingsByPatientId(string patientId)
+        public (bool Result, List<PatientBookingsList> Response) GetDoctorBookingsByPatientId(string patientId)
         {
             try
             {
@@ -274,7 +278,8 @@ namespace HrbiApp.API.Helpers
 
         public async Task<bool> AcceptBooking(int bookingId)
         {
-            try {
+            try
+            {
                 var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
                 booking.Status = Consts.Accepted;
                 _db.Update(booking);
@@ -302,6 +307,64 @@ namespace HrbiApp.API.Helpers
             }
         }
 
+        public async Task<bool> DelayBooking(int bookingId)
+        {
+            try
+            {
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                booking.Status = Consts.Delayed;
+                _db.Update(booking);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public (bool Result, List<NurseBookingsList> Response) GetNurseBookingsByPatientId(string patientId)
+        {
+            try
+            {
+                var bookings = _db.NurseBookings.Where(a => a.PatientID == patientId);
+                var result = bookings.Select(a => new NurseBookingsList
+                {
+                    ServiceID = a.ServiceID,
+                    PatientID = a.PatientID,
+                    Status = a.Status,
+                    CreateDate = a.CreateDate,
+                    VisitTime = a.VisitTime
+                }).ToList();
+                return (true, result);
+            }
+            catch (Exception)
+            {
+                return (false, new());
+            }
+        }
+
+        public (bool Result, List<LabServiceBookingsList> Response) GetLabServiceBookingsByPatientId(string patientId)
+        {
+            try
+            {
+                var bookings = _db.LabServiceBookings.Where(a => a.PatientID == patientId);
+                var result = bookings.Select(a => new LabServiceBookingsList
+                {
+                    LabServiceID = a.LabServiceID,
+                    PatientID = a.PatientID,
+                    Status = a.Status,
+                    IsFromHome = a.IsFromHome,
+                    VisitTime = a.VisitTime,
+                    Price = a.Price
+                }).ToList();
+                return (true, result);
+            }
+            catch (Exception)
+            {
+                return (false, new());
+            }
+        }
         #endregion
 
         #region Common Services
@@ -456,6 +519,49 @@ namespace HrbiApp.API.Helpers
             }
         }
 
+        public (bool Result, List<SpecializationModel>Response) GetAllSpecializations()
+        {
+            try
+            {
+
+                var specializations = _db.Specializations.Select(a => new SpecializationModel
+                {
+                    Id = a.ID,
+                    NameAR = a.NameAR,
+                    NameEN = a.NameEN
+                }).ToList();
+
+                return (true, specializations);
+
+            }
+            catch (Exception)
+            {
+
+                return (false, new());
+            }
+        }
+
+        public (bool Result, List<DoctorSpecialziationModel>Response)GetAllDoctorPositions()
+        {
+            try
+            {
+
+                var positions = _db.DoctorPositions.Select(a => new DoctorSpecialziationModel
+                {
+                    ID = a.ID,
+                    NameAR = a.NameAR,
+                    NameEN = a.NameEN
+                }).ToList();
+
+                return (true, positions);
+
+            }
+            catch (Exception)
+            {
+
+                return (false, new());
+            }
+        }
 
 
         #endregion

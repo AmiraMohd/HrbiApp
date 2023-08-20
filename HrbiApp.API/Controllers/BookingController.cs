@@ -218,5 +218,160 @@ namespace HrbiApp.API.Controllers
                 }); ;
             }
         }
+
+        [HttpPut]
+        [Route("DelayBookingByDoctor")]
+        public async Task<IActionResult> DelayBookingByDoctor(int bookingId, int doctorId)
+        {
+            if (_validator.IsBookingAccepted(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.BookingAlreadyAccepted
+                });
+            }
+            if (_validator.IsBookingRejected(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.BookingAlreadyRejected
+                });
+            }
+            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidDoctor
+                });
+
+            }
+            var result = CS.DelayBooking(bookingId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true
+
+                }); ;
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDoctorBookingsByDoctorId")]
+        public async Task<IActionResult> GetDoctorBookingsByDoctorId(int doctorId)
+        {
+            if (!_validator.IsValidDoctor(doctorId)) 
+            {
+                return Ok(new BaseResponse() {
+                    Message = Responses.NotValidDoctor
+                });
+            }
+                var result = CS.GetDoctorBookingsByDoctorId(doctorId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+                Data = result.Response
+            });
+
+        }
+
+        [HttpGet]
+        [Route("GetDoctorBookingsByPatientId")]
+        public async Task<IActionResult> GetDoctorBookingsByPatientId(string patientId)
+        {
+            if (!_validator.IsValidPatient(patientId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidPatient
+                });
+            }
+            var result = CS.GetDoctorBookingsByPatientId(patientId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+                Data = result.Response
+            });
+
+        }
+
+        [HttpGet]
+        [Route("GetLabServiceBookingsByPatientId")]
+        public async Task<IActionResult> GetLabServiceBookingsByPatientId(string patientId)
+        {
+            if (!_validator.IsValidPatient(patientId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidPatient
+                });
+            }
+            var result = CS.GetLabServiceBookingsByPatientId(patientId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+                Data = result.Response
+            });
+
+        }
+
+        [HttpGet]
+        [Route("GetNurseBookingsByPatientId")]
+        public async Task<IActionResult> GetNurseBookingsByPatientId(string patientId)
+        {
+            if (!_validator.IsValidPatient(patientId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.NotValidPatient
+                });
+            }
+            var result = CS.GetNurseBookingsByPatientId(patientId);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Responses.Failed
+                });
+            }
+
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+                Data = result.Response
+            });
+
+        }
     }
 }

@@ -25,6 +25,8 @@ namespace DBContext
         public const string NotValidSpecialization = "NotValidSpecialization";
         public const string NotValidNurseService = "NotValidNurseService";
         public const string NotValidLabService = "NotValidLabService";
+        public const string NotActiveDoctorSpecialization = "NotActiveDoctorSpecialization";
+        public const string NotActiveDoctorPosition = "NotActiveDoctorPosition";
         #endregion
 
         #region Booking Messages
