@@ -1,0 +1,109 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.Payments.AllDoctorPaymentsListModel>
+
+@{
+    ViewData["Title"] = "AllDoctorPayments";
+}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> @HrbiApp.Web.Resource.ResourceAr.Payments</h1>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title"> <p>@*<a class="btn btn-primary icon-btn" href=""><i class="fa fa-plus"></i>@Tzwed.Web.Resource.ResourceAr.Add	</a>*@</p></h3>
+            </div>
+            <div class="tile-body">
+                <table class="table dataTable">
+    <thead>
+        <tr>
+           <th>
+                @Html.DisplayNameFor(model => model.TotalAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorProfit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SystemProfit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfitPercentage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcceptDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SettledDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorProfit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SystemProfit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProfitPercentage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorPhone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AcceptDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SettledDate)
+                </td>
+                <td>
+                    @if (item.Status == Consts.New)
+                    {
+                        <div>@Html.ActionLink("Accept", "AcceptDoctorBookingPayment", new { paymentID=item.ID })</div>
+
+                    }
+                    else if (item.Status == Consts.Accepted)
+                    {
+                        <div>@Html.ActionLink("Settle", "SettleDoctorBookingPayment", new { paymentID=item.ID })</div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+</div>

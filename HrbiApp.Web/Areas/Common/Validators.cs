@@ -396,5 +396,34 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
         #endregion
+
+        #region Payments
+        public bool IsValidPaymentToAccept(int paymentID)
+        {
+            try
+            {
+                var payment = _dbContext.DoctorBookingPayments.Find(paymentID);
+                return payment.Status == Consts.New;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public bool IsValidPaymentToSettle(int paymentID)
+        {
+            try
+            {
+                var payment = _dbContext.DoctorBookingPayments.Find(paymentID);
+                return payment.Status == Consts.Accepted;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        #endregion
     }
 }

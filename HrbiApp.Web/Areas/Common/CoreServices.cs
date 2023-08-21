@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 using System.Reflection;
+using HrbiApp.Web.Models.Payments;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -29,7 +30,7 @@ namespace HrbiApp.Web.Areas.Common
             _userManager = userManager;
 
         }
-        
+
         #region Lab Services
         public (bool Result, List<LabServicesListModel> Services) GetLabServices()
         {
@@ -396,48 +397,66 @@ namespace HrbiApp.Web.Areas.Common
         #endregion
 
         #region Doctors
-        public (bool Result,DoctorDetailsModel Doctor) GetDoctorDetails(int doctorId)
+        public (bool Result, DoctorDetailsModel Doctor) GetDoctorDetails(int doctorId)
         {
             try
             {
                 var doctor = _dbContext.Doctors.Find(doctorId);
                 var position = _dbContext.DoctorPositions.Find(doctor.PositionID);
                 var specilazation = _dbContext.Specializations.Find(doctor.SpecializationID);
-                
-                var detailsModel= new DoctorDetailsModel()
+                var user = _dbContext.Users.Find(doctor.ApplicationUserID);
+
+                var detailsModel = new DoctorDetailsModel()
                 {
-                    AboutDoctor=doctor.AboutDoctor,
-                    ApplicationUserID=doctor.ApplicationUserID,
-                    SpecializationNameAR=specilazation.NameAR,
-                    SpecializationNameEN=specilazation.NameEN,
-                    Status=doctor.Status,
-                    Address=doctor.Address,
-                    CloseTime=doctor.CloseTime,
-                    ID=doctor.ID,
-                    Lat=doctor.Lat,
-                    Lon=doctor.Lon,
-                    OpenTime=doctor.OpenTime,
-                    Price=doctor.Price,
-                    WorkHours=doctor.WorkHours,
-                    PositionNameAR=position.NameAR,
-                    PositionNameEN=position.NameEN,
-                    
+                    Name=user.FullName,
+                    Email=user.Email,
+                    Phone=user.PhoneNumber,
+                    AboutDoctor = doctor.AboutDoctor,
+                    ApplicationUserID = doctor.ApplicationUserID,
+                    SpecializationNameAR = specilazation.NameAR,
+                    SpecializationNameEN = specilazation.NameEN,
+                    Status = doctor.Status,
+                    Address = doctor.Address,
+                    CloseTime = doctor.CloseTime,
+                    ID = doctor.ID,
+                    Lat = doctor.Lat,
+                    Lon = doctor.Lon,
+                    OpenTime = doctor.OpenTime,
+                    Price = doctor.Price,
+                    WorkHours = doctor.WorkHours,
+                    PositionNameAR = position.NameAR,
+                    PositionNameEN = position.NameEN,
+
                 };
+                detailsModel.Payments= _dbContext.DoctorBookingPayments.Include(p => p.DoctorBooking)
+                   .Where(p=>p.DoctorBooking.DoctorID==doctorId)
+                   .Select(p => new DoctorPayment()
+                    {
+                        ID = p.ID,
+                        Status = p.Status,
+                        SystemProfit = p.SystemProfit,
+                        SettledDate = p.SettledDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                        AcceptDate = p.AcceptDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                        CreateDate = p.CreateDate.ToString("dd-MM-yyyy HH:mm"),  
+                        DoctorProfit = p.DoctorProfit,
+                        ProfitPercentage = p.ProfitPercentage,
+                        TotalAmount = p.TotalAmount,
+                    }).ToList();
                 return (true, detailsModel);
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
+                return (false, new());
             }
         }
-        public (bool Result,List<DoctorsListModel>Doctors) GetDoctors()
+        public (bool Result, List<DoctorsListModel> Doctors) GetDoctors()
         {
             try
             {
                 var doctors = _dbContext.Doctors.Include(d => d.User).Select(d => new DoctorsListModel()
                 {
-                    ID= d.ID,
+                    ID = d.ID,
                     Email = d.User.Email,
                     FullName = d.User.FullName,
                     Status = d.Status,
@@ -461,8 +480,8 @@ namespace HrbiApp.Web.Areas.Common
                     Email = model.Email,
                     PhoneNumber = model.Phone,
                     FullName = model.FullName,
-                    UserName=model.Phone,
-                    AccountType=Consts.DoctorAccountType,
+                    UserName = model.Phone,
+                    AccountType = Consts.DoctorAccountType,
                 };
                 var reuslt = await _userManager.CreateAsync(user, "123456");
                 if (!reuslt.Succeeded)
@@ -501,19 +520,19 @@ namespace HrbiApp.Web.Areas.Common
                 return false;
             }
         }
-        public (bool Result,UpdateDoctorModel Doctor)GetDoctorToUpdate(int doctorID)
+        public (bool Result, UpdateDoctorModel Doctor) GetDoctorToUpdate(int doctorID)
         {
             try
             {
                 var doctor = _dbContext.Doctors.Find(doctorID);
                 var user = _dbContext.Users.Find(doctor.ApplicationUserID);
-                var updateModel= new UpdateDoctorModel()
+                var updateModel = new UpdateDoctorModel()
                 {
                     SpecializationID = doctor.SpecializationID,
-                    Email=user.Email,
-                    FullName=user.FullName,
-                    ID=doctor.ID,
-                    Phone=user.PhoneNumber
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    ID = doctor.ID,
+                    Phone = user.PhoneNumber
                 };
                 return (true, updateModel);
             }
@@ -530,9 +549,9 @@ namespace HrbiApp.Web.Areas.Common
                 var doctor = _dbContext.Doctors.Find(model.ID);
                 var user = _dbContext.Users.Find(doctor.ApplicationUserID);
 
-                doctor.SpecializationID=model.SpecializationID;
-                user.Email=model.Email;
-                user.FullName=model.FullName;
+                doctor.SpecializationID = model.SpecializationID;
+                user.Email = model.Email;
+                user.FullName = model.FullName;
                 user.PhoneNumber = model.Phone;
 
                 _dbContext.Doctors.Update(doctor);
@@ -551,7 +570,7 @@ namespace HrbiApp.Web.Areas.Common
         #endregion
 
         #region Specializations
-        public (bool Result,List<SpecializationsListModel> Specializations) GetSpecializations()
+        public (bool Result, List<SpecializationsListModel> Specializations) GetSpecializations()
         {
             try
             {
@@ -567,48 +586,48 @@ namespace HrbiApp.Web.Areas.Common
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
-            } 
+                return (false, new());
+            }
         }
-        public (bool Result,List<SelectListItem> Specializations) GetSpecializationsToSelect()
+        public (bool Result, List<SelectListItem> Specializations) GetSpecializationsToSelect()
         {
             try
             {
-                var list = _dbContext.Specializations.Where(s => s.Status == Consts.Active).Select(s => new SelectListItem(s.NameAR, s.ID+"")).ToList();
+                var list = _dbContext.Specializations.Where(s => s.Status == Consts.Active).Select(s => new SelectListItem(s.NameAR, s.ID + "")).ToList();
                 return (true, list);
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,  new());
+                return (false, new());
             }
         }
-        public (bool Result,UpdateSpecializationModel Specialization) GetSpecializationToUpdate(int specializationID)
+        public (bool Result, UpdateSpecializationModel Specialization) GetSpecializationToUpdate(int specializationID)
         {
             try
             {
                 var specilization = _dbContext.Specializations.Find(specializationID);
-                var model=new UpdateSpecializationModel()
+                var model = new UpdateSpecializationModel()
                 {
                     ID = specializationID,
-                    NameAR=specilization.NameAR,
-                    NameEN=specilization.NameEN,
+                    NameAR = specilization.NameAR,
+                    NameEN = specilization.NameEN,
                 };
                 return (true, model);
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
+                return (false, new());
             }
         }
         public bool UpdateSpecialization(UpdateSpecializationModel model)
         {
             try
             {
-                var specilization=_dbContext.Specializations.Find(model.ID);
-                specilization.NameEN= model.NameEN;
-                specilization.NameAR= model.NameAR;
+                var specilization = _dbContext.Specializations.Find(model.ID);
+                specilization.NameEN = model.NameEN;
+                specilization.NameAR = model.NameAR;
 
                 _dbContext.Specializations.Update(specilization);
                 _dbContext.SaveChanges();
@@ -672,12 +691,12 @@ namespace HrbiApp.Web.Areas.Common
                     Phone = a.Phone,
                     Status = a.Status,
                 }).ToList();
-                return(true, ambulances);
+                return (true, ambulances);
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
+                return (false, new());
             }
         }
         public bool CreateAmbulance(CreateAmbulanceModel model)
@@ -692,7 +711,7 @@ namespace HrbiApp.Web.Areas.Common
                 };
                 _dbContext.Ambulances.Add(ambulance);
                 _dbContext.SaveChanges();
-                return(true);
+                return (true);
             }
             catch (Exception ex)
             {
@@ -705,11 +724,11 @@ namespace HrbiApp.Web.Areas.Common
             try
             {
                 var ambulance = _dbContext.Ambulances.Find(model.ID);
-                ambulance.Phone=model.Phone;
-                ambulance.Hospital=model.Hospital;
+                ambulance.Phone = model.Phone;
+                ambulance.Hospital = model.Hospital;
                 _dbContext.Ambulances.Update(ambulance);
                 _dbContext.SaveChanges();
-                return(true);
+                return (true);
             }
             catch (Exception ex)
             {
@@ -849,6 +868,71 @@ namespace HrbiApp.Web.Areas.Common
                 return false;
             }
         }
+        #endregion
+
+        #region Payments
+        public (bool Result, List<AllDoctorPaymentsListModel> Payments) GetAllDoctorPayments()
+        {
+            try
+            {
+                var payments = _dbContext.DoctorBookingPayments.Include(p => p.DoctorBooking)
+                    .ThenInclude(b => b.Doctor).ThenInclude(d => d.User).Select(p => new AllDoctorPaymentsListModel()
+                    {
+                        ID = p.ID,
+                        Status = p.Status,
+                        SystemProfit = p.SystemProfit,
+                        SettledDate = p.SettledDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                        AcceptDate = p.AcceptDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                        CreateDate = p.CreateDate.ToString("dd-MM-yyyy HH:mm"),
+                        DoctorName = p.DoctorBooking.Doctor.User.FullName,
+                        DoctorPhone = p.DoctorBooking.Doctor.User.PhoneNumber,
+                        DoctorProfit = p.DoctorProfit,
+                        ProfitPercentage = p.ProfitPercentage,
+                        TotalAmount = p.TotalAmount,
+                    }).ToList();
+                return (true, payments);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
+        public bool AcceptDoctorBookingPayment(int paymentID,string status)
+        {
+            try
+            {
+                var payment = _dbContext.DoctorBookingPayments.Find(paymentID);
+                payment.Status=status;
+                payment.AcceptDate=DateTime.Now;
+                _dbContext.DoctorBookingPayments.Update(payment);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public bool SettleDoctorBookingPayment(int paymentID, string status)
+        {
+            try
+            {
+                var payment = _dbContext.DoctorBookingPayments.Find(paymentID);
+                payment.Status = status;
+                payment.SettledDate = DateTime.Now;
+                _dbContext.DoctorBookingPayments.Update(payment);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
         #endregion
     }
 }

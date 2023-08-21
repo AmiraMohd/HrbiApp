@@ -4,6 +4,9 @@ namespace HrbiApp.Web.Models.Doctors
     public class DoctorDetailsModel
     {
         public int ID { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
         public string ApplicationUserID { get; set; }
         public string SpecializationNameAR { get; set; }
         public string SpecializationNameEN { get; set; }
@@ -18,5 +21,6 @@ namespace HrbiApp.Web.Models.Doctors
         public string? AboutDoctor { get; set; }
         public DateTime? OpenTime { get; set; }
         public DateTime? CloseTime { get; set; }
+        public IEnumerable<DoctorPayment>Payments { get; set; }=new List<DoctorPayment>();
     }
 }

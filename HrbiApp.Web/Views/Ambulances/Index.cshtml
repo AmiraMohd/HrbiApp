@@ -4,51 +4,73 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> @HrbiApp.Web.Resource.ResourceAr.Ambulances</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-           
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hospital)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title"> <p>@*<a class="btn btn-primary icon-btn" href=""><i class="fa fa-plus"></i>@Tzwed.Web.Resource.ResourceAr.Add	</a>*@</p>
+                    
+                </h3>
+            </div>
             
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hospital)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                    @Html.ActionLink("Update", "Update", new { ambulanceID=item.ID }) |
-                    @if (item.Status == Consts.Active)
-                    {
-                        @Html.ActionLink("DeActivate", "DeActivate", new { ambulanceID=item.ID })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Activate", "Activate", new { ambulanceID=item.ID })
-                    }
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+            <div class="tile-body">
+                <p>
+                    <a asp-action="Create">@HrbiApp.Web.Resource.ResourceAr.Add</a>
+                </p>
+                <table class="table dataTable">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Hospital)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Hospital)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(HrbiApp.Web.Resource.ResourceAr.Update, "Update", new { ambulanceID=item.ID }) |
+                                    @if (item.Status == Consts.Active)
+                                    {
+                                        @Html.ActionLink(HrbiApp.Web.Resource.ResourceAr.DeActivate, "DeActivate", new { ambulanceID=item.ID })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(HrbiApp.Web.Resource.ResourceAr.Activate, "Activate", new { ambulanceID=item.ID })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

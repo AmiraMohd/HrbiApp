@@ -253,6 +253,51 @@ namespace DBContext.Migrations
                     b.ToTable("DoctorBookings");
                 });
 
+            modelBuilder.Entity("DBContext.DoctorBookingPayment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime?>("AcceptDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("BookingID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getDate()");
+
+                    b.Property<double>("DoctorProfit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ProfitPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime?>("SettledDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("SystemProfit")
+                        .HasColumnType("float");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookingID");
+
+                    b.ToTable("DoctorBookingPayments");
+                });
+
             modelBuilder.Entity("DBContext.DoctorPosition", b =>
                 {
                     b.Property<int>("ID")
@@ -744,6 +789,17 @@ namespace DBContext.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("DBContext.DoctorBookingPayment", b =>
+                {
+                    b.HasOne("DBContext.DoctorBooking", "DoctorBooking")
+                        .WithMany()
+                        .HasForeignKey("BookingID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DoctorBooking");
                 });
 
             modelBuilder.Entity("DBContext.LabServiceBooking", b =>

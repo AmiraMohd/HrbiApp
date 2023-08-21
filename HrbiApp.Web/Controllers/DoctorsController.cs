@@ -27,7 +27,7 @@ namespace HrbiApp.Web.Controllers
         {
             if (!Validators.IsValidDoctor(doctorID))
             {
-Alert(Messages.ExceptionOccured,Consts.AdminNotificationType.error);
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
             var getDetails = CS.GetDoctorDetails(doctorID);

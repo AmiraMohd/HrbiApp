@@ -16,6 +16,7 @@ namespace HrbiApp.Web.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction( "AllDoctorPayments", "Payments");
             return View();
         }
         [Authorize]
