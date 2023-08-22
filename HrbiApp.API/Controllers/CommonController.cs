@@ -72,8 +72,8 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllDoctorPosotions")]
-        public async Task<IActionResult> GetAllDoctorPosotions()
+        [Route("GetAllDoctorPostions")]
+        public async Task<IActionResult> GetAllDoctorPostions()
         {
 
             var result = CS.GetAllDoctorPositions();

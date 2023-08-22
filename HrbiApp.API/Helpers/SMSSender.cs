@@ -62,7 +62,7 @@ namespace HrbiApp.API.Helpers
             {
                 string OTP = new Random().Next(0, 999999).ToString("D6");
                 var otp = _db.OTPs.FirstOrDefault(otp => otp.UserID == userID &&
-                otp.Purpose == Consts.ResetPurose);
+                otp.Purpose == Consts.ResetPurpose);
                 if (otp == null)
                 {
                     _db.OTPs.Add(new OTP()
@@ -70,7 +70,7 @@ namespace HrbiApp.API.Helpers
                         Code = OTP,
                         Phone = phone,
                         UserID = userID,
-                        Purpose = Consts.ResetPurose,
+                        Purpose = Consts.ResetPurpose,
                         Count = 1
                     });
                 }
