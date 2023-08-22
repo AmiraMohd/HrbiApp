@@ -24,6 +24,30 @@ namespace HrbiApp.API.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
         }
+
+
+        [HttpGet]
+        [Route("GetAllServices")]
+        public async Task<IActionResult> GetAllServices()
+        {
+
+            var result = CS.GetAllServices();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Data = result.Response
+                });
+
+            }
+        }
         [HttpGet]
         [Route("GetAllDoctorSpeicalizations")]
         public async Task<IActionResult> GetAllDoctorSpeicalizations()

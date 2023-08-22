@@ -464,7 +464,7 @@ namespace HrbiApp.API.Helpers
                 var user = _db.Users.FirstOrDefault(u => u.UserName == userName);
                 string OTP = new Random().Next(0, 999999).ToString("D6");
                 var otp = _db.OTPs.FirstOrDefault(otp => otp.UserID == user.Id &&
-                otp.Purpose == Consts.ResetPurose);
+                otp.Purpose == Consts.ResetPurpose);
                 if (otp == null)
                 {
                     _db.OTPs.Add(new OTP()
@@ -472,7 +472,7 @@ namespace HrbiApp.API.Helpers
                         Code = OTP,
                         Phone = user.PhoneNumber,
                         UserID = user.Id,
-                        Purpose = Consts.ResetPurose,
+                        Purpose = Consts.ResetPurpose,
                         Count = 1
                     });
                 }
@@ -580,6 +580,28 @@ namespace HrbiApp.API.Helpers
                 }).ToList();
 
                 return (true, positions);
+
+            }
+            catch (Exception)
+            {
+
+                return (false, new());
+            }
+        }
+
+        public (bool Result, List<ServicesModel> Response) GetAllServices()
+        {
+            try
+            {
+
+                var services = _db.Services.Select(a => new ServicesModel
+                {
+                    Id = a.ID,
+                    NameAR = a.NameAR,
+                    NameEN = a.NameEN
+                }).ToList();
+
+                return (true, services);
 
             }
             catch (Exception)
