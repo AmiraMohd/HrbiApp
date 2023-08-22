@@ -19,6 +19,7 @@ namespace DBContext
         public int ServiceID { get; set; }
         [ForeignKey(nameof(ServiceID))]
         public NurseService NurseService { get; set; }
+        public double Price { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime VisitTime { get; set; }
         public string Status { get; set; }

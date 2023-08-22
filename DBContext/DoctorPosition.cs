@@ -15,7 +15,7 @@ namespace DBContext
         public int ID { get; set; }
         public string NameAR { get; set; }
         public string NameEN { get; set; }
-        public string Status { get; set; } = Consts.Active;
+        public string Status { get; set; } = Consts.NotActive;
 
 
     }

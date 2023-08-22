@@ -1,0 +1,91 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.Doctors.DoctorPayment>
+
+<div>
+    <table class="table dataTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DoctorProfit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SystemProfit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProfitPercentage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AcceptDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SettledDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DoctorProfit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SystemProfit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProfitPercentage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AcceptDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SettledDate)
+                    </td>
+                    <td>
+                        @if (item.Status == Consts.New)
+                        {
+                            <div>@Html.ActionLink("Accept", "AcceptDoctorBookingPayment","Payments", new { paymentID=item.ID ,returnURL=Context.Request.Path+Context.Request.QueryString})</div>
+
+                        }
+                        else if (item.Status == Consts.Accepted)
+                        {
+                            <div>@Html.ActionLink("Settle", "SettleDoctorBookingPayment","Payments", new { paymentID=item.ID ,returnURL=Context.Request.Path+Context.Request.QueryString})</div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('table').DataTable(
+                {
+                    /* Disable initial sort */
+                    "aaSorting": [], "columnDefs": [{ "searchable": false, "targets": [-1] }]
+                });
+           
+        })
+    </script>
+}

@@ -16,21 +16,21 @@ namespace DBContext
         public string ApplicationUserID { get; set; }
         [ForeignKey(nameof(ApplicationUserID))]
         public ApplicationUser User { get; set; }
-        [ForeignKey(nameof (SpecializationID))]
+        [ForeignKey(nameof(SpecializationID))]
         public Specialization Specialization { get; set; }
         public int SpecializationID { get; set; }
 
         [ForeignKey(nameof(PositionID))]
-        public DoctorPosition Position { get; set; }
-        public int PositionID { get; set; }
-        public double Lat { get; set; }
-        public double Lon { get; set; }
-        public string Address { get; set; }
-        public string WorkHours { get; set; }
+        public DoctorPosition? Position { get; set; }
+        public int? PositionID { get; set; }
+        public double? Lat { get; set; }
+        public double? Lon { get; set; }
+        public string? Address { get; set; }
+        public string? WorkHours { get; set; }
         public string Status { get; set; } = Consts.NotActive;
-        public double Price { get; set; }
-        public string AboutDoctor { get; set; }
-        public DateTime OpenTime { get; set; }
-        public DateTime CloseTime { get; set; }
+        public double? Price { get; set; }
+        public string? AboutDoctor { get; set; }
+        public DateTime? OpenTime { get; set; }
+        public DateTime? CloseTime { get; set; }
     }
 }

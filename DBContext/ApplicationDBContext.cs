@@ -33,9 +33,14 @@ namespace DBContext
         public DbSet<ApplicationVersion> ApplicationVersions { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Services> Services { get; set; }
+        public DbSet<Ambulance> Ambulances { get; set; }
+        public DbSet<DoctorBookingPayment> DoctorBookingPayments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<DoctorBookingPayment>().Property(p => p.CreateDate)
+                .HasDefaultValueSql("getDate()");
             base.OnModelCreating(builder);
 
         }

@@ -13,6 +13,10 @@ namespace DBContext
         public const string ResetPurpose = "Reset";
         public const string NotificationServerKey = "";
 
+        public const string ContactUsPhoneSetting = "ContactUsPhone";
+        public const string ContactUsEmailSetting = "ContactUsE,Email";
+        public const string ContactUsLatSetting = "ContactUsLat";
+        public const string ContactUsLonSetting = "ContactUsLon";
         #endregion
         #region Statuses
 
@@ -32,6 +36,10 @@ namespace DBContext
         public const string New = "New";
         public const string OnProgress = "OnProgress";
         public const string Done = "Done";
+        #endregion
+        #region Payment Statuses
+        public const string Settled = "Settled";
+
         #endregion
         #endregion
         #region AccountTypes

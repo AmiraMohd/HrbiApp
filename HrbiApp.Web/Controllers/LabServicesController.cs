@@ -94,7 +94,7 @@ namespace HrbiApp.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-    public IActionResult ActivateService(int serviceID) {
+        public IActionResult ActivateService(int serviceID) {
             if (!Validators.IsValidLabService(serviceID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);

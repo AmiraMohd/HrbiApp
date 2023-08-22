@@ -1,0 +1,130 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.NurseBookings.NurseBookingListModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> @HrbiApp.Web.Resource.ResourceAr.NurseBookings</h1>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title"> <p>@*<a class="btn btn-primary icon-btn" href=""><i class="fa fa-plus"></i>@Tzwed.Web.Resource.ResourceAr.Add	</a>*@</p></h3>
+            </div>
+            <div class="tile-body">
+                <table class="table dataTable">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.PatintName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VisitTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceNameAR)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServiceNameEN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatintName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VisitTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceNameAR)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceNameEN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @if (item.Status == Consts.New)
+                    {
+                        <div>
+                            <button type="button" class="btn btn-primary showModal" data-toggle="modal" data-target="#exampleModal" data-id="@item.ID">
+                                Accept
+                            </button>
+                            @Html.ActionLink("Reject", "Reject", new { bookingID = item.ID })
+                        </div>
+                    }
+                    else if (item.Status == Consts.Accepted)
+                        @Html.ActionLink("MakeDone", "MakeDone", new { bookingID=item.ID })
+
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="Accept">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Set Visiting Time</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="datetime-local" name="visitTime" />
+                    <input type="hidden" name="bookingID" id="bookingID" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Accept</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).on("click", ".showModal", function () {
+            $('#bookingID').val($(this).data('id'))
+            $('#exampleModal').modal('show');
+        })
+    </script>
+}
