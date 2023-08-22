@@ -34,7 +34,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else
@@ -57,7 +57,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else

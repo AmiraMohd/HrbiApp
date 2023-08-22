@@ -10,7 +10,7 @@ namespace DBContext
     {
         #region GeneralSettings
         public const string ConfirmationPurpose = "Confirmation";
-        public const string ResetPurose = "Reset";
+        public const string ResetPurpose = "Reset";
         public const string NotificationServerKey = "";
 
         #endregion
@@ -63,6 +63,12 @@ namespace DBContext
         #region ClaimsName
         public const string UserIDClaimName = "UserID";
         public const string PhoneNumberClaimName = "PhoneNumber";
+        #endregion
+
+        #region Settings
+        public const string SMSUsernameSetting = "SMSUsername";
+        public const string SMSPasswordSetting = "SMSPassword";
+        public const string SMSSenderSetting = "SMSSender";
         #endregion
     }
 }

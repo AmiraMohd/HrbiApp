@@ -1,6 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
+
 
 // Add services to the container.
 
@@ -10,24 +15,24 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(options =>
 {
-    //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    //options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidAudience = configuration["JWT:ValidAudience"],
+        ValidIssuer = configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+    };
 });
-//.AddJwtBearer(options =>
-//{
-//    options.SaveToken = true;
-//    options.RequireHttpsMetadata = false;
-//    options.TokenValidationParameters = new TokenValidationParameters()
-//    {
-//        ValidateIssuer = false,
-//        ValidateAudience = false,
-//        ValidateLifetime = false,
-//        ValidAudience = configuration["JWT:ValidAudience"],
-//        ValidIssuer = configuration["JWT:ValidIssuer"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-//    };
-//});
 
 var app = builder.Build();
 

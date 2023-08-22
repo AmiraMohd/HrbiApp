@@ -36,7 +36,28 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
-
+        public bool IsValidPhoneAndOTP(string phone, string OTP, string purpose)
+        {
+            try
+            {
+                var user = _db.Users.FirstOrDefault(u => u.UserName == phone);
+                var otp = _db.OTPs.FirstOrDefault(otp => otp.UserID == user.Id && otp.Purpose == purpose);
+                if (otp == null)
+                {
+                    return false;
+                }
+                if (otp.Code != OTP)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         public bool IsActiveAccount(string phone)
         {
             try
@@ -63,7 +84,7 @@ namespace HrbiApp.API.Helpers
         {
             try
             {
-                var user = _db.Doctors.FirstOrDefault(u => u.ID == id);
+                var user = _db.Doctors. FirstOrDefault(u => u.ID == id);
                 if (user != null && user.Status == Consts.Active)
                 {
                     return true;

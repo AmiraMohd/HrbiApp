@@ -36,7 +36,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidDoctor
+                    Message = Messages.NotValidDoctor
                 });
             }
             if (!_validator.IsValidPatient(model.PatientId))
@@ -44,7 +44,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.PlaceDoctorBooking(model);
@@ -54,14 +54,14 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Responses.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking
                 });
             }
             else
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingFailed
+                    Message = Messages.BookingFailed
                 });
             }
         }
@@ -76,7 +76,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidNurseService
+                    Message = Messages.NotValidNurseService
                 });
             }
             if (!_validator.IsValidPatient(model.PatientId))
@@ -84,7 +84,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.PlaceNurseServiceBooking(model);
@@ -94,14 +94,14 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Responses.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking
                 });
             }
             else
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingFailed
+                    Message = Messages.BookingFailed
                 });
             }
         }
@@ -116,7 +116,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidLabService
+                    Message = Messages.NotValidLabService
                 });
             }
             if (!_validator.IsValidPatient(model.PatientId))
@@ -124,7 +124,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.PlaceLabServiceBooking(model);
@@ -134,14 +134,14 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Responses.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking
                 });
             }
             else
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingFailed
+                    Message = Messages.BookingFailed
                 });
             }
         }
@@ -154,13 +154,13 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingAlreadyRejected
+                    Message = Messages.BookingAlreadyRejected
                 });
             }
             if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId,bookingId)) {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidDoctor
+                    Message = Messages.NotValidDoctor
                 });
 
             }
@@ -169,7 +169,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else
@@ -190,14 +190,14 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingAlreadyAccepted
+                    Message = Messages.BookingAlreadyAccepted
                 });
             }
             if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidDoctor
+                    Message = Messages.NotValidDoctor
                 });
 
             }
@@ -206,7 +206,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else
@@ -227,21 +227,21 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingAlreadyAccepted
+                    Message = Messages.BookingAlreadyAccepted
                 });
             }
             if (_validator.IsBookingRejected(bookingId))
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.BookingAlreadyRejected
+                    Message = Messages.BookingAlreadyRejected
                 });
             }
             if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidDoctor
+                    Message = Messages.NotValidDoctor
                 });
 
             }
@@ -250,7 +250,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else
@@ -270,7 +270,7 @@ namespace HrbiApp.API.Controllers
             if (!_validator.IsValidDoctor(doctorId)) 
             {
                 return Ok(new BaseResponse() {
-                    Message = Responses.NotValidDoctor
+                    Message = Messages.NotValidDoctor
                 });
             }
                 var result = CS.GetDoctorBookingsByDoctorId(doctorId);
@@ -278,7 +278,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
 
@@ -298,7 +298,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.GetDoctorBookingsByPatientId(patientId);
@@ -306,7 +306,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
 
@@ -326,7 +326,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.GetLabServiceBookingsByPatientId(patientId);
@@ -334,7 +334,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
 
@@ -354,7 +354,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidPatient
+                    Message = Messages.NotValidPatient
                 });
             }
             var result = CS.GetNurseBookingsByPatientId(patientId);
@@ -362,7 +362,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
 
