@@ -258,6 +258,22 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+
+        public bool IsValidBooking(int bookingId)
+        {
+            try
+            {
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                if (booking != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }

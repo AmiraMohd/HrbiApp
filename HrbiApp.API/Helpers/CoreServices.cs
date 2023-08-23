@@ -1,5 +1,6 @@
 ﻿using DBContext;
 using DBContext.Enums;
+using DBContext.Migrations;
 using HrbiApp.API.Models.Account;
 using HrbiApp.API.Models.Booking;
 using HrbiApp.API.Models.Common;
@@ -162,6 +163,29 @@ namespace HrbiApp.API.Helpers
 
                 }).ToList();
                 return (true, result);
+            }
+            catch (Exception)
+            {
+                return (false, new());
+            }
+        }
+
+        public async Task<(bool Result, DoctorBookingPaymentModel Response)> GetDoctorBookingPayment(int bookingId)
+        {
+            try
+            {
+                var payment = _db.DoctorBookingPayments.FirstOrDefault(a => a.BookingID == bookingId);
+                    var model =  new DoctorBookingPaymentModel()
+                    {
+                        ID = payment.ID,
+                        AcceptDate = payment.AcceptDate,
+                        TotalAmount = payment.TotalAmount,
+                        BookingID = payment.BookingID,
+                        CreateDate = payment.CreateDate,
+                        Status = payment.Status,
+                        SettledDate = payment.SettledDate
+                    };
+                return (true, model);
             }
             catch (Exception)
             {
@@ -567,12 +591,12 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public (bool Result, List<DoctorSpecialziationModel>Response)GetAllDoctorPositions()
+        public (bool Result, List<DoctorPositionsModel>Response)GetAllDoctorPositions()
         {
             try
             {
 
-                var positions = _db.DoctorPositions.Select(a => new DoctorSpecialziationModel
+                var positions = _db.DoctorPositions.Select(a => new DoctorPositionsModel
                 {
                     ID = a.ID,
                     NameAR = a.NameAR,
@@ -681,6 +705,29 @@ namespace HrbiApp.API.Helpers
                 return (false, new PatientLoginResponse() { Message = Messages.ExceptionOccured });
             }
         }
+
+        //public async Task<(bool Result, List<PatientBillsModel> Response)> GetDoctorBookingBill(string bookingId)
+        //{
+        //    try
+        //    {
+        //        var bills = _db.DoctorBookingPayments.Include(a => a.DoctorBooking)
+        //            .Where(a => a.DoctorBooking.PatientID == patientId).Select(a => new PatientBillsModel()
+        //            {
+        //                ID= a.ID,
+        //                AcceptDate = a.AcceptDate,
+        //                TotalAmount = a.TotalAmount,
+        //                BookingID = a.BookingID,
+        //                CreateDate= a.CreateDate,
+        //                Status =a.Status,
+        //                SettledDate = a.SettledDate
+        //            }).ToList();
+        //        return (true, bills);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return (false, new());
+        //    }
+        //}
         #endregion
 
     }

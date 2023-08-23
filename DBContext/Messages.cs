@@ -62,6 +62,8 @@ namespace DBContext
         public const string BookingFailed = "BookingFailed";
         public const string BookingAlreadyRejected = "BookingAlreadyRejected";
         public const string BookingAlreadyAccepted = "BookingAlreadyAccepted";
+        public const string NotValidBooking = "NotValidBooking";
+
         #endregion
 
         #region General
