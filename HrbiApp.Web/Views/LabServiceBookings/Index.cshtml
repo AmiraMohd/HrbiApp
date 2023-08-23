@@ -27,10 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.VisitTime)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ServiceID)
-            </th>
-            <th>
+           <th>
                 @Html.DisplayNameFor(model => model.ServiceNameAR)
             </th>
             <th>
@@ -45,7 +42,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th></th>
+                            <th>@HrbiApp.Web.Resource.ResourceAr.Control</th>
         </tr>
     </thead>
     <tbody>
@@ -59,10 +56,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.VisitTime)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ServiceID)
-                </td>
-                <td>
+               <td>
                     @Html.DisplayFor(modelItem => item.ServiceNameAR)
                 </td>
                 <td>

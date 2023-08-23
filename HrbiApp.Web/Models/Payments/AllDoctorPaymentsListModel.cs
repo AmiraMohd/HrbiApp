@@ -1,17 +1,14 @@
-﻿namespace HrbiApp.Web.Models.Payments
+﻿using HrbiApp.Web.Models.Doctors;
+using System.ComponentModel.DataAnnotations;
+
+namespace HrbiApp.Web.Models.Payments
 {
-    public class AllDoctorPaymentsListModel
+    public class AllDoctorPaymentsListModel:DoctorPayment
     {
-        public int ID { get; set; }
-        public double TotalAmount { get; set; }
-        public double DoctorProfit { get; set; }
-        public double SystemProfit { get; set; }
-        public double ProfitPercentage { get; set; }
-        public string Status { get;set; }
+        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "DoctorName")]
         public string DoctorName { get; set; }
+        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "DoctorPhone")]
         public string DoctorPhone { get; set; }
-        public string CreateDate { get; set; }
-        public string AcceptDate { get; set; }
-        public string SettledDate { get; set; }
+        
     }
 }

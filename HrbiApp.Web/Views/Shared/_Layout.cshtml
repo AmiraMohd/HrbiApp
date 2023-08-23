@@ -129,7 +129,11 @@
             $('table.dataTable').DataTable(
                 {
                     /* Disable initial sort */
-                    "aaSorting": [],"columnDefs":[{"searchable":false,"targets":[-1]}]
+                    "aaSorting": [],
+                    "columnDefs":[
+                        {"searchable":false,"targets":[-1]},
+                        {"class": "text-center", "targets": "_all"}
+                    ]
                 });
             $('.AllColumnSearchableTable').DataTable(
                 {

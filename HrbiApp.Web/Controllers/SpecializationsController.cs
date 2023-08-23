@@ -3,10 +3,12 @@ using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.Doctors;
 using HrbiApp.Web.Models.Specializations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
 {
+    [Authorize]
     public class SpecializationsController : WebController
     {
         public SpecializationsController(CoreServices cs, Validators validators) : base(cs, validators)

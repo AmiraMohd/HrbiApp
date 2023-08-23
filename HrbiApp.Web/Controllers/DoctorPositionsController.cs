@@ -2,10 +2,12 @@
 using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.DoctorPositions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
 {
+    [Authorize]
     public class DoctorPositionsController : WebController
     {
         public DoctorPositionsController(CoreServices cs, Validators validators) : base(cs, validators)
