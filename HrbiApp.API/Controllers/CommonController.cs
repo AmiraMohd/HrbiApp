@@ -24,6 +24,30 @@ namespace HrbiApp.API.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
         }
+
+
+        [HttpGet]
+        [Route("GetAllServices")]
+        public async Task<IActionResult> GetAllServices()
+        {
+
+            var result = CS.GetAllServices();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Data = result.Response
+                });
+
+            }
+        }
         [HttpGet]
         [Route("GetAllDoctorSpeicalizations")]
         public async Task<IActionResult> GetAllDoctorSpeicalizations()
@@ -34,7 +58,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else
@@ -48,8 +72,8 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllDoctorPosotions")]
-        public async Task<IActionResult> GetAllDoctorPosotions()
+        [Route("GetAllDoctorPostions")]
+        public async Task<IActionResult> GetAllDoctorPostions()
         {
 
             var result = CS.GetAllDoctorPositions();
@@ -57,7 +81,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.Failed
+                    Message = Messages.Failed
                 });
             }
             else

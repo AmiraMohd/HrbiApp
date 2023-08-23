@@ -1,5 +1,6 @@
 ﻿using DBContext;
 using HrbiApp.API.Models;
+using HrbiApp.API.Models.Account;
 using HrbiApp.API.Models.Doctor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -36,7 +37,7 @@ namespace HrbiApp.API.Controllers
                 {
                     return Ok(new BaseResponse
                     {
-                        Message = Responses.NotValidPhone
+                        Message = Messages.NotValidPhone
                     }) ;
                 }
                 var register = await CS.DoctorRegister(model);
@@ -62,14 +63,14 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotActiveAccount
+                    Message = Messages.NotActiveAccount
                 });
             }
             if (!_validator.IsValidPhone(model.PhoneNumber))
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Responses.NotValidPhone
+                    Message = Messages.NotValidPhone
                 });
             }
             var login = await CS.DoctorLogin(model);
@@ -86,6 +87,94 @@ namespace HrbiApp.API.Controllers
                 Data = login.Response
 
             });
+        }
+
+        [HttpGet("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(string phone)
+        {
+            if (!_validator.IsActiveAccount(phone))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotActiveAccount
+                });
+            }
+            if (!_validator.IsValidPhone(phone))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidPhone
+                });
+            }
+            var result = await CS.ForgetPasswordAsync(phone);
+            if (!result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.ExceptionOccured
+                });
+            }
+            return Ok(new BaseResponse()
+            {
+                Status = true
+            });
+        }
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPassword model)
+        {
+            if (!_validator.IsValidPhoneAndOTP(model.Phone, model.OTP, Consts.ResetPurpose))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = false,
+                    Message = Messages.NotValidPhoneAndOTP
+                });
+            }
+            var result = await CS.ResetPassword(model);
+            if (!result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = false,
+                });
+            }
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+            });
+        }
+
+        [HttpGet("GetLoginOTP/{phone}")]
+        public async Task<IActionResult> GetLoginOTP(string phone)
+        {
+            if (!_validator.IsActiveAccount(phone))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotActiveAccount
+                });
+            }
+            if (!_validator.IsValidPhone(phone))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidPhone
+                });
+            }
+            
+            var sendLoginOTP = CS.SendLoginOTP(phone);
+            if (!sendLoginOTP)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.ExceptionOccured
+                });
+            }
+            return Ok(new BaseResponse()
+            {
+                Status = true,
+            });
+
         }
 
         [HttpGet]
@@ -123,7 +212,7 @@ namespace HrbiApp.API.Controllers
                 return Ok(new BaseResponse()
                 {
              
-                    Message = Responses.NotValidSpecialization
+                    Message = Messages.NotValidSpecialization
                 });
             }
             var result = CS.GetDoctorsBySpecialization(specializationId);

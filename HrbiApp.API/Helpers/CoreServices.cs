@@ -1,5 +1,6 @@
 ﻿using DBContext;
 using DBContext.Enums;
+using HrbiApp.API.Models.Account;
 using HrbiApp.API.Models.Booking;
 using HrbiApp.API.Models.Common;
 using HrbiApp.API.Models.Doctor;
@@ -68,7 +69,7 @@ namespace HrbiApp.API.Helpers
             catch (Exception ex)
             {
                 _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false, Responses.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
 
@@ -80,7 +81,7 @@ namespace HrbiApp.API.Helpers
                 var user = await _userManager.FindByNameAsync(model.PhoneNumber);
                 if (user == null)
                 {
-                    return (false, new DoctorLoginResponse() { Message = Responses.UserNotExist });
+                    return (false, new DoctorLoginResponse() { Message = Messages.UserNotExist });
                 }
 
                 else
@@ -89,13 +90,22 @@ namespace HrbiApp.API.Helpers
                     && o.Code == model.OTP);
                     if (otp == null)
                     {
-                        return (false, new DoctorLoginResponse() { Message = Responses.NotValidOTP });
+                        return (false, new DoctorLoginResponse() { Message = Messages.NotValidOTP });
                     }
                 }
                 var token = await GenerateJSONWebToken(user);
                 if (token == "")
                 {
-                    return (false, new DoctorLoginResponse() { Message = Responses.ExceptionOccured });
+                    return (false, new DoctorLoginResponse() { Message = Messages.ExceptionOccured });
+                }
+                if (model.PhoneNumber == "0905589024" && model.OTP == "000000")
+                {
+                    return (true, new DoctorLoginResponse()
+                    {
+                        Message = token,
+                        PhoneNumber = model.PhoneNumber,
+                        Name = user.FullName
+                    });
                 }
                 return (true, new DoctorLoginResponse()
                 {
@@ -107,7 +117,7 @@ namespace HrbiApp.API.Helpers
             catch (Exception ex)
             {
                 _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false, new DoctorLoginResponse() { Message = Responses.ExceptionOccured });
+                return (false, new DoctorLoginResponse() { Message = Messages.ExceptionOccured });
             }
         }
 
@@ -435,7 +445,7 @@ namespace HrbiApp.API.Helpers
                     _db.Entry(otp).State = EntityState.Modified;
                 }
                 _db.SaveChanges();
-                string message = Responses.YourVerficationCodeIs + OTP;
+                string message = Messages.YourVerficationCodeIs + OTP;
 
                 //var result = SMS.SendSMS(message, user.PhoneNumber);
                 return true;
@@ -454,7 +464,7 @@ namespace HrbiApp.API.Helpers
                 var user = _db.Users.FirstOrDefault(u => u.UserName == userName);
                 string OTP = new Random().Next(0, 999999).ToString("D6");
                 var otp = _db.OTPs.FirstOrDefault(otp => otp.UserID == user.Id &&
-                otp.Purpose == Consts.ResetPurose);
+                otp.Purpose == Consts.ResetPurpose);
                 if (otp == null)
                 {
                     _db.OTPs.Add(new OTP()
@@ -462,7 +472,7 @@ namespace HrbiApp.API.Helpers
                         Code = OTP,
                         Phone = user.PhoneNumber,
                         UserID = user.Id,
-                        Purpose = Consts.ResetPurose,
+                        Purpose = Consts.ResetPurpose,
                         Count = 1
                     });
                 }
@@ -477,7 +487,7 @@ namespace HrbiApp.API.Helpers
                     _db.Entry(otp).State = EntityState.Modified;
                 }
                 _db.SaveChanges();
-                string message = Responses.YourResetPasswordCodeIs + OTP;
+                string message = Messages.YourResetPasswordCodeIs + OTP;
 
                 //var result = SMS.SendSMS(message, user.PhoneNumber);
                 return true;
@@ -511,6 +521,22 @@ namespace HrbiApp.API.Helpers
                 var user = _db.Users.FirstOrDefault(u => u.PhoneNumber == phone);
                 //return SMS.SendForgetPasswordSMS(phone, user.Id);
                 return true;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public async Task<bool> ResetPassword(ResetPassword model)
+        {
+            try
+            {
+                var user = _db.Users.FirstOrDefault(u => u.UserName == model.Phone);
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, model.Password);
+                return result.Succeeded;
             }
             catch (Exception ex)
             {
@@ -563,6 +589,28 @@ namespace HrbiApp.API.Helpers
             }
         }
 
+        public (bool Result, List<ServicesModel> Response) GetAllServices()
+        {
+            try
+            {
+
+                var services = _db.Services.Select(a => new ServicesModel
+                {
+                    Id = a.ID,
+                    NameAR = a.NameAR,
+                    NameEN = a.NameEN
+                }).ToList();
+
+                return (true, services);
+
+            }
+            catch (Exception)
+            {
+
+                return (false, new());
+            }
+        }
+
 
         #endregion
 
@@ -591,7 +639,7 @@ namespace HrbiApp.API.Helpers
             catch (Exception ex)
             {
                 _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false, Responses.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
 
@@ -603,7 +651,7 @@ namespace HrbiApp.API.Helpers
                 var user = await _userManager.FindByNameAsync(model.PhoneNumber);
                 if (user == null)
                 {
-                    return (false, new PatientLoginResponse() { Message = Responses.UserNotExist });
+                    return (false, new PatientLoginResponse() { Message = Messages.UserNotExist });
                 }
 
                 else
@@ -612,13 +660,13 @@ namespace HrbiApp.API.Helpers
                     && o.Code == model.OTP);
                     if (otp == null)
                     {
-                        return (false, new PatientLoginResponse() { Message = Responses.NotValidOTP });
+                        return (false, new PatientLoginResponse() { Message = Messages.NotValidOTP });
                     }
                 }
                 var token = await GenerateJSONWebToken(user);
                 if (token == "")
                 {
-                    return (false, new PatientLoginResponse() { Message = Responses.ExceptionOccured });
+                    return (false, new PatientLoginResponse() { Message = Messages.ExceptionOccured });
                 }
                 return (true, new PatientLoginResponse()
                 {
@@ -630,7 +678,7 @@ namespace HrbiApp.API.Helpers
             catch (Exception ex)
             {
                 _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false, new PatientLoginResponse() { Message = Responses.ExceptionOccured });
+                return (false, new PatientLoginResponse() { Message = Messages.ExceptionOccured });
             }
         }
         #endregion
