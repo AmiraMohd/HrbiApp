@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HrbiApp.Web.Resource {
+namespace HrbiApp.Web.Resource
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,40 +23,48 @@ namespace HrbiApp.Web.Resource {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ResourceAr {
-        
+    public class ResourceAr
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ResourceAr() {
+        internal ResourceAr()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        public static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HrbiApp.Web.Resource.ResourceAr", typeof(ResourceAr).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
-            get {
+        public static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
@@ -189,7 +198,7 @@ namespace HrbiApp.Web.Resource {
                 return ResourceManager.GetString("Logout", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to رجوع.
         /// </summary>
         public static string Back
@@ -199,7 +208,7 @@ namespace HrbiApp.Web.Resource {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to إضافة.
         /// </summary>
         public static string Add
@@ -239,7 +248,7 @@ namespace HrbiApp.Web.Resource {
                 return ResourceManager.GetString("DeActivate", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to تفاصيل.
         /// </summary>
         public static string Details
@@ -249,7 +258,7 @@ namespace HrbiApp.Web.Resource {
                 return ResourceManager.GetString("Details", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to الهاتق.
         /// </summary>
         public static string Phone
@@ -257,6 +266,346 @@ namespace HrbiApp.Web.Resource {
             get
             {
                 return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to المستشفى.
+        /// </summary>
+        public static string Hospital
+        {
+            get
+            {
+                return ResourceManager.GetString("Hospital", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to الاسم العربي.
+        /// </summary>
+        public static string NameAR
+        {
+            get
+            {
+                return ResourceManager.GetString("NameAR", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to الاسم الانجليزي.
+        /// </summary>
+        public static string NameEN
+        {
+            get
+            {
+                return ResourceManager.GetString("NameEN", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to الاسم الكامل.
+        /// </summary>
+        public static string FullName
+        {
+            get
+            {
+                return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to التخصص.
+        /// </summary>
+        public static string Specialization
+        {
+            get
+            {
+                return ResourceManager.GetString("Specialization", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to البريد الالكتروني.
+        /// </summary>
+        public static string Email
+        {
+            get
+            {
+                return ResourceManager.GetString("Email", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string Position
+        {
+            get
+            {
+                return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to العنوان.
+        /// </summary>
+        public static string Address
+        {
+            get
+            {
+                return ResourceManager.GetString("Address", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to سعر المقابلة.
+        /// </summary>
+        public static string Price
+        {
+            get
+            {
+                return ResourceManager.GetString("Price", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to عن الطبيب.
+        /// </summary>
+        public static string AboutDoctor
+        {
+            get
+            {
+                return ResourceManager.GetString("AboutDoctor", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to بدء المقابلات.
+        /// </summary>
+        public static string OpenTime
+        {
+            get
+            {
+                return ResourceManager.GetString("OpenTime", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to انتهاء المقابلات.
+        /// </summary>
+        public static string CloseTime
+        {
+            get
+            {
+                return ResourceManager.GetString("CloseTime", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ التسوية.
+        /// </summary>
+        public static string SettledDate
+        {
+            get
+            {
+                return ResourceManager.GetString("SettledDate", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الموافقة.
+        /// </summary>
+        public static string AcceptDate
+        {
+            get
+            {
+                return ResourceManager.GetString("AcceptDate", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الانشاء.
+        /// </summary>
+        public static string CreateDate
+        {
+            get
+            {
+                return ResourceManager.GetString("CreateDate", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to نسبة ربح التطبيق.
+        /// </summary>
+        public static string ProfitPercentage
+        {
+            get
+            {
+                return ResourceManager.GetString("ProfitPercentage", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to ربح التطبيق.
+        /// </summary>
+        public static string SystemProfit
+        {
+            get
+            {
+                return ResourceManager.GetString("SystemProfit", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to ربح الطبيب.
+        /// </summary>
+        public static string DoctorProfit
+        {
+            get
+            {
+                return ResourceManager.GetString("DoctorProfit", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to المبلغ الكلي.
+        /// </summary>
+        public static string TotalAmount
+        {
+            get
+            {
+                return ResourceManager.GetString("TotalAmount", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم المريض.
+        /// </summary>
+        public static string PatintName
+        {
+            get
+            {
+                return ResourceManager.GetString("PatintName", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to زمن المقابلة.
+        /// </summary>
+        public static string VisitTime
+        {
+            get
+            {
+                return ResourceManager.GetString("VisitTime", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم الخدمة.
+        /// </summary>
+        public static string ServiceName
+        {
+            get
+            {
+                return ResourceManager.GetString("ServiceName", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to هل الخدمة من المنزل.
+        /// </summary>
+        public static string IsFromHome
+        {
+            get
+            {
+                return ResourceManager.GetString("IsFromHome", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to هل متوفرة من المنزل.
+        /// </summary>
+        public static string IsAvilableFromHome
+        {
+            get
+            {
+                return ResourceManager.GetString("IsAvilableFromHome", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to هاتف الطبيب.
+        /// </summary>
+        public static string DoctorPhone
+        {
+            get
+            {
+                return ResourceManager.GetString("DoctorPhone", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم الطبيب.
+        /// </summary>
+        public static string DoctorName
+        {
+            get
+            {
+                return ResourceManager.GetString("DoctorName", resourceCulture);
+            }
+        }
+     /// <summary>
+        ///   Looks up a localized string similar to الحالة
+        /// </summary>
+        public static string Status
+        {
+            get
+            {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to التحكم
+        /// </summary>
+        public static string Control
+        {
+            get
+            {
+                return ResourceManager.GetString("Control", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to حفظ
+        /// </summary>
+        public static string Save
+        {
+            get
+            {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to كلمة المرور
+        /// </summary>
+        public static string Password
+        {
+            get
+            {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم المستخدم
+        /// </summary>
+        public static string UserName
+        {
+            get
+            {
+                return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تذكرني
+        /// </summary>
+        public static string RememberMe
+        {
+            get
+            {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to تسجيل الدخول
+        /// </summary>
+        public static string SignIn
+        {
+            get
+            {
+                return ResourceManager.GetString("SignIn", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to HrbiApp
+        /// </summary>
+        public static string HrbiApp
+        {
+            get
+            {
+                return ResourceManager.GetString("HrbiApp", resourceCulture);
             }
         }
     }

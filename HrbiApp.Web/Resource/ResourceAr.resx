@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutDoctor" xml:space="preserve">
+    <value>عن الطبيب</value>
+  </data>
+  <data name="AcceptDate" xml:space="preserve">
+    <value>تاريخ الموافقة</value>
+  </data>
   <data name="Activate" xml:space="preserve">
     <value>تفعيل</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>إضافة</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
   <data name="Ambulances" xml:space="preserve">
     <value>أرقام الإسعاف</value>
+  </data>
+  <data name="CloseTime" xml:space="preserve">
+    <value>انتهاء المقابلات</value>
+  </data>
+  <data name="Control" xml:space="preserve">
+    <value>التحكم</value>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>تاريخ الانشاء</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
     <value>لوحة التحكم</value>
@@ -135,11 +153,38 @@
   <data name="Details" xml:space="preserve">
     <value>تفاصيل</value>
   </data>
+  <data name="DoctorName" xml:space="preserve">
+    <value>اسم الطبيب</value>
+  </data>
+  <data name="DoctorPhone" xml:space="preserve">
+    <value>هاتف الطبيب</value>
+  </data>
   <data name="DoctorPositions" xml:space="preserve">
     <value>درجات الأطباء</value>
   </data>
+  <data name="DoctorProfit" xml:space="preserve">
+    <value>ربح الطبيب</value>
+  </data>
   <data name="Doctors" xml:space="preserve">
     <value>الأطباء</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>البريد الالكتروني</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>الاسم الكامل</value>
+  </data>
+  <data name="Hospital" xml:space="preserve">
+    <value>المستشفى</value>
+  </data>
+  <data name="HrbiApp" xml:space="preserve">
+    <value>HrbiApp</value>
+  </data>
+  <data name="IsAvilableFromHome" xml:space="preserve">
+    <value>هل متوفرة من المنزل؟</value>
+  </data>
+  <data name="IsFromHome" xml:space="preserve">
+    <value>هل الخدمة من المنزل؟</value>
   </data>
   <data name="LabServiceBookings" xml:space="preserve">
     <value>حجوزات المعمل</value>
@@ -150,11 +195,26 @@
   <data name="Logout" xml:space="preserve">
     <value>تسجيل الخروج</value>
   </data>
+  <data name="NameAR" xml:space="preserve">
+    <value>الاسم العربي</value>
+  </data>
+  <data name="NameEN" xml:space="preserve">
+    <value>الاسم الانجليزي</value>
+  </data>
   <data name="NurseBookings" xml:space="preserve">
     <value>حجوزات التمريض</value>
   </data>
   <data name="NurseServices" xml:space="preserve">
     <value>خدمات التمريض</value>
+  </data>
+  <data name="OpenTime" xml:space="preserve">
+    <value>بدء المقابلات</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة المرور</value>
+  </data>
+  <data name="PatintName" xml:space="preserve">
+    <value>اسم المريض</value>
   </data>
   <data name="Payments" xml:space="preserve">
     <value>الدفوعات</value>
@@ -162,13 +222,55 @@
   <data name="Phone" xml:space="preserve">
     <value>الهاتف</value>
   </data>
+  <data name="Position" xml:space="preserve">
+    <value>الدرجة</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>سعر المقابلة</value>
+  </data>
+  <data name="ProfitPercentage" xml:space="preserve">
+    <value>نسبة ربح التطبيق</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>تذكرني</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>حفظ</value>
+  </data>
+  <data name="ServiceName" xml:space="preserve">
+    <value>اسم الخدمة</value>
+  </data>
   <data name="Setting" xml:space="preserve">
     <value>الإعدادات</value>
+  </data>
+  <data name="SettledDate" xml:space="preserve">
+    <value>تاريخ التسوية</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>تسجيل الدخول</value>
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>التخصص</value>
   </data>
   <data name="Specializations" xml:space="preserve">
     <value>التخصصات</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="SystemProfit" xml:space="preserve">
+    <value>ربح التطبيق</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>المبلغ الكلي</value>
+  </data>
   <data name="Update" xml:space="preserve">
     <value>تعديل</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="VisitTime" xml:space="preserve">
+    <value>زمن المقابلة</value>
   </data>
 </root>

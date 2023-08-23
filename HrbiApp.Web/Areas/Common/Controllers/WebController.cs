@@ -1,8 +1,10 @@
 ﻿using DBContext;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Areas.Common.Controllers
 {
+    [Authorize]
     public class WebController : Controller
     {
         protected CoreServices CS;

@@ -81,6 +81,5 @@ namespace DBContext
         public const string DoneNurseBookingTitle = "DoneNurseBookingTitle";
         public const string DoneNurseBookingBody = "DoneNurseBookingBody";
         #endregion
-        #endregion
     }
 }

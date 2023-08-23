@@ -1,10 +1,12 @@
 ﻿using DBContext;
 using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
 {
+    [Authorize]
     public class NurseBookingsController : WebController
     {
         public NurseBookingsController(CoreServices cs, Validators validators) : base(cs, validators)
