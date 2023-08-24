@@ -180,6 +180,9 @@
   <data name="HrbiApp" xml:space="preserve">
     <value>HrbiApp</value>
   </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+    <value>البيانات غير صحيحة</value>
+  </data>
   <data name="IsAvilableFromHome" xml:space="preserve">
     <value>هل متوفرة من المنزل؟</value>
   </data>
