@@ -94,7 +94,6 @@
             <li><a asp-controller="LabServiceBookings" asp-action="Index" class="app-menu__item"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.LabServiceBookings</span></a></li>
             <li><a asp-controller="NurseBookings" asp-action="Index" class="app-menu__item"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.NurseBookings</span></a></li>
             <li><a asp-controller="Patients" asp-action="Index" class="app-menu__item"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Patients</span></a></li>
-            
             <li><a asp-controller="Payments" asp-action="AllDoctorPayments" class="app-menu__item"><i class="app-menu__icon fa fa-envelope-open "></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Payments</span></a></li>
             <li class="treeview">
                 <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Setting</span><i class="treeview-indicator fa fa-angle-right"></i></a>
@@ -167,7 +166,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/firebase-app.js"></script>
     <script src="~/js/firebase-messaging.js"></script>
-    <script src="~/js/WebChating.js"></script>
+    <script src="~/js/WebChating.js" asp-append-version="true"></script>
     <script src="~/lib/sweetalert/sweetalert.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
