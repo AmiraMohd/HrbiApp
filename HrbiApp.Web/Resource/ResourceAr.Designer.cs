@@ -618,5 +618,15 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("InvalidLoginAttempt", resourceCulture);
             }
         }
+    /// <summary>
+        ///   Looks up a localized string similar to خدمات التطبيق
+        /// </summary>
+        public static string Services
+        {
+            get
+            {
+                return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
     }
 }

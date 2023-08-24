@@ -425,5 +425,22 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
         #endregion
+
+        #region Services
+        public bool IsValidService(int serviceID)
+        {
+            try
+            {
+                var service = _dbContext.Services.FirstOrDefault(s => s.ID == serviceID);
+                return service != null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

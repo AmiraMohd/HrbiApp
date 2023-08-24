@@ -243,6 +243,9 @@
   <data name="ServiceName" xml:space="preserve">
     <value>اسم الخدمة</value>
   </data>
+  <data name="Services" xml:space="preserve">
+    <value>خدمات التطبيق</value>
+  </data>
   <data name="Setting" xml:space="preserve">
     <value>الإعدادات</value>
   </data>
