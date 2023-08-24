@@ -442,5 +442,21 @@ namespace HrbiApp.Web.Areas.Common
         }
 
         #endregion
+        #region Users
+        public bool IsValidUser(string UserID)
+        {
+            try
+            {
+                var service = _dbContext.Users.FirstOrDefault(s => s.Id == UserID);
+                return service != null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

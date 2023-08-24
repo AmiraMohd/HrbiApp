@@ -216,6 +216,9 @@
   <data name="Password" xml:space="preserve">
     <value>كلمة المرور</value>
   </data>
+  <data name="Patients" xml:space="preserve">
+    <value>العملاء</value>
+  </data>
   <data name="PatintName" xml:space="preserve">
     <value>اسم المريض</value>
   </data>

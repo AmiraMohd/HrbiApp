@@ -5,29 +5,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
 {
-    public class ServicesController : WebController
+    public class PatientsController : WebController
     {
-        public ServicesController(CoreServices cs, Validators validators) : base(cs, validators)
+        public PatientsController(CoreServices cs, Validators validators) : base(cs, validators)
         {
         }
 
         public IActionResult Index()
         {
-            var getServices = CS.GetServices();
-            if (!getServices.Result)
+            var getPatients = CS.GetPatients();
+            if (!getPatients.Result)
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
             }
-            return View(getServices.Services);
+            return View(getPatients.Patients);
         }
-        public IActionResult DeActivate(int serviceID)
+        public IActionResult DeActivate(string patientID)
         {
-            if (!Validators.IsValidService(serviceID))
+            if (!Validators.IsValidUser(patientID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var result = CS.ChangeServiceStatus(serviceID, Consts.NotActive);
+            var result = CS.ChangeUserStatus(patientID, Consts.NotActive);
             if (!result)
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
@@ -38,14 +38,14 @@ namespace HrbiApp.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Activate(int serviceID)
+        public IActionResult Activate(string patientID)
         {
-            if (!Validators.IsValidService(serviceID))
+            if (!Validators.IsValidUser(patientID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var result = CS.ChangeServiceStatus(serviceID, Consts.Active);
+            var result = CS.ChangeUserStatus(patientID, Consts.Active);
             if (!result)
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);

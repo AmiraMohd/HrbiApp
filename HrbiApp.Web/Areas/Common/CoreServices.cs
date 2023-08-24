@@ -14,6 +14,7 @@ using System.Collections.Immutable;
 using System.Reflection;
 using HrbiApp.Web.Models.Payments;
 using HrbiApp.Web.Models.Services;
+using HrbiApp.Web.Models.Patients;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -957,7 +958,7 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
-        public bool ChangebServiceStatus(int serviceID, string status)
+        public bool ChangeServiceStatus(int serviceID, string status)
         {
             try
             {
@@ -974,6 +975,45 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
+        #endregion
+        #region Patients
+        public (bool Result, List<PatientsListModel> Patients) GetPatients()
+        {
+            try
+            {
+                var users = _dbContext.Users.Where(u=>u.AccountType==Consts.PatientAccountType).Select(s => new PatientsListModel()
+                {
+                    ID = s.Id,
+                    Name = s.FullName,
+                    Email = s.Email,
+                    Phone = s.PhoneNumber,
+                    Status = s.Status,
+                }).ToList();
+                return (true, users);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new List<PatientsListModel>());
+            }
+        }
+
+        public bool ChangeUserStatus(string UserID, string status)
+        {
+            try
+            {
+                var user = _dbContext.Users.Find(UserID);
+                user.Status = status;
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         #endregion
     }
 }
