@@ -46,8 +46,8 @@ namespace DBContext
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Data Source=SQL5104.site4now.net;Initial Catalog=db_a9df23_harbiproject52;User Id=db_a9df23_harbiproject52_admin;Password=Sudu@123#");
-            //optionsBuilder.UseSqlServer("Server=DESKTOP-QN2UA1B;Initial Catalog=Hrbi;User ID = sa; Password = 123456;Database=Hrbi;TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Server=192.119.80.230;Initial Catalog=TzwedTest;User ID = 21techis; Password = techis@123#;Database=TzwedTest;Trusted_Connection=False;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-QN2UA1B;Initial Catalog=Hrbi;User ID = sa; Password = 123456;Database=Hrbi;TrustServerCertificate=True");
 
             base.OnConfiguring(optionsBuilder);
         }
