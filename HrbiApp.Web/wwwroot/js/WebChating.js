@@ -1,11 +1,11 @@
 ﻿var firebaseConfig = {
-    apiKey: "AIzaSyA2YsIm-TojzVpwaJm8lk-f5gRGyLYeios",
-    authDomain: "tazweed-a71ed.firebaseapp.com",
-    projectId: "tazweed-a71ed",
-    storageBucket: "tazweed-a71ed.appspot.com",
-    messagingSenderId: "578926858761",
-    appId: "1:578926858761:web:0ea4b38f501a0b6a175ed8",
-    measurementId: "G-9PP10YJW8T"
+    apiKey: "AIzaSyA6u0xr2tRY-ocNDjq1glOBrZ5kX8fRj9k",
+    authDomain: "hrbiapp.firebaseapp.com",
+    projectId: "hrbiapp",
+    storageBucket: "hrbiapp.appspot.com",
+    messagingSenderId: "740259280118",
+    appId: "1:740259280118:web:56f1faaa02d25a132968d7",
+    measurementId: "G-QGPNY84B5M"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -37,12 +37,12 @@ if ("serviceWorker" in navigator) {
         .register("../js/firebase-messaging-sw.js")
         .then(function (registration) {
             console.log("Registration successful, scope is:", registration.scope);
-            wMessaging.getToken({ vapidKey: "BMcYp1p70UOGOd03gF7KIiV-026_aDnD-FO-83onQj_9tq6_CUfriJNRuafs-NG_WQIJVgV2Amgaq_AUh-73Lgw", serviceWorkerRegistration: registration })
+            wMessaging.getToken({ vapidKey: "BLH8UWj5yOPM1pc-_a_aDtSUNwECSm5MYOsE_LNE-ctRa6oSW5GnOvt3HS65NvQPbAsHwadhzvP6_bqXXV6ffb0", serviceWorkerRegistration: registration })
                 .then((currentToken) => {
                     if (currentToken) {
                         console.log('current token for client: ', currentToken);
                         $.ajax({
-                            url: '/users/SaveInstanceID?instanceID=' + currentToken,
+                            url: '/Home/SaveAdminInstanceID?instanceID=' + currentToken,
                             type: 'POST',
                             dataType: 'application/json',
                             crossDomain: true,

@@ -981,7 +981,7 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var users = _dbContext.Users.Where(u=>u.AccountType==Consts.PatientAccountType).Select(s => new PatientsListModel()
+                var users = _dbContext.Users.Where(u => u.AccountType == Consts.PatientAccountType).Select(s => new PatientsListModel()
                 {
                     ID = s.Id,
                     Name = s.FullName,
@@ -1004,6 +1004,24 @@ namespace HrbiApp.Web.Areas.Common
             {
                 var user = _dbContext.Users.Find(UserID);
                 user.Status = status;
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        #endregion
+        #region Admins
+        public bool SaveAdminInstanceID(string adminID, string instanceID)
+        {
+            try
+            {
+                var user = _dbContext.Users.FirstOrDefault(u => u.Id == adminID);
+                user.InstanceID = instanceID;
                 _dbContext.Users.Update(user);
                 _dbContext.SaveChanges();
                 return true;

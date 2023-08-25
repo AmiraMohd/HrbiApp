@@ -2,14 +2,16 @@
 importScripts('firebase-messaging.js');
 // Initialize Firebase
 var firebaseConfig = {
-    apiKey: "AIzaSyA2YsIm-TojzVpwaJm8lk-f5gRGyLYeios",
-    authDomain: "tazweed-a71ed.firebaseapp.com",
-    projectId: "tazweed-a71ed",
-    storageBucket: "tazweed-a71ed.appspot.com",
-    messagingSenderId: "578926858761",
-    appId: "1:578926858761:web:0ea4b38f501a0b6a175ed8",
-    measurementId: "G-9PP10YJW8T"
+    apiKey: "AIzaSyA6u0xr2tRY-ocNDjq1glOBrZ5kX8fRj9k",
+    authDomain: "hrbiapp.firebaseapp.com",
+    projectId: "hrbiapp",
+    storageBucket: "hrbiapp.appspot.com",
+    messagingSenderId: "740259280118",
+    appId: "1:740259280118:web:56f1faaa02d25a132968d7",
+    measurementId: "G-QGPNY84B5M"
 };
+
+
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 var myEvent = null;
