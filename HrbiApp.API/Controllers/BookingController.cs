@@ -47,14 +47,15 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceDoctorBooking(model);
+            var result = await CS.PlaceDoctorBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
                 });
             }
             else
@@ -87,14 +88,15 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceNurseServiceBooking(model);
+            var result = await CS.PlaceNurseServiceBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
                 });
             }
             else
@@ -127,14 +129,16 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceLabServiceBooking(model);
+            var result = await CS.PlaceLabServiceBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
+
                 });
             }
             else

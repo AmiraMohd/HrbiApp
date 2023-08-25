@@ -2,6 +2,7 @@
 using HrbiApp.API.Models;
 using HrbiApp.API.Models.Account;
 using HrbiApp.API.Models.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,11 +60,11 @@ namespace HrbiApp.API.Controllers
         public async Task<IActionResult> Login([FromBody] DoctorLoginModel model)
         {
 
-            if (!_validator.IsActiveAccount(model.PhoneNumber))
+            if (!_validator.IsActiveDoctor(model.PhoneNumber))
             {
                 return Ok(new BaseResponse()
                 {
-                    Message = Messages.NotActiveAccount
+                    Message = Messages.NotActiveDoctor
                 });
             }
             if (!_validator.IsValidPhone(model.PhoneNumber))
@@ -203,8 +204,8 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetDoctorsBySpecialization/{specializationId}")]
-        public async Task<IActionResult> GetDoctorsBySpecialization(int specializationId)
+        [Route("GetDoctorsBySpecialization/{specializationId}/{positionId}")]
+        public async Task<IActionResult> GetDoctorsBySpecialization(int specializationId, int positionId)
         {
 
             if (!_validator.IsValidSpecialization(specializationId))
@@ -215,7 +216,15 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidSpecialization
                 });
             }
-            var result = CS.GetDoctorsBySpecialization(specializationId);
+            if (!_validator.IsValidDoctorPosition(positionId))
+            {
+                return Ok(new BaseResponse()
+                {
+
+                    Message = Messages.NotValidPosition
+                });
+            }
+            var result = CS.GetDoctorsBySpecialization(specializationId,positionId);
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
@@ -235,8 +244,73 @@ namespace HrbiApp.API.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("UpdateDetails")]
+        public async Task<IActionResult> UpdateDetails([FromBody] DoctorProfileModel model)
+        {
+            if (!_validator.IsValidDoctor(model.Id))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidDoctor
+                });
+            }
+
+            var result = await CS.UpdateDoctorDetails(model);
+            if (result == true)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                });
+
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = false,
+
+                });
+            }
+
+        }
 
 
-        
+        [Authorize]
+        [HttpGet("SaveInstanceID")]
+        public async Task<IActionResult> SaveInstanceID(string instanceID)
+        {
+            var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase));
+            var result = CS.SaveInstanceID(instanceID, userID.Value);
+            if (!result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.ExceptionOccured
+                });
+            }
+            return Ok(new BaseResponse()
+            {
+                Status = true
+            });
+        }
+        [Authorize]
+        [HttpGet("GetNotifications")]
+        public IActionResult GetNotifications()
+        {
+            var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase));
+
+            var getNotifications = CS.GetUserNotifications(userID.Value);
+            if (!getNotifications.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.ExceptionOccured
+                });
+            }
+            return Ok(new BaseResponse() { Data = getNotifications.Notifications, Status = true });
+        }
+
     }
 }

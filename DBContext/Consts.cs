@@ -78,5 +78,11 @@ namespace DBContext
         public const string SMSPasswordSetting = "SMSPassword";
         public const string SMSSenderSetting = "SMSSender";
         #endregion
+
+       public enum NotificationTypes{
+            DoctorBooking,
+            AcceptedOrder
+            
+        }
     }
 }
