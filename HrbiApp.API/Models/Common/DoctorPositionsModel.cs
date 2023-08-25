@@ -1,6 +1,6 @@
 ﻿namespace HrbiApp.API.Models.Common
 {
-    public class DoctorSpecialziationModel
+    public class DoctorPositionsModel
     {
         public int ID { get; set; }
         public string NameAR { get; set; }

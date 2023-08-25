@@ -1,10 +1,20 @@
+using DBContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
+// For Entity Framework
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+options.UseSqlServer(configuration.GetConnectionString("ConnString")));
+
+// For Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
 
 
 // Add services to the container.
@@ -33,10 +43,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
     };
 });
-
-var app = builder.Build();
-
-
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 0;
@@ -45,6 +51,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 });
+var app = builder.Build();
+
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

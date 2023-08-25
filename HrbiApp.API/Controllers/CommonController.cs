@@ -43,11 +43,61 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
+                    Status = true,
                     Data = result.Response
-                });
+                }); ;
 
             }
         }
+
+        [HttpGet]
+        [Route("GetAllLabServices")]
+        public async Task<IActionResult> GetAllLabServices()
+        {
+
+            var result = CS.GetAllLabServices();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                }); ;
+
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllNurseServices")]
+        public async Task<IActionResult> GetAllNurseServices()
+        {
+
+            var result = CS.GetAllNurseServices();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                }); ;
+
+            }
+        }
+
         [HttpGet]
         [Route("GetAllDoctorSpeicalizations")]
         public async Task<IActionResult> GetAllDoctorSpeicalizations()
@@ -65,6 +115,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
+                    Status = true,
                     Data = result.Response
                 });
 
@@ -88,6 +139,7 @@ namespace HrbiApp.API.Controllers
             {
                 return Ok(new BaseResponse()
                 {
+                    Status = true,
                     Data = result.Response
                 });
 

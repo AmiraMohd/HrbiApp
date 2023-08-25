@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using DBContext;
 using Microsoft.AspNetCore.Identity;
-using Azure;
+
 using HrbiApp.API.Models.Booking;
 
 namespace HrbiApp.API.Controllers
@@ -47,14 +47,15 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceDoctorBooking(model);
+            var result = await CS.PlaceDoctorBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
                 });
             }
             else
@@ -87,14 +88,15 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceNurseServiceBooking(model);
+            var result = await CS.PlaceNurseServiceBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
                 });
             }
             else
@@ -127,14 +129,16 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.PlaceLabServiceBooking(model);
+            var result = await CS.PlaceLabServiceBooking(model);
 
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()
                 {
                     Status = true,
-                    Message = Messages.SuccessfulBooking
+                    Message = Messages.SuccessfulBooking,
+                    Data = result.Response
+
                 });
             }
             else
@@ -371,6 +375,40 @@ namespace HrbiApp.API.Controllers
                 Status = true,
                 Data = result.Response
             });
+
+        }
+
+        [HttpGet]
+        [Route("GetDoctorBookingPayment/{bookingId}")]
+        public async Task<IActionResult> GetDoctorsBookingPayment(int bookingId)
+        {
+
+            if (!_validator.IsValidBooking(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+
+                    Message = Messages.NotValidSpecialization
+                });
+            }
+            var result =await CS.GetDoctorBookingPayment(bookingId);
+            if (result.Result == true)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                });
+
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = false,
+
+                });
+            }
 
         }
     }

@@ -2,7 +2,7 @@
 {
     public class PatientBookingsList
     {
-        public int DoctorId { get; set; }
+        public int? DoctorId { get; set; }
         public string DoctorName { get; set; }
         public string DoctorNumber { get; set; }
         public string Status { get; set; }
