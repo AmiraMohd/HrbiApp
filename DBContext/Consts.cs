@@ -11,7 +11,7 @@ namespace DBContext
         #region GeneralSettings
         public const string ConfirmationPurpose = "Confirmation";
         public const string ResetPurpose = "Reset";
-        public const string NotificationServerKey = "";
+        public const string NotificationServerKey = "AAAArFrkNPY:APA91bGm9RBIc7Akn3euORyyRlV4RV7L4oYltKy8x21KbMvaBgEs6gZzli1ruB5LaV2NaavC1ZgPb1YJIYERa9LCO2B8SCJNWY-NsDIViGv33HeE8k0gD6W3LOXOymaZ8gE5BFp_6ip4";
 
         public const string ContactUsPhoneSetting = "ContactUsPhone";
         public const string ContactUsEmailSetting = "ContactUsE,Email";

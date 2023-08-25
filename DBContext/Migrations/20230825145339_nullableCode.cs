@@ -5,11 +5,19 @@
 namespace DBContext.Migrations
 {
     /// <inheritdoc />
-    public partial class Services : Migration
+    public partial class nullableCode : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "Code",
+                table: "LabServiceBookings",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
             migrationBuilder.CreateTable(
                 name: "Services",
                 columns: table => new
@@ -18,7 +26,8 @@ namespace DBContext.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameAR = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NameEN = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,6 +40,16 @@ namespace DBContext.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Services");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Code",
+                table: "LabServiceBookings",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
     }
 }

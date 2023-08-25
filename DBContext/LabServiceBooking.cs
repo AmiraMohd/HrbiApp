@@ -16,7 +16,7 @@ namespace DBContext
         [ForeignKey(nameof(PatientID))]
         public ApplicationUser Patient { get; set; }
         public string PatientID { get; set; }
-        public string Code { get; set;}
+        public string? Code { get; set;}
         [ForeignKey(nameof(LabServiceID))]
         public LabService LabService { get; set;}
         public int LabServiceID { get; set; }

@@ -237,8 +237,8 @@ namespace HrbiApp.API.Helpers
                     PatientID = model.PatientId,
                     DoctorID = model.DoctorId,
                     Status = Consts.Pending,
-                    CreateDate = DateTime.Now,
-                    VisiteDate = model.VisitDate
+                    CreateDate = DateTime.Now
+                
                 };
                 _db.DoctorBookings.Add(booking);
                 _db.SaveChanges();
@@ -268,7 +268,7 @@ namespace HrbiApp.API.Helpers
                     CreateDate = DateTime.Now,
                     PatientID = model.PatientId,
                     Status = Consts.Pending
-
+                    
                 };
                 _db.NurseBookings.Add(booking);
                 _db.SaveChanges();
@@ -289,15 +289,19 @@ namespace HrbiApp.API.Helpers
         {
             try
             {
+                var labService = _db.LabServices.FirstOrDefault(a=>a.ID == model.LabServiceId);
                 var booking = new LabServiceBooking()
                 {
                     LabServiceID = model.LabServiceId,
                     PatientID = model.PatientId,
                     Status = Consts.Pending,
                     IsFromHome = model.IsFromHome,
-                    Price = model.Price
-
+                    Price = labService.Price
+                    
                 };
+                _db.LabServiceBookings.Add(booking);
+                _db.SaveChanges();
+
                 return (true, new PlaceLabServiceBookingResponse
                 {
                     ServiceId = booking.LabServiceID,
@@ -355,11 +359,12 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public async Task<bool> AcceptBooking(int bookingId)
+        public async Task<bool> AcceptBooking(AcceptBookingModel model)
         {
             try
             {
-                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == model.BookingId);
+                booking.VisiteDate = model.VisitTime;
                 booking.Status = Consts.Accepted;
                 _db.Update(booking);
                 _db.SaveChanges();
@@ -386,11 +391,12 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public async Task<bool> DelayBooking(int bookingId)
+        public async Task<bool> DelayBooking(DelayBookingModel model)
         {
             try
             {
-                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == bookingId);
+                var booking = _db.DoctorBookings.FirstOrDefault(a => a.ID == model.BookingId);
+                booking.VisiteDate = model.VisitTime;
                 booking.Status = Consts.Delayed;
                 _db.Update(booking);
                 _db.SaveChanges();

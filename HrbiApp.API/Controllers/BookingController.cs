@@ -152,23 +152,33 @@ namespace HrbiApp.API.Controllers
 
         [HttpPut]
         [Route("AcceptBookingByDoctor")]
-        public async Task<IActionResult> AcceptBookingByDoctor(int bookingId,int doctorId)
+        public async Task<IActionResult> AcceptBookingByDoctor(AcceptBookingModel model)
         {
-            if (_validator.IsBookingRejected(bookingId))
+
+
+            if (!_validator.IsValidDoctorBooking(model.BookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidBooking
+                });
+            }
+            if (_validator.IsBookingRejected(model.BookingId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.BookingAlreadyRejected
                 });
             }
-            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId,bookingId)) {
-                return Ok(new BaseResponse()
-                {
-                    Message = Messages.NotValidDoctor
-                });
+           
+            //if (!_validator.IsValidDoctorToAcceptRejectBooking(model.DoctorId,model.BookingId)) {
+            //    return Ok(new BaseResponse()
+            //    {
+            //        Message = Messages.NotValidDoctor
+            //    });
 
-            }
-            var result = CS.AcceptBooking(bookingId);
+            //}
+            var result = CS.AcceptBooking(model);
             if(!result.Result)
             {
                 return Ok(new BaseResponse()
@@ -188,8 +198,16 @@ namespace HrbiApp.API.Controllers
 
         [HttpPut]
         [Route("RejectBookingByDoctor")]
-        public async Task<IActionResult> RejectBookingByDoctor(int bookingId, int doctorId)
+        public async Task<IActionResult> RejectBookingByDoctor(int bookingId)
         {
+            if (!_validator.IsValidDoctorBooking(bookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+
+                    Message = Messages.NotValidBooking
+                });
+            }
             if (_validator.IsBookingAccepted(bookingId))
             {
                 return Ok(new BaseResponse()
@@ -197,14 +215,14 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.BookingAlreadyAccepted
                 });
             }
-            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
-            {
-                return Ok(new BaseResponse()
-                {
-                    Message = Messages.NotValidDoctor
-                });
+            //if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
+            //{
+            //    return Ok(new BaseResponse()
+            //    {
+            //        Message = Messages.NotValidDoctor
+            //    });
 
-            }
+            //}
             var result = CS.RejectBooking(bookingId);
             if (!result.Result)
             {
@@ -225,31 +243,39 @@ namespace HrbiApp.API.Controllers
 
         [HttpPut]
         [Route("DelayBookingByDoctor")]
-        public async Task<IActionResult> DelayBookingByDoctor(int bookingId, int doctorId)
+        public async Task<IActionResult> DelayBookingByDoctor(DelayBookingModel model)
         {
-            if (_validator.IsBookingAccepted(bookingId))
+            if (!_validator.IsValidDoctorBooking(model.BookingId))
+            {
+                return Ok(new BaseResponse()
+                {
+
+                    Message = Messages.NotValidBooking
+                });
+            }
+            if (_validator.IsBookingAccepted(model.BookingId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.BookingAlreadyAccepted
                 });
             }
-            if (_validator.IsBookingRejected(bookingId))
+            if (_validator.IsBookingRejected(model.BookingId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.BookingAlreadyRejected
                 });
             }
-            if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
-            {
-                return Ok(new BaseResponse()
-                {
-                    Message = Messages.NotValidDoctor
-                });
+            //if (!_validator.IsValidDoctorToAcceptRejectBooking(doctorId, bookingId))
+            //{
+            //    return Ok(new BaseResponse()
+            //    {
+            //        Message = Messages.NotValidDoctor
+            //    });
 
-            }
-            var result = CS.DelayBooking(bookingId);
+            //}
+            var result = CS.DelayBooking(model);
             if (!result.Result)
             {
                 return Ok(new BaseResponse()
@@ -383,12 +409,12 @@ namespace HrbiApp.API.Controllers
         public async Task<IActionResult> GetDoctorsBookingPayment(int bookingId)
         {
 
-            if (!_validator.IsValidBooking(bookingId))
+            if (!_validator.IsValidDoctorBooking(bookingId))
             {
                 return Ok(new BaseResponse()
                 {
 
-                    Message = Messages.NotValidSpecialization
+                    Message = Messages.NotValidBooking
                 });
             }
             var result =await CS.GetDoctorBookingPayment(bookingId);

@@ -277,40 +277,7 @@ namespace HrbiApp.API.Controllers
         }
 
 
-        [Authorize]
-        [HttpGet("SaveInstanceID")]
-        public async Task<IActionResult> SaveInstanceID(string instanceID)
-        {
-            var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase));
-            var result = CS.SaveInstanceID(instanceID, userID.Value);
-            if (!result)
-            {
-                return Ok(new BaseResponse()
-                {
-                    Message = Messages.ExceptionOccured
-                });
-            }
-            return Ok(new BaseResponse()
-            {
-                Status = true
-            });
-        }
-        [Authorize]
-        [HttpGet("GetNotifications")]
-        public IActionResult GetNotifications()
-        {
-            var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase));
 
-            var getNotifications = CS.GetUserNotifications(userID.Value);
-            if (!getNotifications.Result)
-            {
-                return Ok(new BaseResponse()
-                {
-                    Message = Messages.ExceptionOccured
-                });
-            }
-            return Ok(new BaseResponse() { Data = getNotifications.Notifications, Status = true });
-        }
 
     }
 }

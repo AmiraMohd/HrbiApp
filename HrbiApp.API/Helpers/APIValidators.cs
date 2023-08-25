@@ -89,7 +89,7 @@ namespace HrbiApp.API.Helpers
         {
             try
             {
-                var user = _db.Doctors. FirstOrDefault(u => u.ID == id);
+                var user = _db.Doctors.FirstOrDefault(u => u.ID == id);
                 if (user != null && user.Status == Consts.Active)
                 {
                     return true;
@@ -282,7 +282,7 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public bool IsValidBooking(int bookingId)
+        public bool IsValidDoctorBooking(int bookingId)
         {
             try
             {

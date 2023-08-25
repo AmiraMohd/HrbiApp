@@ -1,8 +1,12 @@
 using DBContext;
+using HrbiApp.API.Helpers;
+using HrbiApp.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Nancy.Json;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +20,44 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = actionContext =>
+    {
+        try
+        {
+            var db = builder.Services.BuildServiceProvider().CreateScope().ServiceProvider.GetService<ApplicationDBContext>();
+            ExceptionHandler excptionHandler = new ExceptionHandler(db);
+            var serializedErrors = new JavaScriptSerializer().Serialize(actionContext.ModelState.Values);
+            //var serializedModel= new JavaScriptSerializer().Serialize(actionContext.ActionDescriptor.);
+            excptionHandler.LogException(serializedErrors, "BadRequest", actionContext.HttpContext.Request.Path.Value);
+            //excptionHandler.LogException(serializedErrors, "BadRequest", actionContext.HttpContext.Request.Path.Value);
+        }
+        catch (Exception ex)
+        {
 
+
+        }
+
+        var values = actionContext.ModelState.Values.ToList();
+        string errorString = "";
+        var errorList = new List<string>();
+        foreach (var value in values)
+        {
+            if (value.Errors.Count > 0)
+                errorList.Add(value.Errors.First().ErrorMessage);
+        }
+        errorString += string.Join(',', errorList);
+
+        return new OkObjectResult(new BaseResponse
+        {
+            Status = false,
+            Message = errorString
+        });
+
+        //return new BadRequestObjectResult(actionContext.ModelState);
+    };
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
