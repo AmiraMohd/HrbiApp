@@ -25,6 +25,7 @@ builder.Services.AddScoped<ExcptionHandler>();
 builder.Services.AddScoped<Validators>();
 builder.Services.AddScoped<NotificationCenter>();
 builder.Services.AddScoped<CoreServices>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

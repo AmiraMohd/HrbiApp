@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
 using System.Reflection;
 using HrbiApp.Web.Models.Payments;
+using HrbiApp.Web.Models.Services;
+using HrbiApp.Web.Models.Patients;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -78,9 +80,9 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var service = _dbContext.LabServices.Find(serviceID);
+                var service = _dbContext.Services.Find(serviceID);
                 service.Status = status;
-                _dbContext.LabServices.Update(service);
+                _dbContext.Services.Update(service);
                 _dbContext.SaveChanges();
                 return true;
             }
@@ -408,9 +410,9 @@ namespace HrbiApp.Web.Areas.Common
 
                 var detailsModel = new DoctorDetailsModel()
                 {
-                    Name=user.FullName,
-                    Email=user.Email,
-                    Phone=user.PhoneNumber,
+                    Name = user.FullName,
+                    Email = user.Email,
+                    Phone = user.PhoneNumber,
                     AboutDoctor = doctor.AboutDoctor,
                     ApplicationUserID = doctor.ApplicationUserID,
                     SpecializationNameAR = specilazation.NameAR,
@@ -428,20 +430,20 @@ namespace HrbiApp.Web.Areas.Common
                     PositionNameEN = position.NameEN,
 
                 };
-                detailsModel.Payments= _dbContext.DoctorBookingPayments.Include(p => p.DoctorBooking)
-                   .Where(p=>p.DoctorBooking.DoctorID==doctorId)
+                detailsModel.Payments = _dbContext.DoctorBookingPayments.Include(p => p.DoctorBooking)
+                   .Where(p => p.DoctorBooking.DoctorID == doctorId)
                    .Select(p => new DoctorPayment()
-                    {
-                        ID = p.ID,
-                        Status = p.Status,
-                        SystemProfit = p.SystemProfit,
-                        SettledDate = p.SettledDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
-                        AcceptDate = p.AcceptDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
-                        CreateDate = p.CreateDate.ToString("dd-MM-yyyy HH:mm"),  
-                        DoctorProfit = p.DoctorProfit,
-                        ProfitPercentage = p.ProfitPercentage,
-                        TotalAmount = p.TotalAmount,
-                    }).ToList();
+                   {
+                       ID = p.ID,
+                       Status = p.Status,
+                       SystemProfit = p.SystemProfit,
+                       SettledDate = p.SettledDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                       AcceptDate = p.AcceptDate.GetValueOrDefault().ToString("dd-MM-yyyy HH:mm"),
+                       CreateDate = p.CreateDate.ToString("dd-MM-yyyy HH:mm"),
+                       DoctorProfit = p.DoctorProfit,
+                       ProfitPercentage = p.ProfitPercentage,
+                       TotalAmount = p.TotalAmount,
+                   }).ToList();
                 return (true, detailsModel);
             }
             catch (Exception ex)
@@ -898,13 +900,13 @@ namespace HrbiApp.Web.Areas.Common
                 return (false, new());
             }
         }
-        public bool AcceptDoctorBookingPayment(int paymentID,string status)
+        public bool AcceptDoctorBookingPayment(int paymentID, string status)
         {
             try
             {
                 var payment = _dbContext.DoctorBookingPayments.Find(paymentID);
-                payment.Status=status;
-                payment.AcceptDate=DateTime.Now;
+                payment.Status = status;
+                payment.AcceptDate = DateTime.Now;
                 _dbContext.DoctorBookingPayments.Update(payment);
                 _dbContext.SaveChanges();
                 return true;
@@ -933,6 +935,85 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
+        #endregion
+
+        #region Services
+        public (bool Result, List<ServicesListModel> Services) GetServices()
+        {
+            try
+            {
+                var services = _dbContext.Services.Select(s => new ServicesListModel()
+                {
+                    ID = s.ID,
+                    NameAR = s.NameAR,
+                    NameEN = s.NameEN,
+                    Status = s.Status,
+                }).ToList();
+                return (true, services);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new List<ServicesListModel>());
+            }
+        }
+
+        public bool ChangeServiceStatus(int serviceID, string status)
+        {
+            try
+            {
+                var service = _dbContext.Services.Find(serviceID);
+                service.Status = status;
+                _dbContext.Services.Update(service);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        #endregion
+        #region Patients
+        public (bool Result, List<PatientsListModel> Patients) GetPatients()
+        {
+            try
+            {
+                var users = _dbContext.Users.Where(u=>u.AccountType==Consts.PatientAccountType).Select(s => new PatientsListModel()
+                {
+                    ID = s.Id,
+                    Name = s.FullName,
+                    Email = s.Email,
+                    Phone = s.PhoneNumber,
+                    Status = s.Status,
+                }).ToList();
+                return (true, users);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new List<PatientsListModel>());
+            }
+        }
+
+        public bool ChangeUserStatus(string UserID, string status)
+        {
+            try
+            {
+                var user = _dbContext.Users.Find(UserID);
+                user.Status = status;
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         #endregion
     }
 }

@@ -11666,7 +11666,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "لا يوجد بيانات",
 	
 	
 			/**

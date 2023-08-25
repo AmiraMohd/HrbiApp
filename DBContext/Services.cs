@@ -16,5 +16,6 @@ namespace DBContext
         public string NameAR { get; set; }
         public string NameEN { get; set; }
         public string Status { get; set; }
+        public string Code { get; set; }
     }
 }

@@ -180,6 +180,9 @@
   <data name="HrbiApp" xml:space="preserve">
     <value>HrbiApp</value>
   </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+    <value>البيانات غير صحيحة</value>
+  </data>
   <data name="IsAvilableFromHome" xml:space="preserve">
     <value>هل متوفرة من المنزل؟</value>
   </data>
@@ -213,6 +216,9 @@
   <data name="Password" xml:space="preserve">
     <value>كلمة المرور</value>
   </data>
+  <data name="Patients" xml:space="preserve">
+    <value>العملاء</value>
+  </data>
   <data name="PatintName" xml:space="preserve">
     <value>اسم المريض</value>
   </data>
@@ -239,6 +245,9 @@
   </data>
   <data name="ServiceName" xml:space="preserve">
     <value>اسم الخدمة</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>خدمات التطبيق</value>
   </data>
   <data name="Setting" xml:space="preserve">
     <value>الإعدادات</value>

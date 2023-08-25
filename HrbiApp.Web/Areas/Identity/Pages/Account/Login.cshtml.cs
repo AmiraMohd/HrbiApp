@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using DBContext;
+using NuGet.Protocol.Plugins;
 
 namespace HrbiApp.Web.Areas.Identity.Pages.Account
 {
@@ -129,7 +130,7 @@ namespace HrbiApp.Web.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, HrbiApp.Web.Resource.ResourceAr.InvalidLoginAttempt);
                     return Page();
                 }
             }
