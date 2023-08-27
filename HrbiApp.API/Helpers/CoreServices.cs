@@ -715,7 +715,7 @@ namespace HrbiApp.API.Helpers
                 return (true, services);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return (false, new());

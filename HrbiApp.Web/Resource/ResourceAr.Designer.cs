@@ -638,5 +638,15 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("Patients", resourceCulture);
             }
         }
+    /// <summary>
+        ///   Looks up a localized string similar to سعر الخدمة
+        /// </summary>
+        public static string ServicePrice
+        {
+            get
+            {
+                return ResourceManager.GetString("ServicePrice", resourceCulture);
+            }
+        }
     }
 }

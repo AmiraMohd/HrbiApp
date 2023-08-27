@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Nancy.Json;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName= Microsoft.Extensions.Hosting.Environments.Development});
 ConfigurationManager configuration = builder.Configuration;
 // For Entity Framework
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -92,6 +92,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 });
+builder.WebHost.UseEnvironment("Development");
 var app = builder.Build();
 
 
