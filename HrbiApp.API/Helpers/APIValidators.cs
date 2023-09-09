@@ -18,9 +18,25 @@ namespace HrbiApp.API.Helpers
            _ex = new ExceptionHandler(db);
         }
 
-
-
         public bool IsValidPhone(string phone)
+        {
+            try
+            {
+                var user = _db.Users.FirstOrDefault(u => u.UserName == phone);
+                if (user == null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public bool IsValidPhoneToLogin(string phone)
         {
             try
             {
