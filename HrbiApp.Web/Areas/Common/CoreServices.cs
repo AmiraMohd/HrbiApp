@@ -80,9 +80,9 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var service = _dbContext.Services.Find(serviceID);
+                var service = _dbContext.LabServices.Find(serviceID);
                 service.Status = status;
-                _dbContext.Services.Update(service);
+                _dbContext.LabServices.Update(service);
                 _dbContext.SaveChanges();
                 return true;
             }

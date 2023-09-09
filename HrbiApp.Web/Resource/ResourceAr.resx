@@ -246,6 +246,9 @@
   <data name="ServiceName" xml:space="preserve">
     <value>اسم الخدمة</value>
   </data>
+  <data name="ServicePrice" xml:space="preserve">
+    <value>سعر الخدمة</value>
+  </data>
   <data name="Services" xml:space="preserve">
     <value>خدمات التطبيق</value>
   </data>
