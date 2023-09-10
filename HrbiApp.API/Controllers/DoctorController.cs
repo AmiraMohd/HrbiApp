@@ -67,7 +67,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotActiveDoctor
                 });
             }
-            if (!_validator.IsValidPhone(model.PhoneNumber))
+            if (!_validator.IsValidPhoneToLogin(model.PhoneNumber))
             {
                 return Ok(new BaseResponse()
                 {
