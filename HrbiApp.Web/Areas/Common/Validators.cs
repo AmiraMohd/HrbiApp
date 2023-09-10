@@ -21,12 +21,12 @@ namespace HrbiApp.Web.Areas.Common
         }
         #region LabServices
 
-        
+
         public bool IsValidLabService(int serviceID)
         {
             try
             {
-                var service =_dbContext.LabServices.FirstOrDefault(s=>s.ID==serviceID);
+                var service = _dbContext.LabServices.FirstOrDefault(s => s.ID == serviceID);
                 return service != null;
             }
             catch (Exception ex)
@@ -36,23 +36,23 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
-        public (bool Result,string Message)IsValidLabServiceToCreate(CreateLabServiceModel model)
+        public (bool Result, string Message) IsValidLabServiceToCreate(CreateLabServiceModel model)
         {
             try
             {
                 List<string> messages = new List<string>();
                 var sameARName = _dbContext.LabServices.FirstOrDefault(s => s.NameAR == model.ServiceNameAR);
-                if(sameARName != null) messages.Add(Messages.ThereIsServiceWithSameARName);
+                if (sameARName != null) messages.Add(Messages.ThereIsServiceWithSameARName);
 
-                var sameENName= _dbContext.LabServices.FirstOrDefault(s=>s.NameEN==model.ServiceNameEN);
+                var sameENName = _dbContext.LabServices.FirstOrDefault(s => s.NameEN == model.ServiceNameEN);
                 if (sameENName != null) messages.Add(Messages.ThereIsServiceWithSameENName);
 
-                return (messages.Count==0 , string.Join(",",messages));
+                return (messages.Count == 0, string.Join(",", messages));
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,Messages.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
 
@@ -60,8 +60,8 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                List<string> messages = new ();
-                var sameARName = _dbContext.LabServices.FirstOrDefault(s => s.NameAR == model.ServiceNameAR&&s.ID!=model.ID);
+                List<string> messages = new();
+                var sameARName = _dbContext.LabServices.FirstOrDefault(s => s.NameAR == model.ServiceNameAR && s.ID != model.ID);
                 if (sameARName != null) messages.Add(Messages.ThereIsServiceWithSameARName);
 
                 var sameENName = _dbContext.LabServices.FirstOrDefault(s => s.NameEN == model.ServiceNameEN && s.ID != model.ID);
@@ -152,6 +152,64 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
+        public (bool Result, string Message) IsValidNurseToCreate(CreateNurseModel model)
+        {
+            try
+            {
+                List<string> messages = new List<string>();
+                var sameName = _dbContext.Users.FirstOrDefault(s => s.FullName == model.Name);
+                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+
+                var sameEmail = _dbContext.Users.FirstOrDefault(s => s.Email == model.Email);
+                if (sameEmail != null) messages.Add(Messages.ThereIsUserWithSameEmail);
+
+                var samePhone = _dbContext.Users.FirstOrDefault(s => s.PhoneNumber == model.Phone);
+                if (samePhone != null) messages.Add(Messages.ThereIsUserWithSamePhone);
+
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, Messages.ExceptionOccured);
+            }
+        }
+        public (bool Result, string Message) IsValidNurseToUpdate(UpdateNurseModel model)
+        {
+            try
+            {
+                List<string> messages = new List<string>();
+                var user = _dbContext.Users.Find(_dbContext.Nurses.Find(model.ID).ApplicationUserID);
+                var sameName = _dbContext.Users.FirstOrDefault(s => s.FullName == model.Name && s.Id != user.Id);
+                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+
+                var sameEmail = _dbContext.Users.FirstOrDefault(s => s.Email == model.Email && s.Id != user.Id);
+                if (sameEmail != null) messages.Add(Messages.ThereIsUserWithSameEmail);
+
+                var samePhone = _dbContext.Users.FirstOrDefault(s => s.PhoneNumber == model.Phone && s.Id != user.Id);
+                if (samePhone != null) messages.Add(Messages.ThereIsUserWithSamePhone);
+
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, Messages.ExceptionOccured);
+            }
+        }
+        public bool IsValidNurse(int nurseID)
+        {
+            try
+            {
+                return _dbContext.Nurses.Find(nurseID) is not null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
         #endregion
 
         #region NurseServiceBookings
@@ -172,7 +230,7 @@ namespace HrbiApp.Web.Areas.Common
         #endregion
 
         #region Doctors
-        public (bool Result,string Message) IsValidDoctorToCreate(CreateDoctorModel model)
+        public (bool Result, string Message) IsValidDoctorToCreate(CreateDoctorModel model)
         {
             try
             {
@@ -191,18 +249,18 @@ namespace HrbiApp.Web.Areas.Common
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,Messages.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
         public (bool Result, string Message) IsValidDoctorToUpdate(UpdateDoctorModel model)
         {
             try
             {
-                var doctor=_dbContext.Doctors.Find(model.ID);
-                var user=_dbContext.Users.Find(doctor.ApplicationUserID);
+                var doctor = _dbContext.Doctors.Find(model.ID);
+                var user = _dbContext.Users.Find(doctor.ApplicationUserID);
 
                 List<string> messages = new List<string>();
-                var sameName = _dbContext.Users.FirstOrDefault(s => s.FullName == model.FullName&&s.Id!=user.Id);
+                var sameName = _dbContext.Users.FirstOrDefault(s => s.FullName == model.FullName && s.Id != user.Id);
                 if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
 
                 var sameEmail = _dbContext.Users.FirstOrDefault(s => s.Email == model.Email && s.Id != user.Id);
@@ -307,20 +365,20 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
-        public (bool Result,string Message) IaValidAmbulanceToCreate(CreateAmbulanceModel model)
+        public (bool Result, string Message) IaValidAmbulanceToCreate(CreateAmbulanceModel model)
         {
             try
             {
                 List<string> messages = new List<string>();
 
                 var samePhone = _dbContext.Ambulances.FirstOrDefault(a => a.Phone == model.Phone);
-                if(samePhone!=null)messages.Add(Messages.ThereIsAnAmbulanceWithSamePhone);
+                if (samePhone != null) messages.Add(Messages.ThereIsAnAmbulanceWithSamePhone);
                 return (messages.Count == 0, string.Join(",", messages));
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,Messages.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
         public (bool Result, string Message) IaValidAmbulanceToUpdate(UpdateAmbulanceModel model)
@@ -329,14 +387,14 @@ namespace HrbiApp.Web.Areas.Common
             {
                 List<string> messages = new List<string>();
 
-                var samePhone = _dbContext.Ambulances.FirstOrDefault(a => a.Phone == model.Phone&&a.ID!=model.ID);
+                var samePhone = _dbContext.Ambulances.FirstOrDefault(a => a.Phone == model.Phone && a.ID != model.ID);
                 if (samePhone != null) messages.Add(Messages.ThereIsAnAmbulanceWithSamePhone);
                 return (messages.Count == 0, string.Join(",", messages));
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,Messages.ExceptionOccured);
+                return (false, Messages.ExceptionOccured);
             }
         }
         #endregion

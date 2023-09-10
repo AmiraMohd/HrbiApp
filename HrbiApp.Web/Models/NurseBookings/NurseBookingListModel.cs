@@ -10,9 +10,11 @@ namespace HrbiApp.Web.Models.NurseBookings
         [Display(ResourceType = typeof(Resource.ResourceAr), Name = "VisitTime")]
         public DateTime VisitTime { get; set; }
         public int ServiceID { get; set; }
-        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "ServiceName")]
+        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "ServiceNameAR")]
         public string ServiceNameAR { get; set; }
-        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "ServiceName")]
+        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "NurseName")]
+        public string NurseName { get; set; }
+        [Display(ResourceType = typeof(Resource.ResourceAr), Name = "ServiceNameEN")]
         public string ServiceNameEN { get; set; }
         [Display(ResourceType = typeof(Resource.ResourceAr), Name = "Status")]
         public string Status { get; set; }

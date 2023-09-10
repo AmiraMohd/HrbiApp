@@ -648,5 +648,56 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("ServicePrice", resourceCulture);
             }
         }
+    /// <summary>
+        ///   Looks up a localized string similar to اسم الممرض
+        /// </summary>
+        public static string NurseName
+        {
+            get
+            {
+                return ResourceManager.GetString("NurseName", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to قائمة التمريض
+        /// </summary>
+        public static string Nurses
+        {
+            get
+            {
+                return ResourceManager.GetString("Nurses", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to سنوات الخبرة
+        /// </summary>
+        public static string Experience
+        {
+            get
+            {
+                return ResourceManager.GetString("Experience", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to اسم الخدمة بالعربي
+        /// </summary>
+        public static string ServiceNameAR
+        {
+            get
+            {
+                return ResourceManager.GetString("ServiceNameAR", resourceCulture);
+            }
+        }
+    /// <summary>
+        ///   Looks up a localized string similar to اسم الخدمة بالانجليزي
+        /// </summary>
+        public static string ServiceNameEN
+        {
+            get
+            {
+                return ResourceManager.GetString("ServiceNameEN", resourceCulture);
+            }
+        }
+    
     }
 }

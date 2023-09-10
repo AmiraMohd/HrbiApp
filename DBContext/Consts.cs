@@ -48,6 +48,7 @@ namespace DBContext
         public const string LabAdminAccountType = "LabAdmin";
         public const string AdminAccountType = "Admin";
         public const string NourseAdminAccountType = "NourseAdmin";
+        public const string NurseAccountType = "Nurse";
 
         #endregion
 

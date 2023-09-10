@@ -171,6 +171,9 @@
   <data name="Email" xml:space="preserve">
     <value>البريد الالكتروني</value>
   </data>
+  <data name="Experience" xml:space="preserve">
+    <value>سنوات الخبرة</value>
+  </data>
   <data name="FullName" xml:space="preserve">
     <value>الاسم الكامل</value>
   </data>
@@ -206,6 +209,12 @@
   </data>
   <data name="NurseBookings" xml:space="preserve">
     <value>حجوزات التمريض</value>
+  </data>
+  <data name="NurseName" xml:space="preserve">
+    <value>اسم الممرض</value>
+  </data>
+  <data name="Nurses" xml:space="preserve">
+    <value>قائمة التمريض</value>
   </data>
   <data name="NurseServices" xml:space="preserve">
     <value>خدمات التمريض</value>
@@ -245,6 +254,12 @@
   </data>
   <data name="ServiceName" xml:space="preserve">
     <value>اسم الخدمة</value>
+  </data>
+  <data name="ServiceNameAR" xml:space="preserve">
+    <value>اسم الخدمة بالعربي</value>
+  </data>
+  <data name="ServiceNameEN" xml:space="preserve">
+    <value>اسم الخدمة بالانجليزي</value>
   </data>
   <data name="ServicePrice" xml:space="preserve">
     <value>سعر الخدمة</value>

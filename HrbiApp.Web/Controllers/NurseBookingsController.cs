@@ -20,16 +20,22 @@ namespace HrbiApp.Web.Controllers
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
             }
+            var getNurses = CS.GetNursesToSelect();
+            if (!getNurses.Result)
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+            }
+            ViewData["Nurses"] = getNurses.Nurses;
             return View(getBooking.Bookings);
         }
-        public IActionResult Accept(int bookingID, DateTime visitTime)
+        public IActionResult Accept(int bookingID, DateTime visitTime,int nurseID)
         {
             if (!Validators.IsValidNurseServiceBooking(bookingID))
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
                 return RedirectToAction(nameof(Index));
             }
-            var accept = CS.AcceptNurseServiceBooking(bookingID, visitTime);
+            var accept = CS.AcceptNurseServiceBooking(bookingID, visitTime,nurseID);
             if (!accept.Result)
             {
                 Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
