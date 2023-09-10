@@ -35,6 +35,7 @@ namespace DBContext
         public DbSet<Services> Services { get; set; }
         public DbSet<Ambulance> Ambulances { get; set; }
         public DbSet<DoctorBookingPayment> DoctorBookingPayments { get; set; }
+        public DbSet<Nurse> Nurses { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

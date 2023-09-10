@@ -313,6 +313,127 @@ namespace HrbiApp.Web.Areas.Common
                 return false;
             }
         }
+
+        public (bool Result, List<NurseListModel> Nurses) GetNurses()
+        {
+            try
+            {
+                var nurses = _dbContext.Nurses.Include(n => n.User)
+                    .Select(n => new NurseListModel()
+                    {
+                        Address = n.Address,
+                        Status = n.Status,
+                        Email = n.User.Email,
+                        Experiance = n.Experiance,
+                        ID = n.ID,
+                        Name = n.User.FullName,
+                        Phone = n.User.PhoneNumber
+                    }).ToList();
+                return (true, nurses);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,new());
+            }
+        }
+        public async Task<bool> CreateNurse(CreateNurseModel model)
+        {
+            try
+            {
+                var user = new ApplicationUser()
+                {
+                    Email = model.Email,
+                    PhoneNumber = model.Phone,
+                    FullName = model.Name,
+                    UserName = model.Phone,
+                    AccountType = Consts.NurseAccountType,
+                    Status=Consts.NotActive
+                };
+                var reuslt = await _userManager.CreateAsync(user, "123456");
+                if (reuslt.Succeeded)
+                {
+                    Nurse nurse = new Nurse()
+                    {
+                        Status = Consts.NotActive,
+                        Address = model.Address,
+                        ApplicationUserID = user.Id,
+                        Experiance = model.Experience,
+                    };
+                    _dbContext.Nurses.Add(nurse);
+                    _dbContext.SaveChanges();
+                    return true;
+                };
+                return false;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public bool UpdateNurse(UpdateNurseModel model)
+        {
+            try
+            {
+                var nurse = _dbContext.Nurses.Find(model.ID);
+                var user = _dbContext.Users.Find(nurse.ApplicationUserID);
+                user.PhoneNumber = model.Phone;
+                user.Email = model.Email;
+                user.FullName = model.Name;
+                nurse.Experiance=model.Experience;
+                nurse.Address = model.Address;
+                _dbContext.Users.Update(user);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public (bool Result,UpdateNurseModel Nurse)GetNurseToUpdate(int nurseID)
+        {
+            try
+            {
+                var nurse = _dbContext.Nurses.Find(nurseID);
+                var user = _dbContext.Users.Find(nurse.ApplicationUserID);
+                var updateModel = new UpdateNurseModel()
+                {
+                    ID = nurseID,
+                    Email = user.Email,
+                    Status = nurse.Status,
+                    Name = user.FullName,
+                    Phone = user.PhoneNumber,
+                    Experience=nurse.Experiance,
+                    Address=nurse.Address,
+                };
+                return (true, updateModel);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new UpdateNurseModel() { ID = nurseID });
+            }
+        }
+        public bool ChangeStatus(int nurseID,string status)
+        {
+            try
+            {
+                var nurse = _dbContext.Nurses.Find(nurseID);
+                nurse.Status = status;
+                _dbContext.Nurses.Update(nurse);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         #endregion
 
         #region Nurse Bookings
@@ -323,6 +444,7 @@ namespace HrbiApp.Web.Areas.Common
                 var bookings = _dbContext.NurseBookings.Where(b => b.Status != Consts.Deleted)
                     .Include(b => b.NurseService)
                     .Include(b => b.Patient)
+                    .Include(b=>b.Nurse).ThenInclude(n=>n.User)
                     .Select(b => new NurseBookingListModel()
                     {
                         Status = b.Status,
@@ -333,6 +455,7 @@ namespace HrbiApp.Web.Areas.Common
                         PatintName = b.Patient.FullName,
                         Price = b.Price,
                         VisitTime = b.VisitTime,
+                        NurseName=b.Nurse==null?"":b.Nurse.User.FullName
                     }
                 ).ToList();
                 return (true, bookings);
@@ -343,14 +466,31 @@ namespace HrbiApp.Web.Areas.Common
                 return (false, new());
             }
         }
-
-        public async Task<bool> AcceptNurseServiceBooking(int bookingID, DateTime vistTime)
+        public (bool Result, List<SelectListItem> Nurses) GetNursesToSelect()
+        {
+            try
+            {
+                var nurses=_dbContext.Nurses.Where(n=>n.Status==Consts.Active).Include(n=>n.User).Select(n=>new SelectListItem()
+                {
+                    Text=n.User.FullName,
+                    Value=n.ID+"",
+                }).ToList();
+                return (true, nurses);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,new());
+            }
+        }
+        public async Task<bool> AcceptNurseServiceBooking(int bookingID, DateTime vistTime,int nurseID)
         {
             try
             {
                 var booking = _dbContext.NurseBookings.Find(bookingID);
                 booking.Status = Consts.Accepted;
                 booking.VisitTime = vistTime;
+                booking.NurseID = nurseID;
                 _dbContext.NurseBookings.Update(booking);
                 _dbContext.SaveChanges();
                 await NC.NotifyPatientWithAcceptedNurseBooking(bookingID);

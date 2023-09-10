@@ -23,5 +23,8 @@ namespace DBContext
         public DateTime CreateDate { get; set; }
         public DateTime VisitTime { get; set; }
         public string Status { get; set; }
+        [ForeignKey(nameof(NurseID))]
+        public Nurse? Nurse { get; set; }
+        public int? NurseID { get; set; }
     }
 }

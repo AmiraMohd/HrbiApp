@@ -117,5 +117,85 @@ namespace HrbiApp.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult NurseIndex()
+        {
+            var getNurses = CS.GetNurses();
+            if (!getNurses.Result)
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+            }
+            return View(getNurses.Nurses);
+        }
+        public IActionResult CreateNurse()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateNurse(CreateNurseModel model)
+        {
+            var isValid = Validators.IsValidNurseToCreate(model);
+            if (!isValid.Result)
+            {
+                foreach (var error in isValid.Message.Split(","))
+                    ModelState.AddModelError(Messages.BusinessError, error);
+                return View(model);
+            }
+            var result = await CS.CreateNurse(model);
+            if (!result)
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+                return View(model);
+            }
+            Alert(Messages.Done,Consts.AdminNotificationType.success);
+            return RedirectToAction(nameof(NurseIndex));
+        }
+        public IActionResult UpdateNurse(int nurseID)
+        {
+            var getNurse = CS.GetNurseToUpdate(nurseID);
+            if (!getNurse.Result)
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+            }
+            return View(getNurse.Nurse);
+        }
+        [HttpPost]
+        public IActionResult UpdateNurse(UpdateNurseModel model)
+        {
+            var isValid=Validators.IsValidNurseToUpdate(model);
+            if (!isValid.Result)
+            {
+                ModelState.AddModelError(Messages.BusinessError, isValid.Message);
+                return View(model);
+            }
+            var result=CS.UpdateNurse(model);
+            if (!result)
+            {
+                Alert(Messages.ExceptionOccured,Consts.AdminNotificationType.error);
+                return View(model);
+            }
+            Alert(Messages.Done,Consts.AdminNotificationType.success);
+            return RedirectToAction(nameof(NurseIndex));
+        }
+        public IActionResult Activate(int nurseID)
+        {
+            if (!Validators.IsValidNurse(nurseID))
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+            var result = CS.ChangeStatus(nurseID, Consts.Active);
+            return RedirectToAction(nameof(NurseIndex));
+        }
+        public IActionResult DeActivate(int nurseID)
+        {
+            if (!Validators.IsValidNurse(nurseID))
+            {
+                Alert(Messages.ExceptionOccured, Consts.AdminNotificationType.error);
+                return RedirectToAction(nameof(Index));
+            }
+            var result = CS.ChangeStatus(nurseID, Consts.NotActive);
+            return RedirectToAction(nameof(NurseIndex));
+        }
+
     }
 }
