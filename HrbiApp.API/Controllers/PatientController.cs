@@ -33,7 +33,7 @@ namespace HrbiApp.API.Controllers
         {
             try
             {
-                if (_validator.IsValidPhone(model.PhoneNumber))
+                if (!_validator.IsValidPhone(model.PhoneNumber))
                 {
                     return Ok(new BaseResponse
                     {
@@ -66,7 +66,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotActiveAccount
                 });
             }
-            if (!_validator.IsValidPhone(model.PhoneNumber))
+            if (!_validator.IsValidPhoneToLogin(model.PhoneNumber))
             {
                 return Ok(new BaseResponse()
                 {

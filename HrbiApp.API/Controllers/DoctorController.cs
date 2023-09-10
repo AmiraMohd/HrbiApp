@@ -34,7 +34,7 @@ namespace HrbiApp.API.Controllers
         {
             try
             {
-                if (_validator.IsValidPhone(model.PhoneNumber))
+                if (!_validator.IsValidPhone(model.PhoneNumber))
                 {
                     return Ok(new BaseResponse
                     {
@@ -74,6 +74,13 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPhone
                 });
             }
+            if (!_validator.IsConfirmedPhone(model.PhoneNumber))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.PhoneNotConfirmed
+                });
+            }
             var login = await CS.DoctorLogin(model);
             if (!login.Result)
             {
@@ -88,6 +95,26 @@ namespace HrbiApp.API.Controllers
                 Data = login.Response
 
             });
+        }
+
+        [HttpPost]
+        [Route("CheckOTP")]
+        public async Task<IActionResult> CheckOTP([FromBody] OTPConfirmationModel model)
+        {
+            if (!_validator.IsValidPhoneToLogin(model.PhoneNumber))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidPhone
+                });
+            }
+            var result = await CS.CheckRegisterationOtp(model);
+
+            return Ok(new BaseResponse()
+            {
+                Status = result
+            });
+
         }
 
         [HttpGet("ForgetPassword")]

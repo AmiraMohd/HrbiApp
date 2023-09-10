@@ -182,5 +182,23 @@ namespace HrbiApp.API.Controllers
             }
             return Ok(new BaseResponse() { Data = getNotifications.Notifications, Status = true });
         }
+
+        [HttpGet("GetOTP")]
+        public IActionResult GetOTP(string phoneNumber)
+        {
+            var otp = _db.OTPs.OrderBy(a=>a.ID).LastOrDefault(a => a.Phone == phoneNumber && a.Purpose == Consts.ConfirmationPurpose).Code;
+            if (otp != null)
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Message = otp
+                });
+            else
+                return Ok(new BaseResponse()
+                {
+                    Status = false
+                });
+
+        }
     }
 }

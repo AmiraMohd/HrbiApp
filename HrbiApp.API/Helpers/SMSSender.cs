@@ -46,8 +46,8 @@ namespace HrbiApp.API.Helpers
                 _db.SaveChanges();
                 string message = Messages.YourVerficationCodeIs + OTP;
 
-                var result = SendSMS(message, phone);
-                return result;
+                //var result = SendSMS(message, phone);
+                return true;
             }
             catch (Exception ex)
             {

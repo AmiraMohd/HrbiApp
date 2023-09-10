@@ -47,7 +47,9 @@ namespace DBContext
         public const string NotValidOTP = "NotValidOTP";
         public const string PhoneAlreadyExist = "AlreadyExist";
         public const string UserNotExist = "UserNotExist";
-        public const string YourVerficationCodeIs = "Your Tazweed code : ";
+        public const string PhoneNotConfirmed = "PhoneNotConfirmed";
+        public const string WrongeUserNameOrPassword = "WrongeUserNameOrPassword";
+        public const string YourVerficationCodeIs = "Your HrbiApp code : ";
         public const string YourResetPasswordCodeIs = "رمز إعادة تعيين كلمة المرور هو : ";
         public const string NotValidDoctor = "NotValidDoctor";
         public const string NotValidPatient = "NotValidPatient";

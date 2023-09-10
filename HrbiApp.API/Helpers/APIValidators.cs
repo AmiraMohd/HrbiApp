@@ -53,6 +53,24 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+
+        public bool IsConfirmedPhone(string phone)
+        {
+            try
+            {
+                var user = _db.Users.FirstOrDefault(u => u.UserName == phone && u.PhoneNumberConfirmed);
+                if (user == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         public bool IsValidPhoneAndOTP(string phone, string OTP, string purpose)
         {
             try
