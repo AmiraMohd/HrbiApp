@@ -1,0 +1,95 @@
+﻿@model HrbiApp.Web.Models.Reports.DoctorBookingReport
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> @HrbiApp.Web.Resource.ResourceAr.DoctorReport</h1>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+
+                
+                    <div class="col-md-12">
+                        <form asp-action="DoctorReport">
+                            <div class="form-group">
+                                <div class="row">
+                                <label class="col-6 control-label">@HrbiApp.Web.Resource.ResourceAr.DoctorName</label>
+                                    <select class="col-6 form-control" name="DoctorID" asp-items="@ViewData["Doctors"] as IEnumerable<SelectListItem>">
+                                    </select>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group text-center">
+                                <input type="submit" value="@HrbiApp.Web.Resource.ResourceAr.Generate" class="btn btn-primary" />
+                            </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn">
+
+                    <h3 class="title"> <p>@Model.DoctorName</p></h3>
+                </div>
+                <div class="tile-body">
+                    <table class="table dataTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @HrbiApp.Web.Resource.ResourceAr.VisitTime
+                                </th>
+                                <th>
+                                    @HrbiApp.Web.Resource.ResourceAr.PatintName
+                                </th>
+                                <th>
+                                    @HrbiApp.Web.Resource.ResourceAr.PatintPhone
+                                </th>
+                                <th>
+                                    @HrbiApp.Web.Resource.ResourceAr.Status
+                                </th>
+                                <th>
+                                    @HrbiApp.Web.Resource.ResourceAr.PaymentStatus
+                                    <th>
+                                        @HrbiApp.Web.Resource.ResourceAr.Price
+                                        <th>
+                                            @HrbiApp.Web.Resource.ResourceAr.SystemProfit
+                                            <th>
+                                                @HrbiApp.Web.Resource.ResourceAr.DoctorProfit
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Bookings)
+                            {
+                                <tr>
+                                    <td>@item.VisitTime</td>
+                                    <td>@item.PatientName</td>
+                                    <td>@item.PatientPhone</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.PaymentStatus</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.SystemProfit</td>
+                                    <td>@item.DoctorProfit</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

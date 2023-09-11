@@ -165,6 +165,9 @@
   <data name="DoctorProfit" xml:space="preserve">
     <value>ربح الطبيب</value>
   </data>
+  <data name="DoctorReport" xml:space="preserve">
+    <value>تقرير الطبيب</value>
+  </data>
   <data name="Doctors" xml:space="preserve">
     <value>الأطباء</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="FullName" xml:space="preserve">
     <value>الاسم الكامل</value>
+  </data>
+  <data name="Generate" xml:space="preserve">
+    <value>اعداد</value>
   </data>
   <data name="Hospital" xml:space="preserve">
     <value>المستشفى</value>
@@ -231,8 +237,14 @@
   <data name="PatintName" xml:space="preserve">
     <value>اسم المريض</value>
   </data>
+  <data name="PatintPhone" xml:space="preserve">
+    <value>رقم المريض</value>
+  </data>
   <data name="Payments" xml:space="preserve">
     <value>الدفوعات</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>حالة الدفعية</value>
   </data>
   <data name="Phone" xml:space="preserve">
     <value>الهاتف</value>
@@ -248,6 +260,9 @@
   </data>
   <data name="RememberMe" xml:space="preserve">
     <value>تذكرني</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>التقارير</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>حفظ</value>

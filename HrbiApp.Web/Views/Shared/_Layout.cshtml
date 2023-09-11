@@ -97,6 +97,13 @@
             <li><a asp-controller="Patients" asp-action="Index" class="app-menu__item"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Patients</span></a></li>
             <li><a asp-controller="Payments" asp-action="AllDoctorPayments" class="app-menu__item"><i class="app-menu__icon fa fa-envelope-open "></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Payments</span></a></li>
             <li class="treeview">
+                <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Reports</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+                <ul class="treeview-menu">
+                    <li><a class="treeview-item" asp-controller="Reports" asp-action="DoctorReport"><i class="icon fa fa-circle-o"></i> @HrbiApp.Web.Resource.ResourceAr.DoctorReport</a></li>
+                    
+                </ul>
+            </li>
+             <li class="treeview">
                 <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-cogs"></i><span class="app-menu__label">@HrbiApp.Web.Resource.ResourceAr.Setting</span><i class="treeview-indicator fa fa-angle-right"></i></a>
                 <ul class="treeview-menu">
                     <li><a class="treeview-item" asp-controller="DoctorPositions" asp-action="Index"><i class="icon fa fa-circle-o"></i> @HrbiApp.Web.Resource.ResourceAr.DoctorPositions</a></li>
