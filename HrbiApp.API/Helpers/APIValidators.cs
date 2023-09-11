@@ -2,6 +2,7 @@
 using DBContext.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace HrbiApp.API.Helpers
 {
@@ -28,6 +29,36 @@ namespace HrbiApp.API.Helpers
                     return true;
                 }
                 return false;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+
+        public bool IsValidPhoneNumber(string phone)
+        {
+            try
+            {
+                return Regex.IsMatch(phone, @"(^[2][4][9])(^[0][1]\d{8}$)|(^[0][9]\d{8}$)");
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public bool IsUserExists(string phone)
+        {
+            try
+            {
+                var user = _db.Users.FirstOrDefault(u => u.UserName == phone);
+                if (user == null)
+                {
+                    return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
@@ -77,10 +108,6 @@ namespace HrbiApp.API.Helpers
             {
                 var user = _db.Users.FirstOrDefault(u => u.UserName == phone);
                 var otp = _db.OTPs.FirstOrDefault(otp => otp.UserID == user.Id && otp.Purpose == purpose);
-                if(phone == "0905589024" && OTP == "000000")
-                {
-                    return true;
-                }
                 if (otp == null)
                 {
                     return false;

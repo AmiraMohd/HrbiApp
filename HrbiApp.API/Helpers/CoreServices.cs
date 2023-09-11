@@ -244,13 +244,13 @@ namespace HrbiApp.API.Helpers
         #endregion
 
         #region Booking Services
-        public async Task<(bool Result,PlaceDoctorBookingResponse Response)> PlaceDoctorBooking(PlaceDoctorBookigRequest model)
+        public async Task<(bool Result,PlaceDoctorBookingResponse Response)> PlaceDoctorBooking(PlaceDoctorBookigRequest model, string userId)
         {
             try
             {
                 var booking = new DoctorBooking()
                 {
-                    PatientID = model.PatientId,
+                    PatientID = userId,
                     DoctorID = model.DoctorId,
                     Status = Consts.Pending,
                     CreateDate = DateTime.Now
@@ -274,7 +274,7 @@ namespace HrbiApp.API.Helpers
 
         }
 
-        public async Task<(bool Result, PlaceNurseBookingResponse Response)> PlaceNurseServiceBooking(PlaceNurseBookingRequest model)
+        public async Task<(bool Result, PlaceNurseBookingResponse Response)> PlaceNurseServiceBooking(PlaceNurseBookingRequest model, string userId)
         {
             try
             {
@@ -282,7 +282,7 @@ namespace HrbiApp.API.Helpers
                 {
                     ServiceID = model.NurseServiceId,
                     CreateDate = DateTime.Now,
-                    PatientID = model.PatientId,
+                    PatientID = userId,
                     Status = Consts.Pending
                     
                 };
@@ -301,7 +301,7 @@ namespace HrbiApp.API.Helpers
 
         }
 
-        public async Task<(bool Result, PlaceLabServiceBookingResponse Response)> PlaceLabServiceBooking(PlaceLabServiceBookingRequest model)
+        public async Task<(bool Result, PlaceLabServiceBookingResponse Response)> PlaceLabServiceBooking(PlaceLabServiceBookingRequest model,string userId)
         {
             try
             {
@@ -309,7 +309,7 @@ namespace HrbiApp.API.Helpers
                 var booking = new LabServiceBooking()
                 {
                     LabServiceID = model.LabServiceId,
-                    PatientID = model.PatientId,
+                    PatientID = userId,
                     Status = Consts.Pending,
                     IsFromHome = model.IsFromHome,
                     Price = labService.Price

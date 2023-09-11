@@ -34,11 +34,18 @@ namespace HrbiApp.API.Controllers
         {
             try
             {
-                if (!_validator.IsValidPhone(model.PhoneNumber))
+                if (!_validator.IsValidPhoneNumber(model.PhoneNumber))
                 {
                     return Ok(new BaseResponse
                     {
                         Message = Messages.NotValidPhone
+                    });
+                }
+                if (_validator.IsUserExists(model.PhoneNumber))
+                {
+                    return Ok(new BaseResponse
+                    {
+                        Message = Messages.PhoneAlreadyExist
                     }) ;
                 }
                 var register = await CS.DoctorRegister(model);
