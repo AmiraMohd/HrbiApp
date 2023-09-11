@@ -5,9 +5,11 @@ using DBContext;
 using Microsoft.AspNetCore.Identity;
 
 using HrbiApp.API.Models.Booking;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HrbiApp.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookingController : APIController
@@ -15,7 +17,6 @@ namespace HrbiApp.API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
-
         public BookingController(
             IConfiguration configuration, ApplicationDBContext db,
             UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager,
@@ -24,13 +25,14 @@ namespace HrbiApp.API.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+      
         }
 
         [HttpPost]
         [Route("PlaceDoctorBooking")]
         public async Task<IActionResult> PlaceDoctorBooking([FromBody] PlaceDoctorBookigRequest model)
         {
-
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
             if (!_validator.IsValidDoctor(model.DoctorId))
             {
                 return Ok(new BaseResponse()
@@ -39,7 +41,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidDoctor
                 });
             }
-            if (!_validator.IsValidPatient(model.PatientId))
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
@@ -47,7 +49,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = await CS.PlaceDoctorBooking(model);
+            var result = await CS.PlaceDoctorBooking(model,userId);
 
             if (result.Result == true)
             {
@@ -71,7 +73,7 @@ namespace HrbiApp.API.Controllers
         [Route("PlaceNurseBooking")]
         public async Task<IActionResult> PlaceNurseBooking([FromBody] PlaceNurseBookingRequest model)
         {
-
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
             if (!_validator.IsValidNurseService(model.NurseServiceId))
             {
                 return Ok(new BaseResponse()
@@ -80,7 +82,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidNurseService
                 });
             }
-            if (!_validator.IsValidPatient(model.PatientId))
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
@@ -88,7 +90,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = await CS.PlaceNurseServiceBooking(model);
+            var result = await CS.PlaceNurseServiceBooking(model,userId);
 
             if (result.Result == true)
             {
@@ -112,7 +114,7 @@ namespace HrbiApp.API.Controllers
         [Route("PlaceLabServiceBooking")]
         public async Task<IActionResult> PlaceLabServiceBooking([FromBody] PlaceLabServiceBookingRequest model)
         {
-
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
             if (!_validator.IsValidLabService(model.LabServiceId))
             {
                 return Ok(new BaseResponse()
@@ -121,7 +123,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidLabService
                 });
             }
-            if (!_validator.IsValidPatient(model.PatientId))
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
@@ -129,7 +131,7 @@ namespace HrbiApp.API.Controllers
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = await CS.PlaceLabServiceBooking(model);
+            var result = await CS.PlaceLabServiceBooking(model,userId);
 
             if (result.Result == true)
             {
@@ -294,9 +296,13 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetDoctorBookingsByDoctorId")]
-        public async Task<IActionResult> GetDoctorBookingsByDoctorId(int doctorId)
+        [Route("GetDoctorBookingsByDoctor")]
+        public async Task<IActionResult> GetDoctorBookingsByDoctor()
         {
+            
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+            var doctorId = _db.Doctors.FirstOrDefault(a => a.ApplicationUserID == userId).ID;
+          
             if (!_validator.IsValidDoctor(doctorId)) 
             {
                 return Ok(new BaseResponse() {
@@ -321,17 +327,19 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetDoctorBookingsByPatientId")]
-        public async Task<IActionResult> GetDoctorBookingsByPatientId(string patientId)
+        [Route("GetDoctorBookingsByPatient")]
+        public async Task<IActionResult> GetDoctorBookingsByPatient()
         {
-            if (!_validator.IsValidPatient(patientId))
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.GetDoctorBookingsByPatientId(patientId);
+            var result = CS.GetDoctorBookingsByPatientId(userId);
             if (!result.Result)
             {
                 return Ok(new BaseResponse()
@@ -349,17 +357,19 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetLabServiceBookingsByPatientId")]
-        public async Task<IActionResult> GetLabServiceBookingsByPatientId(string patientId)
+        [Route("GetLabServiceBookingsByPatient")]
+        public async Task<IActionResult> GetLabServiceBookingsByPatient()
         {
-            if (!_validator.IsValidPatient(patientId))
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.GetLabServiceBookingsByPatientId(patientId);
+            var result = CS.GetLabServiceBookingsByPatientId(userId);
             if (!result.Result)
             {
                 return Ok(new BaseResponse()
@@ -377,17 +387,18 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetNurseBookingsByPatientId")]
-        public async Task<IActionResult> GetNurseBookingsByPatientId(string patientId)
+        [Route("GetNurseBookingsByPatient")]
+        public async Task<IActionResult> GetNurseBookingsByPatient()
         {
-            if (!_validator.IsValidPatient(patientId))
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+            if (!_validator.IsValidPatient(userId))
             {
                 return Ok(new BaseResponse()
                 {
                     Message = Messages.NotValidPatient
                 });
             }
-            var result = CS.GetNurseBookingsByPatientId(patientId);
+            var result = CS.GetNurseBookingsByPatientId(userId);
             if (!result.Result)
             {
                 return Ok(new BaseResponse()
@@ -406,7 +417,7 @@ namespace HrbiApp.API.Controllers
 
         [HttpGet]
         [Route("GetDoctorBookingPayment/{bookingId}")]
-        public async Task<IActionResult> GetDoctorsBookingPayment(int bookingId)
+        public async Task<IActionResult> GetDoctorBookingPayment(int bookingId)
         {
 
             if (!_validator.IsValidDoctorBooking(bookingId))

@@ -95,7 +95,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.WebHost.UseEnvironment("Development");
 var app = builder.Build();
 
-
+builder.Services.AddHttpContextAccessor();
 
 
 // Configure the HTTP request pipeline.
