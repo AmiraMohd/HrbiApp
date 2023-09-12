@@ -198,6 +198,9 @@
   <data name="IsFromHome" xml:space="preserve">
     <value>هل الخدمة من المنزل؟</value>
   </data>
+  <data name="LabReport" xml:space="preserve">
+    <value>تقرير المعمل</value>
+  </data>
   <data name="LabServiceBookings" xml:space="preserve">
     <value>حجوزات المعمل</value>
   </data>
@@ -219,6 +222,9 @@
   <data name="NurseName" xml:space="preserve">
     <value>اسم الممرض</value>
   </data>
+  <data name="NurseReport" xml:space="preserve">
+    <value>تقرير الممرض</value>
+  </data>
   <data name="Nurses" xml:space="preserve">
     <value>قائمة التمريض</value>
   </data>
@@ -230,6 +236,12 @@
   </data>
   <data name="Password" xml:space="preserve">
     <value>كلمة المرور</value>
+  </data>
+  <data name="PatientName" xml:space="preserve">
+    <value>اسم العميل</value>
+  </data>
+  <data name="PatientPhone" xml:space="preserve">
+    <value>هاتف العميل</value>
   </data>
   <data name="Patients" xml:space="preserve">
     <value>العملاء</value>

@@ -1227,6 +1227,63 @@ namespace HrbiApp.Web.Areas.Common
                 return (false, new DoctorBookingReport());
             }
         }
+
+        public (bool Result, List<LabBookingsReport> Report) GetLabBookingReport()
+        {
+            try
+            {
+                var report = _dbContext.LabServiceBookings
+                    .Include(b => b.Patient)
+                    .Include(b => b.LabService)
+                    .Select(b => new LabBookingsReport()
+                    {
+                        ServiceNameAR = b.LabService.NameAR,
+                        ServiceNameEN = b.LabService.NameEN,
+                        BookingID = b.ID,
+                        PatientName = b.Patient.FullName,
+                        PatientPhone = b.Patient.PhoneNumber,
+                        TotalAmount = b.Price,
+                        VisitTime = b.VisitTime.ToString("dd-MM-yyyy HH:mm"),
+
+                    }).ToList();
+                return (true, report);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
+
+        public (bool Result, NurseReport Report) GetNurseReport(int nurseID)
+        {
+            try
+            {
+                var nurse = _dbContext.Nurses.Find(nurseID);
+                var user = _dbContext.Users.Find(nurse.ApplicationUserID);
+                var report = new NurseReport()
+                {
+                    NurseName = user.FullName,
+                    NurseBookings = _dbContext.NurseBookings.Where(b=>b.NurseID==nurseID)
+                    .Include(b => b.Patient)
+                    .Include(b => b.NurseService).Select(b => new NurseBookings
+                    {
+                        ServiceNameAR = b.NurseService.NameAR,
+                        ServiceNameEN = b.NurseService.NameEN,
+                        PatientName = b.Patient.FullName,
+                        PatientPhone = b.Patient.PhoneNumber,
+                        Price = b.Price,
+                        VisitTime = b.VisitTime.ToString("dd-MM-yyyy HH:mm")
+                    }).ToList()
+                };
+                return (true,report);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
         #endregion
     }
 }

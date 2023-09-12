@@ -187,6 +187,26 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("DoctorReport", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to تقرير الممرض.
+        /// </summary>
+        public static string NurseReport
+        {
+            get
+            {
+                return ResourceManager.GetString("NurseReport", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تقرير المعمل.
+        /// </summary>
+        public static string LabReport
+        {
+            get
+            {
+                return ResourceManager.GetString("LabReport", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to التخصصات.
@@ -738,7 +758,7 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("ServiceNameAR", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to اسم الخدمة بالانجليزي
         /// </summary>
         public static string ServiceNameEN
@@ -748,6 +768,26 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("ServiceNameEN", resourceCulture);
             }
         }
-    
+        /// <summary>
+        ///   Looks up a localized string similar to هاتف العميل
+        /// </summary>
+        public static string PatientPhone
+        {
+            get
+            {
+                return ResourceManager.GetString("PatientPhone", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم العميل
+        /// </summary>
+        public static string PatientName
+        {
+            get
+            {
+                return ResourceManager.GetString("PatientName", resourceCulture);
+            }
+        }
+        
     }
 }

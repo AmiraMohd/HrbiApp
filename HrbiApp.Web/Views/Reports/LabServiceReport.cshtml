@@ -1,0 +1,62 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.Reports.LabBookingsReport>
+
+@{
+    ViewData["Title"] = "Lab Booking Report";
+}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> @HrbiApp.Web.Resource.ResourceAr.LabReport</h1>
+
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title"> <p>@*<a class="btn btn-primary icon-btn" href=""><i class="fa fa-plus"></i>@Tzwed.Web.Resource.ResourceAr.Add	</a>*@</p></h3>
+            </div>
+            <div class="tile-body">
+                <table class="table dataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.VisitTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PatientName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PatientPhone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TotalAmount)
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VisitTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PatientName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PatientPhone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
