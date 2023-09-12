@@ -267,7 +267,20 @@ namespace HrbiApp.API.Helpers
                 };
                 _db.DoctorBookings.Add(booking);
                 _db.SaveChanges();
-
+                var doctor = _db.Doctors.Find(model.DoctorId);
+                var percentage = Convert.ToDouble(_db.Settings.FirstOrDefault(s => s.Name == Consts.DoctorProfitSetting).Value);
+                var payment = new DoctorBookingPayment()
+                {
+                    Status = Consts.New,
+                    TotalAmount = doctor.Price.GetValueOrDefault(),
+                    BookingID = booking.ID,
+                    CreateDate = DateTime.Now,
+                    ProfitPercentage = percentage,
+                    SystemProfit = doctor.Price.GetValueOrDefault() * percentage,
+                    DoctorProfit = doctor.Price.GetValueOrDefault() - (doctor.Price.GetValueOrDefault() * percentage),
+                };
+                _db.DoctorBookingPayments.Add(payment);
+                _db.SaveChanges();
                 return (true, new PlaceDoctorBookingResponse()
                 {
                     BookingId = booking.ID,

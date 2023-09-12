@@ -15,6 +15,7 @@ using System.Reflection;
 using HrbiApp.Web.Models.Payments;
 using HrbiApp.Web.Models.Services;
 using HrbiApp.Web.Models.Patients;
+using HrbiApp.Web.Models.Reports;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -334,7 +335,7 @@ namespace HrbiApp.Web.Areas.Common
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
+                return (false, new());
             }
         }
         public async Task<bool> CreateNurse(CreateNurseModel model)
@@ -348,7 +349,7 @@ namespace HrbiApp.Web.Areas.Common
                     FullName = model.Name,
                     UserName = model.Phone,
                     AccountType = Consts.NurseAccountType,
-                    Status=Consts.NotActive
+                    Status = Consts.NotActive
                 };
                 var reuslt = await _userManager.CreateAsync(user, "123456");
                 if (reuslt.Succeeded)
@@ -382,7 +383,7 @@ namespace HrbiApp.Web.Areas.Common
                 user.PhoneNumber = model.Phone;
                 user.Email = model.Email;
                 user.FullName = model.Name;
-                nurse.Experiance=model.Experience;
+                nurse.Experiance = model.Experience;
                 nurse.Address = model.Address;
                 _dbContext.Users.Update(user);
                 _dbContext.SaveChanges();
@@ -394,7 +395,7 @@ namespace HrbiApp.Web.Areas.Common
                 return false;
             }
         }
-        public (bool Result,UpdateNurseModel Nurse)GetNurseToUpdate(int nurseID)
+        public (bool Result, UpdateNurseModel Nurse) GetNurseToUpdate(int nurseID)
         {
             try
             {
@@ -407,8 +408,8 @@ namespace HrbiApp.Web.Areas.Common
                     Status = nurse.Status,
                     Name = user.FullName,
                     Phone = user.PhoneNumber,
-                    Experience=nurse.Experiance,
-                    Address=nurse.Address,
+                    Experience = nurse.Experiance,
+                    Address = nurse.Address,
                 };
                 return (true, updateModel);
             }
@@ -418,7 +419,7 @@ namespace HrbiApp.Web.Areas.Common
                 return (false, new UpdateNurseModel() { ID = nurseID });
             }
         }
-        public bool ChangeStatus(int nurseID,string status)
+        public bool ChangeStatus(int nurseID, string status)
         {
             try
             {
@@ -444,7 +445,7 @@ namespace HrbiApp.Web.Areas.Common
                 var bookings = _dbContext.NurseBookings.Where(b => b.Status != Consts.Deleted)
                     .Include(b => b.NurseService)
                     .Include(b => b.Patient)
-                    .Include(b=>b.Nurse).ThenInclude(n=>n.User)
+                    .Include(b => b.Nurse).ThenInclude(n => n.User)
                     .Select(b => new NurseBookingListModel()
                     {
                         Status = b.Status,
@@ -455,7 +456,7 @@ namespace HrbiApp.Web.Areas.Common
                         PatintName = b.Patient.FullName,
                         Price = b.Price,
                         VisitTime = b.VisitTime,
-                        NurseName=b.Nurse==null?"":b.Nurse.User.FullName
+                        NurseName = b.Nurse == null ? "" : b.Nurse.User.FullName
                     }
                 ).ToList();
                 return (true, bookings);
@@ -470,20 +471,20 @@ namespace HrbiApp.Web.Areas.Common
         {
             try
             {
-                var nurses=_dbContext.Nurses.Where(n=>n.Status==Consts.Active).Include(n=>n.User).Select(n=>new SelectListItem()
+                var nurses = _dbContext.Nurses.Where(n => n.Status == Consts.Active).Include(n => n.User).Select(n => new SelectListItem()
                 {
-                    Text=n.User.FullName,
-                    Value=n.ID+"",
+                    Text = n.User.FullName,
+                    Value = n.ID + "",
                 }).ToList();
                 return (true, nurses);
             }
             catch (Exception ex)
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
-                return (false,new());
+                return (false, new());
             }
         }
-        public async Task<bool> AcceptNurseServiceBooking(int bookingID, DateTime vistTime,int nurseID)
+        public async Task<bool> AcceptNurseServiceBooking(int bookingID, DateTime vistTime, int nurseID)
         {
             try
             {
@@ -613,6 +614,25 @@ namespace HrbiApp.Web.Areas.Common
                 return (false, new());
             }
         }
+        public (bool Result, List<SelectListItem> Doctors) GetDoctorsToSelect()
+        {
+            try
+            {
+                var doctors = _dbContext.Doctors.Include(d => d.User).Select(d => new SelectListItem()
+                {
+                    Value = d.ID + "",
+                    Text = d.User.FullName,
+
+                }).ToList();
+                return (true, doctors);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
+
         public async Task<bool> CreateDoctor(CreateDoctorModel model)
         {
             try
@@ -1170,6 +1190,98 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return false;
+            }
+        }
+        #endregion
+
+        #region Reports
+        public (bool Result, DoctorBookingReport Report) GetDoctorReport(int doctorID)
+        {
+            try
+            {
+                var doctor = _dbContext.Doctors.Find(doctorID);
+                var user = _dbContext.Users.Find(doctor.ApplicationUserID);
+                var report = new DoctorBookingReport()
+                {
+                    DoctorName = user.FullName,
+                    Bookings = _dbContext.DoctorBookings.Where(b => b.DoctorID == doctorID)
+                    .Include(b => b.Patient)
+                    .Select(b => new BookingsList()
+                    {
+                        Status = b.Status,
+                        BookingID = b.ID,
+                        PatientName = b.Patient.FullName,
+                        VisitTime = b.VisiteDate.ToString("dd-MM-yyyy HH:mm"),
+                        PatientPhone = b.Patient.PhoneNumber,
+                        Price = _dbContext.DoctorBookingPayments.FirstOrDefault(p => p.BookingID == b.ID).TotalAmount,
+                        DoctorProfit = _dbContext.DoctorBookingPayments.FirstOrDefault(p => p.BookingID == b.ID).DoctorProfit,
+                        SystemProfit = _dbContext.DoctorBookingPayments.FirstOrDefault(p => p.BookingID == b.ID).SystemProfit,
+                        PaymentStatus = _dbContext.DoctorBookingPayments.FirstOrDefault(p => p.BookingID == b.ID).Status
+                    }).ToList()
+                };
+                return (true, report);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new DoctorBookingReport());
+            }
+        }
+
+        public (bool Result, List<LabBookingsReport> Report) GetLabBookingReport()
+        {
+            try
+            {
+                var report = _dbContext.LabServiceBookings
+                    .Include(b => b.Patient)
+                    .Include(b => b.LabService)
+                    .Select(b => new LabBookingsReport()
+                    {
+                        ServiceNameAR = b.LabService.NameAR,
+                        ServiceNameEN = b.LabService.NameEN,
+                        BookingID = b.ID,
+                        PatientName = b.Patient.FullName,
+                        PatientPhone = b.Patient.PhoneNumber,
+                        TotalAmount = b.Price,
+                        VisitTime = b.VisitTime.ToString("dd-MM-yyyy HH:mm"),
+
+                    }).ToList();
+                return (true, report);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
+
+        public (bool Result, NurseReport Report) GetNurseReport(int nurseID)
+        {
+            try
+            {
+                var nurse = _dbContext.Nurses.Find(nurseID);
+                var user = _dbContext.Users.Find(nurse.ApplicationUserID);
+                var report = new NurseReport()
+                {
+                    NurseName = user.FullName,
+                    NurseBookings = _dbContext.NurseBookings.Where(b=>b.NurseID==nurseID)
+                    .Include(b => b.Patient)
+                    .Include(b => b.NurseService).Select(b => new NurseBookings
+                    {
+                        ServiceNameAR = b.NurseService.NameAR,
+                        ServiceNameEN = b.NurseService.NameEN,
+                        PatientName = b.Patient.FullName,
+                        PatientPhone = b.Patient.PhoneNumber,
+                        Price = b.Price,
+                        VisitTime = b.VisitTime.ToString("dd-MM-yyyy HH:mm")
+                    }).ToList()
+                };
+                return (true,report);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
             }
         }
         #endregion

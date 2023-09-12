@@ -167,6 +167,46 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("Setting", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to التقارير.
+        /// </summary>
+        public static string Reports
+        {
+            get
+            {
+                return ResourceManager.GetString("Reports", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تقرير الطبيب.
+        /// </summary>
+        public static string DoctorReport
+        {
+            get
+            {
+                return ResourceManager.GetString("DoctorReport", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تقرير الممرض.
+        /// </summary>
+        public static string NurseReport
+        {
+            get
+            {
+                return ResourceManager.GetString("NurseReport", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تقرير المعمل.
+        /// </summary>
+        public static string LabReport
+        {
+            get
+            {
+                return ResourceManager.GetString("LabReport", resourceCulture);
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to التخصصات.
@@ -468,6 +508,16 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("PatintName", resourceCulture);
             }
         }
+         /// <summary>
+        ///   Looks up a localized string similar to رقم المريض.
+        /// </summary>
+        public static string PatintPhone
+        {
+            get
+            {
+                return ResourceManager.GetString("PatintPhone", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to زمن المقابلة.
         /// </summary>
@@ -539,6 +589,16 @@ namespace HrbiApp.Web.Resource
             }
         }
     /// <summary>
+        ///   Looks up a localized string similar to حالة الدفعية
+        /// </summary>
+        public static string PaymentStatus
+        {
+            get
+            {
+                return ResourceManager.GetString("PaymentStatus", resourceCulture);
+            }
+        }
+    /// <summary>
         ///   Looks up a localized string similar to التحكم
         /// </summary>
         public static string Control
@@ -556,6 +616,16 @@ namespace HrbiApp.Web.Resource
             get
             {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اعداد
+        /// </summary>
+        public static string Generate
+        {
+            get
+            {
+                return ResourceManager.GetString("Generate", resourceCulture);
             }
         }
         /// <summary>
@@ -688,7 +758,7 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("ServiceNameAR", resourceCulture);
             }
         }
-    /// <summary>
+        /// <summary>
         ///   Looks up a localized string similar to اسم الخدمة بالانجليزي
         /// </summary>
         public static string ServiceNameEN
@@ -698,6 +768,26 @@ namespace HrbiApp.Web.Resource
                 return ResourceManager.GetString("ServiceNameEN", resourceCulture);
             }
         }
-    
+        /// <summary>
+        ///   Looks up a localized string similar to هاتف العميل
+        /// </summary>
+        public static string PatientPhone
+        {
+            get
+            {
+                return ResourceManager.GetString("PatientPhone", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to اسم العميل
+        /// </summary>
+        public static string PatientName
+        {
+            get
+            {
+                return ResourceManager.GetString("PatientName", resourceCulture);
+            }
+        }
+        
     }
 }

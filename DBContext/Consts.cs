@@ -8,6 +8,9 @@ namespace DBContext
 {
     public class Consts
     {
+        #region Settings
+        
+        
         #region GeneralSettings
         public const string ConfirmationPurpose = "Confirmation";
         public const string ResetPurpose = "Reset";
@@ -17,6 +20,15 @@ namespace DBContext
         public const string ContactUsEmailSetting = "ContactUsE,Email";
         public const string ContactUsLatSetting = "ContactUsLat";
         public const string ContactUsLonSetting = "ContactUsLon";
+
+        public const string SMSUsernameSetting = "SMSUsername";
+        public const string SMSPasswordSetting = "SMSPassword";
+        public const string SMSSenderSetting = "SMSSender";
+        #endregion
+
+        #region Database Settings
+        public const string DoctorProfitSetting = "DoctorProfit";
+        #endregion
         #endregion
         #region Statuses
 
@@ -74,11 +86,7 @@ namespace DBContext
         public const string PhoneNumberClaimName = "PhoneNumber";
         #endregion
 
-        #region Settings
-        public const string SMSUsernameSetting = "SMSUsername";
-        public const string SMSPasswordSetting = "SMSPassword";
-        public const string SMSSenderSetting = "SMSSender";
-        #endregion
+        
 
        public enum NotificationTypes{
             DoctorBooking,
