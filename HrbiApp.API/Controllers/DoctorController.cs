@@ -238,27 +238,32 @@ namespace HrbiApp.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetDoctorsBySpecialization/{specializationId}/{positionId}")]
-        public async Task<IActionResult> GetDoctorsBySpecialization(int specializationId, int positionId)
+        [Route("GetDoctorsByFilter")]
+        public async Task<IActionResult> GetDoctorsByFilter(int specializationId, int positionId)
         {
-
-            if (!_validator.IsValidSpecialization(specializationId))
+            if (specializationId != 0)
             {
-                return Ok(new BaseResponse()
+                if (!_validator.IsValidSpecialization(specializationId))
                 {
-             
-                    Message = Messages.NotValidSpecialization
-                });
-            }
-            if (!_validator.IsValidDoctorPosition(positionId))
-            {
-                return Ok(new BaseResponse()
-                {
+                    return Ok(new BaseResponse()
+                    {
 
-                    Message = Messages.NotValidPosition
-                });
+                        Message = Messages.NotValidSpecialization
+                    });
+                }
             }
-            var result = CS.GetDoctorsBySpecialization(specializationId,positionId);
+            if (positionId != 0)
+            {
+                if (!_validator.IsValidDoctorPosition(positionId))
+                {
+                    return Ok(new BaseResponse()
+                    {
+
+                        Message = Messages.NotValidPosition
+                    });
+                }
+            }
+            var result = CS.GetDoctorsByFilter(specializationId,positionId);
             if (result.Result == true)
             {
                 return Ok(new BaseResponse()

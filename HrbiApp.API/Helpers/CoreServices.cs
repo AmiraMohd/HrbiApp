@@ -172,11 +172,20 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public (bool Result, List<DoctorsList> Response) GetDoctorsBySpecialization(int specializationId, int positionId)
+        public (bool Result, List<DoctorsList> Response) GetDoctorsByFilter(int specializationId, int positionId)
         {
             try
             {
-                var doctors = _db.Doctors.Include(a=>a.User).Include(a=>a.Specialization).Include(a=>a.Position).Where(a => a.SpecializationID == specializationId).ToList();
+                var doctors = _db.Doctors.ToList();
+                if(specializationId != 0)
+                {
+                    doctors = _db.Doctors.Include(a => a.User).Include(a => a.Specialization).Where(a => a.SpecializationID == specializationId).ToList();
+                }
+                if(positionId != 0)
+                {
+                    doctors = _db.Doctors.Include(a => a.User).Include(a => a.Position).Where(a => a.PositionID == positionId).ToList();
+                }
+                 
                 var result = doctors.Select(a => new DoctorsList
                 {
                     DoctorId = a.ID,
