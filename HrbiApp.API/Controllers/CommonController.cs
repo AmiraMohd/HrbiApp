@@ -147,6 +147,50 @@ namespace HrbiApp.API.Controllers
             }
         }
 
+        [HttpGet("GetAllAmbulances")]
+        public async Task<IActionResult> GetAllAmbulances()
+        {
+            var result = CS.GetAllAmbulances();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                });
+
+            }
+        }
+
+        [HttpGet("GetAmbulance")]
+        public async Task<IActionResult> GetAmbulance(int id)
+        {
+            var result = CS.GetAmbulanceById(id);
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                });
+
+            }
+        }
+
         [Authorize]
         [HttpGet("SaveInstanceID")]
         public async Task<IActionResult> SaveInstanceID(string instanceID)
