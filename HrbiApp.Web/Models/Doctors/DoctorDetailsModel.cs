@@ -1,4 +1,5 @@
 ﻿using DBContext;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace HrbiApp.Web.Models.Doctors

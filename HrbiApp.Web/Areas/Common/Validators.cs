@@ -4,6 +4,7 @@ using HrbiApp.Web.Models.DoctorPositions;
 using HrbiApp.Web.Models.Doctors;
 using HrbiApp.Web.Models.LabServices;
 using HrbiApp.Web.Models.NurseServices;
+using HrbiApp.Web.Models.Settings;
 using HrbiApp.Web.Models.Specializations;
 using System.Reflection;
 using System.Text;
@@ -515,6 +516,51 @@ namespace HrbiApp.Web.Areas.Common
             }
         }
 
+        #endregion
+        #region Settings
+        public (bool Result,string Message) IsValidBankAccountToCreate(CreateBankAccountModel model)
+        {
+            try
+            {
+                List<string> messages = new List<string>();
+                var sameName = _dbContext.BankAccounts.FirstOrDefault(a => a.Bank == model.BankName);
+                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,Messages.ExceptionOccured);
+            }
+        }
+        public (bool Result,string Message) IsValidBankAccountToUpdate(UpdateBankAccountModel model)
+        {
+            try
+            {
+                List<string> messages = new List<string>();
+                var sameName = _dbContext.BankAccounts.FirstOrDefault(a => a.Bank == model.BankName&&a.ID!=model.ID);
+                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+                return (messages.Count == 0, string.Join(",", messages));
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,Messages.ExceptionOccured);
+            }
+        }
+        public bool IsValidBankAccount(int accountID)
+        {
+            try
+            {
+                var account = _dbContext.BankAccounts.Find(accountID);
+                return account != null;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
         #endregion
     }
 }

@@ -24,6 +24,8 @@ namespace DBContext
 
         public const string ThereIsAnAmbulanceWithSamePhone = "ThereIsAnAmbulanceWithSamePhone";
 
+        public const string ThereIsBankAccountWithSameName = "ThereIsBankAccountWithSameName";
+
         #endregion
 
         #region Notifications

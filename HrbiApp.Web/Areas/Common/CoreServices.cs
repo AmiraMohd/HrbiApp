@@ -16,6 +16,7 @@ using HrbiApp.Web.Models.Payments;
 using HrbiApp.Web.Models.Services;
 using HrbiApp.Web.Models.Patients;
 using HrbiApp.Web.Models.Reports;
+using HrbiApp.Web.Models.Settings;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -1282,6 +1283,85 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return (false, new());
+            }
+        }
+        #endregion
+
+        #region Settings
+        public bool CreateBankAccount(CreateBankAccountModel model)
+        {
+            try
+            {
+                var account = new BankAccount()
+                {
+                    Bank = model.BankName,
+                    Branch = model.BranchName,
+                    Number = model.AccountNumber,
+                };
+                _dbContext.BankAccounts.Add(account);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public bool UpdateBankAccount(UpdateBankAccountModel model)
+        {
+            try
+            {
+                var account = _dbContext.BankAccounts.Find(model.ID);
+                account.Bank = model.BankName;
+                account.Branch= model.BranchName;
+                account.Number = model.AccountNumber;
+                _dbContext.BankAccounts.Update(account);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
+            }
+        }
+        public (bool Result,List<BankAccountListModel>Accounts) GetBankAccounts()
+        {
+            try
+            {
+                var accounts = _dbContext.BankAccounts.Select(a => new BankAccountListModel()
+                {
+                    AccountNumber = a.Number,
+                    BankName = a.Bank,
+                    BranchName = a.Branch
+                }).ToList();
+                return (true, accounts);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
+            }
+        }
+        public (bool Result,UpdateBankAccountModel Account) GetBankAccountToUpdate(int accountID)
+        {
+            try
+            {
+                var account = _dbContext.BankAccounts.Find(accountID);
+                var model = new UpdateBankAccountModel()
+                {
+                    ID = account.ID,
+                    AccountNumber = account.Number,
+                    BankName = account.Bank,
+                    BranchName = account.Branch
+                };
+                return (true, model);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,new UpdateBankAccountModel() { ID=accountID});
             }
         }
         #endregion

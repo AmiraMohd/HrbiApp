@@ -1,6 +1,9 @@
 ﻿using DBContext;
+
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Resources;
 
 namespace HrbiApp.Web.Areas.Common.Controllers
 {
@@ -9,6 +12,8 @@ namespace HrbiApp.Web.Areas.Common.Controllers
     {
         protected CoreServices CS;
         protected Validators Validators;
+        //protected LanguageService _localization;
+
         public WebController(CoreServices cs, Validators validators)
         {
             CS = cs;

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<HrbiApp.Web.Models.Settings.BankAccountListModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="app-title">
+    <div>
+        <h1><i class="fa fa-file-text-o"></i> </h1>BankAccounts
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title"> <p>@*<a class="btn btn-primary icon-btn" href=""><i class="fa fa-plus"></i>@Tzwed.Web.Resource.ResourceAr.Add	</a>*@</p></h3>
+            </div>
+            <div class="tile-body">
+
+                <table class="table dataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BankName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.BranchName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AccountNumber)
+                            </th>
+@*                            <th>@HrbiApp.Web.Resource.Resource.Control</th>
+*@                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BankName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BranchName)
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => item.AccountNumber)
+                                </td>
+                                @*<td>
+                                    @if (item.Status == Consts.Active)
+                                    {
+                                        @Html.ActionLink(HrbiApp.Web.Resource.Resource.DeActivate, "DeActivate", new { serviceId=item.ID })
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(HrbiApp.Web.Resource.Resource.Activate, "Activate", new { serviceId=item.ID })
+                                    }
+                                </td>*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

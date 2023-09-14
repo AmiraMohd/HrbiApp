@@ -1,4 +1,5 @@
 ﻿using HrbiApp.Web.Models.Doctors;
+
 using System.ComponentModel.DataAnnotations;
 
 namespace HrbiApp.Web.Models.Payments

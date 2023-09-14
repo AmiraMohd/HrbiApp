@@ -2,6 +2,7 @@
 using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.Reports;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace HrbiApp.Web.Controllers
