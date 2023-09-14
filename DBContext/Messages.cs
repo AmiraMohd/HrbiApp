@@ -43,7 +43,7 @@ namespace DBContext
         public const string NotValidPhoneAndOTP = "NotValidPhoneAndOTP";
         public const string NotValidEmail = "NotValidEmail";
         public const string NotActiveAccount = "NotActiveAccount";
-        public const string NotActiveDoctor= "NotActiveDoctor";
+        public const string NotActiveDoctor = "NotActiveDoctor";
         public const string NotValidOTP = "NotValidOTP";
         public const string PhoneAlreadyExist = "AlreadyExist";
         public const string UserNotExist = "UserNotExist";
@@ -73,9 +73,10 @@ namespace DBContext
         #region General
 
         public const string Failed = "Failed";
+        public const string NotAllowedExtension = "NotAllowedExtension";
         #endregion
 
-         #region Nurse Booking
+        #region Nurse Booking
         public const string AcceptedNurseBookingTitle = "AcceptedNurseBookingTitle";
         public const string AcceptedNurseBookingBody = "AcceptedNurseBookingBody";
 
@@ -92,5 +93,7 @@ namespace DBContext
 
 
         #endregion
+
+
     }
 }

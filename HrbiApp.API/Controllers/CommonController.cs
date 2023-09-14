@@ -1,5 +1,6 @@
 ﻿using DBContext;
 using HrbiApp.API.Models;
+using HrbiApp.API.Models.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -191,6 +192,60 @@ namespace HrbiApp.API.Controllers
             }
         }
 
+        [HttpGet("GetBankAccounts")]
+        public async Task<IActionResult> GetBankAccounts()
+        {
+            var result = CS.GetBankAccounts();
+            if (!result.Result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                });
+
+            }
+        }
+
+        [Authorize]
+        [HttpPost("SendPatientComplaint")]
+        public async Task<IActionResult> SendPatientComplaint(string text)
+        {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+
+            if (!_validator.IsValidPatient(userId))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotValidPatient
+                });
+            }
+            var result = CS.SaveUserComplaint(text,userId);
+            if (!result)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.Failed
+                });
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true
+                });
+            }
+
+
+        }
+
         [Authorize]
         [HttpGet("SaveInstanceID")]
         public async Task<IActionResult> SaveInstanceID(string instanceID)
@@ -209,7 +264,7 @@ namespace HrbiApp.API.Controllers
                 Status = true
             });
         }
-        
+
         [Authorize]
         [HttpGet("GetNotifications")]
         public IActionResult GetNotifications()
@@ -230,7 +285,7 @@ namespace HrbiApp.API.Controllers
         [HttpGet("GetOTP")]
         public IActionResult GetOTP(string phoneNumber)
         {
-            var otp = _db.OTPs.OrderBy(a=>a.ID).LastOrDefault(a => a.Phone == phoneNumber && a.Purpose == Consts.ConfirmationPurpose).Code;
+            var otp = _db.OTPs.OrderBy(a => a.ID).LastOrDefault(a => a.Phone == phoneNumber && a.Purpose == Consts.ConfirmationPurpose).Code;
             if (otp != null)
                 return Ok(new BaseResponse()
                 {

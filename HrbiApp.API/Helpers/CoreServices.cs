@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Tzwed.API.Helpers;
 
 namespace HrbiApp.API.Helpers
 {
@@ -25,6 +26,7 @@ namespace HrbiApp.API.Helpers
         SignInManager<ApplicationUser> _signInManager;
         private IServiceScopeFactory _serviceScopeFactory;
         public SMSSender SMS;
+        private AttachmentUploader _uploader;
 
         public CoreServices(ApplicationDBContext db, IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IServiceScopeFactory serviceProviderFactory)
         {
@@ -35,6 +37,7 @@ namespace HrbiApp.API.Helpers
             _serviceScopeFactory = serviceProviderFactory;
             _ex = new ExceptionHandler(db);
             SMS = new SMSSender(db);
+            _uploader = new AttachmentUploader(configuration, db);
         }
 
         #region Doctor Services
@@ -228,16 +231,17 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public async Task<bool> UpdateDoctorDetails(DoctorProfileModel model)
+        public async Task<bool> UpdateDoctorDetails(DoctorProfileModel model, int doctorId)
         {
             try
             {
-                var doctor = _db.Doctors.Find(model.Id);
+                var doctor = _db.Doctors.FirstOrDefault(a=>a.ID == doctorId);
                 doctor.AboutDoctor = model.AboutDoctor;
                 doctor.CloseTime = model.CloseTime;
                 doctor.OpenTime = model.OpenTime;
                 doctor.Price = model.TicketPrice;
                 doctor.Address = model.Address;
+                doctor.Instructions = model.Instructions;
                 _db.Doctors.Update(doctor);
                 _db.SaveChanges();
                 return true;
@@ -247,6 +251,39 @@ namespace HrbiApp.API.Helpers
 
                 return false;
 
+            }
+        }
+
+        public (bool Result, GetDoctorProfileModel Response) GetDoctorProfile(int doctorID)
+        {
+            try
+            {
+                var user = _db.Doctors.Include(a=>a.User).FirstOrDefault(a=>a.ID == doctorID);
+
+                var domain = GetSettingValue(Consts.DomainSetting);
+                var vitualPath = GetSettingValue(Consts.ProfileImagesVirualPathSetting);
+                var profile = new GetDoctorProfileModel()
+                {
+                    PhoneNumber = user.User.PhoneNumber,
+                    FullName = user.User.FullName,
+                    Image = string.Join("/", domain, vitualPath, user.Image),
+                    CloseTime = user.CloseTime,
+                    OpenTime = user.OpenTime,
+                    Instructions = user.Instructions,
+                    Address = user.Address,
+                    AboutDoctor = user.AboutDoctor,
+                    TicketPrice = user.Price
+
+                };
+
+           
+
+                return (true, profile);
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
             }
         }
 
@@ -492,7 +529,7 @@ namespace HrbiApp.API.Helpers
         }
         #endregion
 
-        #region Common Services
+        #region Account Services
         public async Task<string> GenerateJSONWebToken(ApplicationUser user)
         {
             try
@@ -695,6 +732,33 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+        public async Task<(bool Result, string Message)> UpdateDoctorProfileImage(int userID, IFormFile file)
+        {
+            try
+            {
+                var user = _db.Doctors.FirstOrDefault(a=>a.ID == userID);
+
+                var uploadReuslt = await _uploader.UploadProfileImage(file);
+                if (!uploadReuslt.Result)
+                {
+                    return (false, uploadReuslt.Message);
+                }
+                user.Image = uploadReuslt.Message;
+                _db.SaveChanges();
+                return (true, "");
+
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, "");
+            }
+
+        }
+
+
+        #endregion
+        #region Common Services
 
         public (bool Result, List<SpecializationModel> Response) GetAllSpecializations()
         {
@@ -752,7 +816,31 @@ namespace HrbiApp.API.Helpers
                 }).ToList();
                 return (true, ambulances);
             }
-            catch (Exception) { return (false, new()); }
+            catch (Exception ex) {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return (false, new()); }
+        }
+
+        public (bool Result, List<BankAccountModel> Response) GetBankAccounts()
+        {
+            try
+            {
+                var accounts = _db.BankAccounts.Select(a => new BankAccountModel
+                {
+                    ID = a.ID,
+                    Bank = a.Bank,
+                    Number = a.Number,
+                    Branch = a.Branch
+                }).ToList();
+                return (true, accounts);
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return (false, new());
+            }
         }
 
         public (bool Result, AmbulanceModel Response) GetAmbulanceById(int id)
@@ -768,7 +856,9 @@ namespace HrbiApp.API.Helpers
                 };
                 return (true, model);
             }
-            catch (Exception) { return (false, new()); }
+            catch (Exception ex) {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new()); }
         }
         public (bool Result, List<ServicesModel> Response) GetAllServices()
         {
@@ -787,6 +877,7 @@ namespace HrbiApp.API.Helpers
             }
             catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
@@ -809,8 +900,9 @@ namespace HrbiApp.API.Helpers
                 return (true, services);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
@@ -832,13 +924,34 @@ namespace HrbiApp.API.Helpers
                 return (true, services);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
         }
 
+        public bool SaveUserComplaint(string text, string userId)
+        {
+            try
+            {
+                var complaint = new Complaint()
+                {
+                    ApplicationUserID = userId,
+                    Text = text
+                };
+                _db.Complaints.Add(complaint);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return false;
+            }
+        }
         #endregion
 
         #region Patient Services
@@ -935,5 +1048,18 @@ namespace HrbiApp.API.Helpers
         //}
         #endregion
 
+        public string GetSettingValue(string name)
+        {
+            try
+            {
+                var setting = _db.Settings.FirstOrDefault(s => s.Name == name);
+                return setting.Value;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return "";
+            }
+        }
     }
 }
