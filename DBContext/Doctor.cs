@@ -32,5 +32,7 @@ namespace DBContext
         public string? AboutDoctor { get; set; }
         public DateTime? OpenTime { get; set; }
         public DateTime? CloseTime { get; set; }
+        public string Instructions { get; set; } = "";
+        public string? Image { get; set; }
     }
 }
