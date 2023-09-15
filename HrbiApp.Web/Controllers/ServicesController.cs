@@ -3,12 +3,13 @@ using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
     public class ServicesController : WebController
     {
-        public ServicesController(CoreServices cs, Validators validators) : base(cs, validators)
+        public ServicesController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 

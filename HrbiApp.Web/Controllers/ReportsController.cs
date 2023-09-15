@@ -4,12 +4,13 @@ using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.Reports;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
     public class ReportsController : WebController
     {
-        public ReportsController(CoreServices cs, Validators validators) : base(cs, validators)
+        public ReportsController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 

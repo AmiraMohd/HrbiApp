@@ -6,13 +6,14 @@ using HrbiApp.Web.Models.Specializations;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
     [Authorize]
     public class SpecializationsController : WebController
     {
-        public SpecializationsController(CoreServices cs, Validators validators) : base(cs, validators)
+        public SpecializationsController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 

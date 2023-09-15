@@ -2,12 +2,13 @@
 using HrbiApp.Web.Areas.Common;
 using HrbiApp.Web.Areas.Common.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
     public class PatientsController : WebController
     {
-        public PatientsController(CoreServices cs, Validators validators) : base(cs, validators)
+        public PatientsController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 

@@ -4,6 +4,7 @@ using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.LabServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
@@ -11,7 +12,7 @@ namespace HrbiApp.Web.Controllers
     public class LabServicesController : WebController
     {
         
-        public LabServicesController(CoreServices cs,Validators validators):base(cs,validators)
+        public LabServicesController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
             
         }

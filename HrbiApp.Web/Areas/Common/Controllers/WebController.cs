@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Resources;
 
 namespace HrbiApp.Web.Areas.Common.Controllers
@@ -13,14 +14,19 @@ namespace HrbiApp.Web.Areas.Common.Controllers
         protected CoreServices CS;
         protected Validators Validators;
         //protected LanguageService _localization;
+        protected readonly IStringLocalizer<SharedResource> _sharedLocalizer;
 
-        public WebController(CoreServices cs, Validators validators)
+
+        public WebController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer)
         {
             CS = cs;
             Validators = validators;
+            _sharedLocalizer = sharedLocalizer;
+
         }
         protected void Alert(string message, Consts.AdminNotificationType notificationType)
         {
+            message = _sharedLocalizer[message];
             string msg = "";
             switch (notificationType)
             {

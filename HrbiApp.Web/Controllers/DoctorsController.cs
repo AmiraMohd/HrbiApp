@@ -4,6 +4,7 @@ using HrbiApp.Web.Areas.Common.Controllers;
 using HrbiApp.Web.Models.Doctors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System.Linq;
 
 namespace HrbiApp.Web.Controllers
@@ -11,7 +12,7 @@ namespace HrbiApp.Web.Controllers
     [Authorize]
     public class DoctorsController : WebController
     {
-        public DoctorsController(CoreServices cs, Validators validators) : base(cs, validators)
+        public DoctorsController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 

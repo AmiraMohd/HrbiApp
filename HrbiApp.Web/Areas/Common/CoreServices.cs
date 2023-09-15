@@ -570,6 +570,8 @@ namespace HrbiApp.Web.Areas.Common
                     WorkHours = doctor.WorkHours,
                     PositionNameAR = position.NameAR,
                     PositionNameEN = position.NameEN,
+                    Instructions = doctor.Instructions,
+                    Image = string.Join("/",GetSettingValue(Consts.DomainSetting),GetSettingValue(Consts.ProfileImagesVirualPathSetting), doctor.Image) ,
 
                 };
                 detailsModel.Payments = _dbContext.DoctorBookingPayments.Include(p => p.DoctorBooking)
@@ -1288,6 +1290,19 @@ namespace HrbiApp.Web.Areas.Common
         #endregion
 
         #region Settings
+        public string GetSettingValue(string settingName)
+        {
+            try
+            {
+                var setting = _dbContext.Settings.FirstOrDefault(s => s.Name == settingName);
+                return setting == null ? "" : setting.Value;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return "";
+            } 
+        }
         public bool CreateBankAccount(CreateBankAccountModel model)
         {
             try
@@ -1332,6 +1347,7 @@ namespace HrbiApp.Web.Areas.Common
             {
                 var accounts = _dbContext.BankAccounts.Select(a => new BankAccountListModel()
                 {
+                    ID= a.ID,
                     AccountNumber = a.Number,
                     BankName = a.Bank,
                     BranchName = a.Branch
@@ -1362,6 +1378,21 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return (false,new UpdateBankAccountModel() { ID=accountID});
+            }
+        }
+        public bool DeteleBankAccount(int accountID)
+        {
+            try
+            {
+                var account = _dbContext.BankAccounts.Find(accountID);
+                _dbContext.Remove<BankAccount>(account);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return false;
             }
         }
         #endregion

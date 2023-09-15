@@ -524,7 +524,7 @@ namespace HrbiApp.Web.Areas.Common
             {
                 List<string> messages = new List<string>();
                 var sameName = _dbContext.BankAccounts.FirstOrDefault(a => a.Bank == model.BankName);
-                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+                if (sameName != null) messages.Add(Messages.ThereIsBankAccountWithSameName);
                 return (messages.Count == 0, string.Join(",", messages));
             }
             catch (Exception ex)
@@ -539,7 +539,7 @@ namespace HrbiApp.Web.Areas.Common
             {
                 List<string> messages = new List<string>();
                 var sameName = _dbContext.BankAccounts.FirstOrDefault(a => a.Bank == model.BankName&&a.ID!=model.ID);
-                if (sameName != null) messages.Add(Messages.ThereIsUserWithSameName);
+                if (sameName != null) messages.Add(Messages.ThereIsBankAccountWithSameName);
                 return (messages.Count == 0, string.Join(",", messages));
             }
             catch (Exception ex)

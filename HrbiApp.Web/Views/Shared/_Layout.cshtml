@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+
+
+
 <html lang="en" dir="rtl">
 
 <head>
@@ -114,6 +117,7 @@
                     <li><a class="treeview-item" asp-controller="LabServices" asp-action="Index"><i class="icon fa fa-circle-o"></i> @HrbiApp.Web.Resource.ResourceAr.LabServices</a></li>
                     <li><a class="treeview-item" asp-controller="NurseServices" asp-action="Index"><i class="icon fa fa-circle-o"></i> @HrbiApp.Web.Resource.ResourceAr.NurseServices</a></li>
                     <li><a class="treeview-item" asp-controller="Services" asp-action="Index"><i class="icon fa fa-circle-o"></i> @HrbiApp.Web.Resource.ResourceAr.Services</a></li>
+                    <li><a class="treeview-item" asp-controller="Settings" asp-action="GetBankAccounts"><i class="icon fa fa-circle-o"></i> @Localizer["BankAccounts"]</a></li>
 
                 </ul>
             </li>

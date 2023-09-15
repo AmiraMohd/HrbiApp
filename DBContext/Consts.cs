@@ -28,6 +28,8 @@ namespace DBContext
 
         #region Database Settings
         public const string DoctorProfitSetting = "DoctorProfit";
+        public const string DomainSetting = "Domain";
+        public const string ProfileImagesVirualPathSetting = "ProfileImagesVirualPath";
         #endregion
         #endregion
         #region Statuses

@@ -5,13 +5,14 @@ using HrbiApp.Web.Models.Ambulances;
 using HrbiApp.Web.Models.Specializations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace HrbiApp.Web.Controllers
 {
     [Authorize]
     public class AmbulancesController : WebController
     {
-        public AmbulancesController(CoreServices cs, Validators validators) : base(cs, validators)
+        public AmbulancesController(CoreServices cs, Validators validators, IStringLocalizer<SharedResource> sharedLocalizer) : base(cs, validators, sharedLocalizer)
         {
         }
 
