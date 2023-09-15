@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HrbiApp.API.Controllers
 {
@@ -287,7 +288,9 @@ namespace HrbiApp.API.Controllers
         [Route("UpdateDetails")]
         public async Task<IActionResult> UpdateDetails([FromBody] DoctorProfileModel model)
         {
-            if (!_validator.IsValidDoctor(model.Id))
+            var userId = User.Claims.FirstOrDefault(c => c.Type == Consts.UserIDClaimName).Value;
+            var doctorId = _db.Doctors.FirstOrDefault(a => a.ApplicationUserID == userId).ID;
+            if (!_validator.IsValidDoctor(doctorId))
             {
                 return Ok(new BaseResponse()
                 {
@@ -295,7 +298,7 @@ namespace HrbiApp.API.Controllers
                 });
             }
 
-            var result = await CS.UpdateDoctorDetails(model);
+            var result = await CS.UpdateDoctorDetails(model,doctorId);
             if (result == true)
             {
                 return Ok(new BaseResponse()
@@ -315,8 +318,74 @@ namespace HrbiApp.API.Controllers
 
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("UploadProfileImage")]
+        public async Task<IActionResult> UploadProfile(IFormFile file)
+        {
+            try
+            {
+                var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase)).Value;
+                var doctorId = _db.Doctors.FirstOrDefault(a => a.ApplicationUserID == userID).ID;
+                var saveImage = await CS.UpdateDoctorProfileImage(doctorId, file);
+                if (!saveImage.Result)
+                {
+                    return Ok(new BaseResponse()
+                    {
+                        Status = false,
+                        Message = saveImage.Message
+                    });
+                }
+                return Ok(new BaseResponse()
+                {
+                    Status = true
 
 
+                });
+
+            }
+            catch (Exception)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.ExceptionOccured
+                });
+            }
+        }
+        [Authorize]
+        [HttpGet]
+        [Route("GetProfileData")]
+        public async Task<IActionResult> GetProfileData()
+        {
+            var userID = User.Claims.FirstOrDefault(x => x.Type.Equals(Consts.UserIDClaimName, StringComparison.InvariantCultureIgnoreCase)).Value;
+            var doctor = _db.Doctors.Include(a=>a.User).FirstOrDefault(a => a.ApplicationUserID == userID);
+
+            if (!_validator.IsActiveDoctor(doctor.User.PhoneNumber))
+            {
+                return Ok(new BaseResponse()
+                {
+                    Message = Messages.NotActiveDoctor
+                });
+            }
+            var result = CS.GetDoctorProfile(doctor.ID);
+            if (result.Result == true)
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = true,
+                    Data = result.Response
+                });
+
+            }
+            else
+            {
+                return Ok(new BaseResponse()
+                {
+                    Status = false,
+
+                });
+            }
+        }
 
     }
 }

@@ -9,8 +9,16 @@ namespace DBContext
     public class Consts
     {
         #region Settings
-        
-        
+
+        #region Paths
+
+        public const string DomainSetting = "Domain";
+        public const string ProfileImagesPathUploadSetting = "ProfileImagesUploadPath";
+        #endregion
+        #region VirtualPaths
+        public const string ProfileImagesVirualPathSetting = "ProfileImagesVirualPath";
+
+        #endregion
         #region GeneralSettings
         public const string ConfirmationPurpose = "Confirmation";
         public const string ResetPurpose = "Reset";

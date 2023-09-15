@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Tzwed.API.Helpers;
 
 namespace HrbiApp.API.Helpers
 {
@@ -25,6 +26,7 @@ namespace HrbiApp.API.Helpers
         SignInManager<ApplicationUser> _signInManager;
         private IServiceScopeFactory _serviceScopeFactory;
         public SMSSender SMS;
+        private AttachmentUploader _uploader;
 
         public CoreServices(ApplicationDBContext db, IConfiguration configuration, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IServiceScopeFactory serviceProviderFactory)
         {
@@ -35,6 +37,7 @@ namespace HrbiApp.API.Helpers
             _serviceScopeFactory = serviceProviderFactory;
             _ex = new ExceptionHandler(db);
             SMS = new SMSSender(db);
+            _uploader = new AttachmentUploader(configuration, db);
         }
 
         #region Doctor Services
@@ -45,13 +48,13 @@ namespace HrbiApp.API.Helpers
                 var user = new ApplicationUser()
                 {
                     UserName = model.PhoneNumber,
-                    FullName = model.FirstName + " " +model.LastName,
+                    FullName = model.FirstName + " " + model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     AccountType = AccountType.Doctor.ToString(),
                     Status = Consts.Active
-                    
+
                 };
-                var result = await _userManager.CreateAsync(user,model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (!result.Succeeded)
                 {
@@ -98,7 +101,7 @@ namespace HrbiApp.API.Helpers
                     {
                         return false;
                     }
-                    user.PhoneNumberConfirmed= true;
+                    user.PhoneNumberConfirmed = true;
                     _db.Update(user);
                     _db.SaveChanges();
                 }
@@ -111,7 +114,7 @@ namespace HrbiApp.API.Helpers
                 _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return false;
             }
-}
+        }
         public async Task<(bool Result, DoctorLoginResponse Response)> DoctorLogin(DoctorLoginModel model)
         {
             try
@@ -152,7 +155,7 @@ namespace HrbiApp.API.Helpers
         {
             try
             {
-                var doctors = _db.Doctors.Include(a=>a.User).ToList();
+                var doctors = _db.Doctors.Include(a => a.User).ToList();
                 var result = doctors.Select(a => new DoctorsList
                 {
                     DoctorId = a.ID,
@@ -177,15 +180,15 @@ namespace HrbiApp.API.Helpers
             try
             {
                 var doctors = _db.Doctors.ToList();
-                if(specializationId != 0)
+                if (specializationId != 0)
                 {
                     doctors = _db.Doctors.Include(a => a.User).Include(a => a.Specialization).Where(a => a.SpecializationID == specializationId).ToList();
                 }
-                if(positionId != 0)
+                if (positionId != 0)
                 {
                     doctors = _db.Doctors.Include(a => a.User).Include(a => a.Position).Where(a => a.PositionID == positionId).ToList();
                 }
-                 
+
                 var result = doctors.Select(a => new DoctorsList
                 {
                     DoctorId = a.ID,
@@ -210,16 +213,16 @@ namespace HrbiApp.API.Helpers
             try
             {
                 var payment = _db.DoctorBookingPayments.FirstOrDefault(a => a.BookingID == bookingId);
-                    var model =  new DoctorBookingPaymentModel()
-                    {
-                        ID = payment.ID,
-                        AcceptDate = payment.AcceptDate,
-                        TotalAmount = payment.TotalAmount,
-                        BookingID = payment.BookingID,
-                        CreateDate = payment.CreateDate,
-                        Status = payment.Status,
-                        SettledDate = payment.SettledDate
-                    };
+                var model = new DoctorBookingPaymentModel()
+                {
+                    ID = payment.ID,
+                    AcceptDate = payment.AcceptDate,
+                    TotalAmount = payment.TotalAmount,
+                    BookingID = payment.BookingID,
+                    CreateDate = payment.CreateDate,
+                    Status = payment.Status,
+                    SettledDate = payment.SettledDate
+                };
                 return (true, model);
             }
             catch (Exception)
@@ -228,24 +231,59 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public async Task<bool> UpdateDoctorDetails(DoctorProfileModel model)
+        public async Task<bool> UpdateDoctorDetails(DoctorProfileModel model, int doctorId)
         {
             try
             {
-                var doctor = _db.Doctors.Find(model.Id);
+                var doctor = _db.Doctors.FirstOrDefault(a=>a.ID == doctorId);
                 doctor.AboutDoctor = model.AboutDoctor;
                 doctor.CloseTime = model.CloseTime;
                 doctor.OpenTime = model.OpenTime;
                 doctor.Price = model.TicketPrice;
                 doctor.Address = model.Address;
+                doctor.Instructions = model.Instructions;
                 _db.Doctors.Update(doctor);
                 _db.SaveChanges();
                 return true;
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
 
                 return false;
-            
+
+            }
+        }
+
+        public (bool Result, GetDoctorProfileModel Response) GetDoctorProfile(int doctorID)
+        {
+            try
+            {
+                var user = _db.Doctors.Include(a=>a.User).FirstOrDefault(a=>a.ID == doctorID);
+
+                var domain = GetSettingValue(Consts.DomainSetting);
+                var vitualPath = GetSettingValue(Consts.ProfileImagesVirualPathSetting);
+                var profile = new GetDoctorProfileModel()
+                {
+                    PhoneNumber = user.User.PhoneNumber,
+                    FullName = user.User.FullName,
+                    Image = string.Join("/", domain, vitualPath, user.Image),
+                    CloseTime = user.CloseTime,
+                    OpenTime = user.OpenTime,
+                    Instructions = user.Instructions,
+                    Address = user.Address,
+                    AboutDoctor = user.AboutDoctor,
+                    TicketPrice = user.Price
+
+                };
+
+           
+
+                return (true, profile);
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new());
             }
         }
 
@@ -253,7 +291,7 @@ namespace HrbiApp.API.Helpers
         #endregion
 
         #region Booking Services
-        public async Task<(bool Result,PlaceDoctorBookingResponse Response)> PlaceDoctorBooking(PlaceDoctorBookigRequest model, string userId)
+        public async Task<(bool Result, PlaceDoctorBookingResponse Response)> PlaceDoctorBooking(PlaceDoctorBookigRequest model, string userId)
         {
             try
             {
@@ -263,7 +301,7 @@ namespace HrbiApp.API.Helpers
                     DoctorID = model.DoctorId,
                     Status = Consts.Pending,
                     CreateDate = DateTime.Now
-                
+
                 };
                 _db.DoctorBookings.Add(booking);
                 _db.SaveChanges();
@@ -306,11 +344,12 @@ namespace HrbiApp.API.Helpers
                     CreateDate = DateTime.Now,
                     PatientID = userId,
                     Status = Consts.Pending
-                    
+
                 };
                 _db.NurseBookings.Add(booking);
                 _db.SaveChanges();
-                return (true, new PlaceNurseBookingResponse{
+                return (true, new PlaceNurseBookingResponse
+                {
                     ServiceId = booking.ServiceID,
                     BookingId = booking.ID,
                     PatientId = booking.PatientID
@@ -323,11 +362,11 @@ namespace HrbiApp.API.Helpers
 
         }
 
-        public async Task<(bool Result, PlaceLabServiceBookingResponse Response)> PlaceLabServiceBooking(PlaceLabServiceBookingRequest model,string userId)
+        public async Task<(bool Result, PlaceLabServiceBookingResponse Response)> PlaceLabServiceBooking(PlaceLabServiceBookingRequest model, string userId)
         {
             try
             {
-                var labService = _db.LabServices.FirstOrDefault(a=>a.ID == model.LabServiceId);
+                var labService = _db.LabServices.FirstOrDefault(a => a.ID == model.LabServiceId);
                 var booking = new LabServiceBooking()
                 {
                     LabServiceID = model.LabServiceId,
@@ -335,7 +374,7 @@ namespace HrbiApp.API.Helpers
                     Status = Consts.Pending,
                     IsFromHome = model.IsFromHome,
                     Price = labService.Price
-                    
+
                 };
                 _db.LabServiceBookings.Add(booking);
                 _db.SaveChanges();
@@ -490,7 +529,7 @@ namespace HrbiApp.API.Helpers
         }
         #endregion
 
-        #region Common Services
+        #region Account Services
         public async Task<string> GenerateJSONWebToken(ApplicationUser user)
         {
             try
@@ -693,8 +732,35 @@ namespace HrbiApp.API.Helpers
                 return false;
             }
         }
+        public async Task<(bool Result, string Message)> UpdateDoctorProfileImage(int userID, IFormFile file)
+        {
+            try
+            {
+                var user = _db.Doctors.FirstOrDefault(a=>a.ID == userID);
 
-        public (bool Result, List<SpecializationModel>Response) GetAllSpecializations()
+                var uploadReuslt = await _uploader.UploadProfileImage(file);
+                if (!uploadReuslt.Result)
+                {
+                    return (false, uploadReuslt.Message);
+                }
+                user.Image = uploadReuslt.Message;
+                _db.SaveChanges();
+                return (true, "");
+
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, "");
+            }
+
+        }
+
+
+        #endregion
+        #region Common Services
+
+        public (bool Result, List<SpecializationModel> Response) GetAllSpecializations()
         {
             try
             {
@@ -716,7 +782,7 @@ namespace HrbiApp.API.Helpers
             }
         }
 
-        public (bool Result, List<DoctorPositionsModel>Response)GetAllDoctorPositions()
+        public (bool Result, List<DoctorPositionsModel> Response) GetAllDoctorPositions()
         {
             try
             {
@@ -738,6 +804,62 @@ namespace HrbiApp.API.Helpers
             }
         }
 
+        public (bool Result, List<AmbulanceModel> Response) GetAllAmbulances()
+        {
+            try
+            {
+                var ambulances = _db.Ambulances.Select(a => new AmbulanceModel
+                {
+                    ID = a.ID,
+                    Phone = a.Phone,
+                    Hospital = a.Phone
+                }).ToList();
+                return (true, ambulances);
+            }
+            catch (Exception ex) {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return (false, new()); }
+        }
+
+        public (bool Result, List<BankAccountModel> Response) GetBankAccounts()
+        {
+            try
+            {
+                var accounts = _db.BankAccounts.Select(a => new BankAccountModel
+                {
+                    ID = a.ID,
+                    Bank = a.Bank,
+                    Number = a.Number,
+                    Branch = a.Branch
+                }).ToList();
+                return (true, accounts);
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return (false, new());
+            }
+        }
+
+        public (bool Result, AmbulanceModel Response) GetAmbulanceById(int id)
+        {
+            try
+            {
+                var ambulance = _db.Ambulances.FirstOrDefault(a => a.ID == id);
+                var model = new AmbulanceModel()
+                {
+                    ID = ambulance.ID,
+                    Phone = ambulance.Phone,
+                    Hospital = ambulance.Phone
+                };
+                return (true, model);
+            }
+            catch (Exception ex) {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false, new()); }
+        }
         public (bool Result, List<ServicesModel> Response) GetAllServices()
         {
             try
@@ -755,6 +877,7 @@ namespace HrbiApp.API.Helpers
             }
             catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
@@ -765,7 +888,7 @@ namespace HrbiApp.API.Helpers
             try
             {
 
-                var services = _db.LabServices.Where(a=>a.Status == Consts.Active).Select(a => new LabServicesModel
+                var services = _db.LabServices.Where(a => a.Status == Consts.Active).Select(a => new LabServicesModel
                 {
                     Id = a.ID,
                     NameAR = a.NameAR,
@@ -777,8 +900,9 @@ namespace HrbiApp.API.Helpers
                 return (true, services);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
@@ -800,13 +924,34 @@ namespace HrbiApp.API.Helpers
                 return (true, services);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
 
                 return (false, new());
             }
         }
 
+        public bool SaveUserComplaint(string text, string userId)
+        {
+            try
+            {
+                var complaint = new Complaint()
+                {
+                    ApplicationUserID = userId,
+                    Text = text
+                };
+                _db.Complaints.Add(complaint);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+
+                return false;
+            }
+        }
         #endregion
 
         #region Patient Services
@@ -822,7 +967,7 @@ namespace HrbiApp.API.Helpers
                     Status = Consts.Active,
                     FullName = model.FirstName + " " + model.LastName
                 };
-                var result = await _userManager.CreateAsync(user,model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (!result.Succeeded)
                 {
@@ -864,7 +1009,7 @@ namespace HrbiApp.API.Helpers
                 {
                     return (false, new PatientLoginResponse() { Message = Messages.ExceptionOccured });
                 }
-               
+
                 return (true, new PatientLoginResponse()
                 {
                     Message = token,
@@ -903,5 +1048,18 @@ namespace HrbiApp.API.Helpers
         //}
         #endregion
 
+        public string GetSettingValue(string name)
+        {
+            try
+            {
+                var setting = _db.Settings.FirstOrDefault(s => s.Name == name);
+                return setting.Value;
+            }
+            catch (Exception ex)
+            {
+                _ex.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return "";
+            }
+        }
     }
 }

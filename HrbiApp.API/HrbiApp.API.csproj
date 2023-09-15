@@ -34,4 +34,8 @@
     <ProjectReference Include="..\DBContext\DBContext.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attachments\DoctorProfileImage\" />
+  </ItemGroup>
+
 </Project>
