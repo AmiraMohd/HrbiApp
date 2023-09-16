@@ -150,6 +150,12 @@
   <data name="CloseTime" xml:space="preserve">
     <value>انتهاء المقابلات</value>
   </data>
+  <data name="Complaints" xml:space="preserve">
+    <value>الشكاوى</value>
+  </data>
+  <data name="ComplaintText" xml:space="preserve">
+    <value>محتوى الشكوى</value>
+  </data>
   <data name="Control" xml:space="preserve">
     <value>التحكم</value>
   </data>

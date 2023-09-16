@@ -10,11 +10,7 @@ namespace DBContext
     {
         #region Settings
 
-        #region Paths
-
-        public const string DomainSetting = "Domain";
-        public const string ProfileImagesPathUploadSetting = "ProfileImagesUploadPath";
-        #endregion
+        
         #region VirtualPaths
         public const string ProfileImagesVirualPathSetting = "ProfileImagesVirualPath";
 
@@ -35,9 +31,12 @@ namespace DBContext
         #endregion
 
         #region Database Settings
-        public const string DoctorProfitSetting = "DoctorProfit";
+        #region Paths
+
         public const string DomainSetting = "Domain";
-        public const string ProfileImagesVirualPathSetting = "ProfileImagesVirualPath";
+        public const string ProfileImagesPathUploadSetting = "ProfileImagesUploadPath";
+        #endregion
+        public const string DoctorProfitSetting = "DoctorProfit";
         #endregion
         #endregion
         #region Statuses

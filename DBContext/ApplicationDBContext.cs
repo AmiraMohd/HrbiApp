@@ -44,14 +44,17 @@ namespace DBContext
         {
             builder.Entity<DoctorBookingPayment>().Property(p => p.CreateDate)
                 .HasDefaultValueSql("getDate()");
+            builder.Entity<Complaint>().Property(p => p.CreateDate)
+                .HasDefaultValueSql("getDate()");
             base.OnModelCreating(builder);
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL8004.site4now.net;Initial Catalog=db_a9ddc8_hrbiproject8;User Id=db_a9ddc8_hrbiproject8_admin;Password=Sudu@123#");
+            //optionsBuilder.UseSqlServer("Data Source=SQL8004.site4now.net;Initial Catalog=db_a9ddc8_hrbiproject8;User Id=db_a9ddc8_hrbiproject8_admin;Password=Sudu@123#");
             //optionsBuilder.UseSqlServer("Server=DESKTOP-QN2UA1B;Initial Catalog=Hrbi;User ID = sa; Password = 123456;Database=Hrbi;TrustServerCertificate=True");
             //optionsBuilder.UseSqlServer("Server=.;Initial Catalog=Hrbi;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("Data Source=SQL5104.site4now.net;Initial Catalog=db_a9df23_harbiproject52;User Id=db_a9df23_harbiproject52_admin;Password=Sudu@123#");
 
             base.OnConfiguring(optionsBuilder);
         }

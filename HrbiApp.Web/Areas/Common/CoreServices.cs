@@ -17,6 +17,7 @@ using HrbiApp.Web.Models.Services;
 using HrbiApp.Web.Models.Patients;
 using HrbiApp.Web.Models.Reports;
 using HrbiApp.Web.Models.Settings;
+using HrbiApp.Web.Models.Complaints;
 
 namespace HrbiApp.Web.Areas.Common
 {
@@ -1393,6 +1394,33 @@ namespace HrbiApp.Web.Areas.Common
             {
                 EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
                 return false;
+            }
+        }
+        #endregion
+
+        #region Complaints
+        public (bool Result,List<ComplaintsListModel> Complaints) GetComplaints()
+        {
+            try
+            {
+                var complaints = _dbContext.Complaints.OrderByDescending(c => c.CreateDate).Take(500)
+                    .Include(c=>c.User)
+                    .Select(c=>new ComplaintsListModel()
+                    {
+                        Status = c.Status,
+                        CreateDate = c.CreateDate.ToString("dd-MM-yyyy HH:mm"),
+                        ID = c.ID,
+                        Text = c.Text,
+                        UserEmail=c.User.Email,
+                        UserName=c.User.FullName,
+                        UserPhone=c.User.PhoneNumber
+                    }).ToList();
+                return (true,complaints);
+            }
+            catch (Exception ex)
+            {
+                EXH.LogException(ex, MethodBase.GetCurrentMethod().ReflectedType.Name, MethodBase.GetCurrentMethod().Name);
+                return (false,new());
             }
         }
         #endregion

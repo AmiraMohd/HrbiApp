@@ -14,6 +14,9 @@ namespace DBContext
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID {  get; set; }
         public string Text { get; set; }
+        [MaxLength(15)]
+        public string Status { get; set; }
+        public DateTime CreateDate { get; set; }
         public string ApplicationUserID { get; set; }
         [ForeignKey(nameof(ApplicationUserID))]
         public ApplicationUser User { get; set; }
